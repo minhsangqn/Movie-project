@@ -20,20 +20,31 @@ exports.get_phim = function(req, res, next){
     res.render('frontend/home/phimNavYear', {pageTitle: req.__('Năm phát hành'), phim: phim});
 };
 //-------------------------details-------------------
-exports.details = (name,episode_id,_id) =>
+exports.details = (name,episode_id) =>
     new Promise((resolve, reject) =>{
-        episode.findOne({"_id": ObjectId(_id)})
-            .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
+        episode.findOne({episode_id: episode_id})
+            // .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
             .then(epi =>{
                 if(epi.length === 0){
                     reject ({status: 404,
                         message: req.__('Không tìm thấy phim!')
                     });
                 }else{
-                    resolve({status: 200, episode: epi});
+                    episode.findOne({"_id":ObjectId(epi._id)})
+                    .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
+                        .then(data =>{
+                            resolve({status: 200,episode: data,name: name});
+                        })
+                        .catch(err =>{
+                            console.log('err');
+                            reject({status: 500, message: req.__('Loi server')});
+                        });
+                    // console.log('tra lan 2');
+                    // resolve({status: 200, episode: data,name: name});
                 }
             })
             .catch(err => {
+                // console.log('err2');
                 reject({status: 500, message: req.__('Loi server')});
             });
     });

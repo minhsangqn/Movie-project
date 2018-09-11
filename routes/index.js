@@ -9,14 +9,14 @@ router.get('/', home_controller.index);
 router.get('/phim/:nav', home_controller.get_phim);
 
 /*----------------------GET details movie------------------------*/
-router.get('/phim/:episode_id/:name/:_id', (req,res) => {
+router.get('/phim/:episode_id/:name/', (req,res) => {
     var name = req.param('name');
     var episode_id = req.param('episode_id');
-    var _id = req.param('_id');
 
-    home_controller.details(name,episode_id,_id)
+    home_controller.details(name,episode_id)
     .then(result => {
-        var Titile = result.episode.episode_name;
+        // console.log("LOG: "+result.episode);
+        var Titile = result.name;
         res.render('frontend/Movie/movieDetails', {
             episode:result.episode,
             pageTitle: req.__(Titile)})

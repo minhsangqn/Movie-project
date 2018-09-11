@@ -100,7 +100,7 @@
         </div>
         <form action="/admin/editMovie?_csrf={{csrfToken}}" method="post" class="form-horizontal">
             <div class="card-body card-block">
-                <input type="text" value="{{item.listCatAndEpi}}" id="ListCat" hidden>
+                <input type="text" value="{{item.listEpisode}}" id="ListCat" hidden>
                 <input type="text" value="{{item.year_order}}" id="Listyear" hidden>
                 <input type="text" value="{{item.episode_hide}}" id="Hide" hidden>
                 {{#if success}}
@@ -153,7 +153,7 @@
                     <div class="col col-md-9">
                         <div class="form-check-inline form-check">
 
-                            <input type="text" hidden id="cat_idList" name="cat_idList" value="{{item.listCatAndEpi}}">
+                            <input type="text" hidden id="cat_idList" name="cat_idList" value="{{item.listEpisode}}">
                             <label for="cat_id" class="form-check-label" id="cat_id">
                             </label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
