@@ -543,9 +543,9 @@ exports.notLogin_use = function (req, res, next) {
     next();
 };
 
-//hinh nhu no bi xoa cookie khi redirect
+
 exports.isLoggedIn = function (req, res, next) {
-    console.log("THONG TIN: "+req.user);
+    // console.log("THONG TIN: "+req.user);
     if(req.user && req.user.roles === 'ADMIN' && req.user.provider === 'admin'){
         return next();
     }else {
@@ -557,7 +557,7 @@ exports.notLoggedIn = function (req, res, next) {
     if(!req.user){
         return next();
     }else {
-        console.log("LOGIN PAGE: CO COOKIE, KO P ADMIN");
+        // console.log("LOGIN PAGE: CO COOKIE, KO P ADMIN");
         if(req.user.roles !== 'ADMIN' && req.user.provider !== 'admin'){
             return next();
         }else {
@@ -567,9 +567,9 @@ exports.notLoggedIn = function (req, res, next) {
 };
 
 
-// Nhu nay theo nguyen ly la ok
+
 // Chi dung cho get_login form admin
-exports.checkLoginAdmin = function (req, res, next) { //truong hop nay no mau thuan khi truy cap truc tiep /admin/login vaf /admin
+exports.checkLoginAdmin = function (req, res, next) {
     if(!req.user){ //Neu khong ton tai cookie thi hien thi form login admin
         return next();
     } else {
