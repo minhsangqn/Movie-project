@@ -1,3 +1,3 @@
-# Movie-project
+# xemphim
 
-wirte by nodejs
+web xem phim được viết bằng nodejs 

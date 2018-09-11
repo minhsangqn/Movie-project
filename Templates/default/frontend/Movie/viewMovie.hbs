@@ -12,7 +12,7 @@
                         <div class="movie_meta_info">
                             <div class="info_nd">
                                 <div class="jw-video jw-reset">
-                                    <video id="player" class="jw-video jw-reset" src=""></video>
+                                    <video height="450" id="player" class="jw-video jw-reset"></video>
                                 </div>
                             </div>
                         </div>
@@ -21,7 +21,7 @@
                                 <li><a href="" id="" class="previous_ep_btn">
                                     <span class="glyphicon glyphicon-step-forward"></span> Tập Trước.</a>
                                 </li>
-                                <li><a href="" class="next_ep_btn" onclick="nextEpisodeHand('http://anime47.com/xem-phim-one-piece-dao-hai-tac-ep-002/76749.html');">
+                                <li><a href="" class="next_ep_btn">
                                     <span class="glyphicon glyphicon-step-backward"></span> Tập Tiếp Theo.</a>
                                 </li>
                                 <li>
@@ -34,9 +34,7 @@
                         <div class="movie_meta_info">
                             <div class="info_nd" id="chapNum">
                                 {{#each viewEpi}}
-                                <a href="" data-value="{{this.id}}" class="IdMovie">
-                                    <button type="button" class="btn btn-success btn-xs">{{this.num}}</button>&nbsp
-                                </a>
+                                    <button type="button" value="{{this.id}}" onClick="reply_click(this.id)" class="btn btn-success btn-xs IdMovie">{{this.num}}</button>&nbsp
                                 {{/each}}
                             </div>
                         </div>
@@ -50,56 +48,41 @@
 <script type="text/javascript" src="/jwplayer-7.12.1/jwplayer.js?v1"></script>
 <script type="text/javascript">jwplayer.key="dWwDdbLI0ul1clbtlw+4/UHPxlYmLoE9Ii9QEw==";</script>
 <script>
-    //ID for
+    jQuery(window).load(function (reply_click) {
+
+    });
+    //create ID number chapter
     var idNum = document.querySelectorAll('.IdMovie');
     for (var i = 0; i < idNum.length; i++)
-         var ii = idNum[i].id = 'ID' + i;
+         idNum[i].id = 'ID' + i;
+    //click get id client send id to server
+    function reply_click(clicked_id) {
+        console.log('Da click'+ clicked_id);
+        var id = document.getElementById(clicked_id).value;
+        var data = {id};
+        $.ajax({
+            type:'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: 'http://localhost:5000/API/endpoint',
+            success:function (data) {
+                console.log('success'+ data);
 
-    $(function () {
-        $().click(function (e) {
-            e.preventDefault();
-            console.log('da click: '+ii);
+                console.log("a "+data.chapter_id);
+                var player = jwplayer('player').setup({
+                    file: data.chapter_url,
+                    width: '100%',
+                    height: 470,
+                    autostart: 'true'
+                });
+                var bumpIt = () => {
+                    var vol = player.getVolume();
+                    player.setVolume(vol + 10);
+                }
+                bumpIt();
+            }
         });
-    });
-
-
-   //  console.log(JsonData);
-   // var dataMovie = document.getElementById('JsonMovie').value;
-   //  var obj = JSON.parse(dataMovie);
-   //
-   //      var out ='';
-   //      for (var j = 0;j < obj.length;j++){
-   //          var MovieId = 'ID'+ j;
-   //          out +='<a onclick="clickChapter()" href="?tap-'+obj[j].chapter_num+'"><input type="text" value="'+obj[j]+'" hidden id="'+MovieId+'"><button type="button" class="btn btn-success btn-xs">'+obj[j].chapter_num+'</button></a>&nbsp&nbsp&nbsp'
-   //      }
-   //      document.getElementById("chapNum").innerHTML = out;
-
-    // function clickChapter() {
-    //     var ViewClick = document.getElementById(MovieId).value;
-    //     console.log("CLICK: "+ViewClick);
-    //     var arrMovie = [];
-    //     for (var i = 0;i < ViewClick.length;i++){
-    //         var chapter = ViewClick[i].chapter_num;
-    //         var url = ViewClick[i].url;
-    //         console.log(chapter+'//'+url);
-    //         arrMovie.push(chapter,url)
-    //     }
-    //     console.log("CLICK DATA: "+arrMovie);
-    // }
-
-
-   // Call the API
-   var player = jwplayer('player').setup({
-       file: 'https://www.youtube.com/watch?v=QKdTbDY-1UI&start_radio=1&list=RDQKdTbDY-1UI',
-       width: '100%',
-       height: 450,
-       // autostart: 'true'
-   });
-   var bumpIt = () => {
-       var vol = player.getVolume();
-       player.setVolume(vol + 10);
-   }
-   bumpIt();
+    }
     // Listen to an event
     // player.on('pause', (event) => {
     //     alert('Why did my user pause their video instead of watching it?');

@@ -44,18 +44,7 @@ router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
             res.redirect('/');
         });
 });
-//
-// router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
-//     var episode_id = req.param("episode_id");
-//     home_controller.get_viewMovie(episode_id)
-//         .then(result => {
-//             console.log('JSON: '+result);
-//             res.status(200).json(doc);
-//         })
-//         .catch(err =>{
-//             res.status(500).json({error: err});
-//         });
-// });
+
 //=========================END VIEW MOVIE============================//
 
 

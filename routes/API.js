@@ -3,6 +3,7 @@ var router = express.Router();
 var Category = require("../modules/table_cat");
 var Year = require("../modules/table_year");
 var chapter = require("../modules/table_chapter");
+
 //===========================API============================================//
 //product
 router.get("/f5bb0c8de146c67b44babbf4e6584cc0", (req, res) => {
@@ -39,7 +40,24 @@ router.get('/c5e549a0721069a573eeaba1677ce509', (req,res) => {
         });
 
 });
+//================================get chapter==================//
+router.post('/endpoint', function (req,res) {
+     var obj = {"err":"Lỗi server"};
+    var id = req.body.id;
+    console.log("vao");
+    chapter.findOne({"_id":Object(id)})
+    .then(obj => {
+        console.log("DATA: "+obj);
+        res.status(200);
+        res.json(obj);
+    })
+    .catch(err => {
+            res.status(500).json({error: err});
+        });
 
+    // console.log('body:' + JSON.stringify(req.body));
+    // res.send(obj);
+});
 
 
 module.exports = router;

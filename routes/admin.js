@@ -172,6 +172,7 @@ router.get('/deleteMovie/:episode_id', (req, res) => {
 //====================================END ADD MOVIE==============================//
 
 //=================================ADD YEAR======================================//
+//em chua bo check vao
 router.get('/addYear', auth_controller.get_addYear);
 
 router.post('/addYear', function (req, res,next) {
@@ -194,7 +195,7 @@ router.post('/addYear', function (req, res,next) {
     }
 });
 
-router.get('/listYear', auth_controller.get_listYear);
+router.get('/listYear', auth_controller.isLoggedIn, auth_controller.get_listYear);
 
 router.get('/editYear/:year_id', (req, res) =>{
     var year_id = req.param('year_id');
@@ -444,7 +445,7 @@ router.get('/logout', auth_controller.isLoggedIn, auth_controller.get_Logout);
 //Not login to dashboard
 router.use('/', auth_controller.notLogin_use);
 
-router.get('/login', auth_controller.notLoggedIn, auth_controller.login_get);
+router.get('/login', auth_controller.checkLoginAdmin, auth_controller.login_get);
 
 router.post('/login', auth_controller.login_post);
 

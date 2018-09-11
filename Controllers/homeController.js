@@ -2,6 +2,7 @@ var episode = require("../modules/table_episode");
 var ObjectId = require('mongodb').ObjectId;
 var Category = require("../modules/table_cat");
 var Year = require("../modules/table_year");
+
 //-----------------------load index product------------------
 exports.index = function (req, res, next) {
     episode.find(function(err,docs) {
