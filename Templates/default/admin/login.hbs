@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Page Description">
+    <meta name="author" content="Administrator">
+    <link rel="stylesheet" href="/adminStyle/styles.css">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="//fonts.googleapis.com/css?family=Hind" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>{{pageTitle}}</title>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <script type="text/javascript">
+        function picknumber(num) {
+            var pin_code = document.getElementById("pin_code");
+            var pinc = document.getElementById("pinc");
+
+            pin_code.value = pin_code.value + num;
+            pinc.value = pinc.value + "*";
+        }
+        function resetpicker() {
+            var pin_code = document.getElementById("pin_code");
+            var pinc = document.getElementById("pinc");
+
+            pin_code.value = '';
+            pinc.value = '';
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="col-md-4 col-sm-4"></div>
+    <div class="col-md-4 col-sm-4">
+        <section class="login-from">
+            <form action="/admin/login" method="post" role="login">
+                <img src="http://i.imgur.com/RcmcLv4.png" class="img-responsive" alt="">
+                {{#if hasErrors}}
+                    <div class="row">
+                        <div class="alert alert-danger">
+                            {{#each messages}}
+                                <p>{{this}}</p>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+
+
+                <div>
+                    <input type="email" name="email" id="email" placeholder="Email" class="form-control input-pin">
+                    <input type="password" name="password" id="pasword" placeholder="password" class="form-control input-pin">
+                </div>
+
+                <div>
+                    <label>Pin Code</label>
+                    <input type="text" class="form-control input-pin" name="pinc" disabled="disabled" id="pinc">
+                    <input type="hidden" name="pin_code" id="pin_code" value="">
+                </div>
+
+                <div>
+                    <div id="vitualKeyboad">
+                        <script type="text/javascript">
+                            function shuffle(array){
+                                var currentIndex = array.length, tempValue, randomIndex;
+                                while(0 != currentIndex){
+                                    randomIndex = Math.floor(Math.random() * currentIndex);
+                                    currentIndex -= 1;
+                                    tempValue = array[currentIndex];
+                                    array[currentIndex] = array[randomIndex];
+                                    array[randomIndex] = tempValue;
+                                }
+                                return array;
+                            }
+                            var numArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                            numArr = shuffle(numArr);
+                            var button = "";
+                            for (var number in numArr) {
+                                button += '<span style="margin-right: 3px;" onclick="picknumber(' + numArr[number] + ');" class="btn btn-default">' + numArr[number] + '</span>';
+                            }
+                            button += '<span style="margin-top: 6px;margin-bottom: 6px;" onclick="resetpicker();" id="clear" class="btn btn-danger">Xóa</span>';
+                            document.getElementById("vitualKeyboad").innerHTML = button;
+                        </script>
+                    </div>
+                </div>
+                <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+                <button type="submit" class="btn btn-primary btn-block"><i style="font-size:24px" class="fa">&#xf090;</i> Đăng nhập</button>
+            </form>
+        </section>
+        <div class="copyright">copyright © 2018 MINH SANG</div>
+    </div>
+    <div class="col-md-4 col-sm-4"></div>
+</div>
+
+
+
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>

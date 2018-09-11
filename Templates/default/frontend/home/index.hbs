@@ -1,0 +1,38 @@
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<!--<div class="body_style"></div>-->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="title_body">Phim Mới Cập Nhật</div>
+            <div class="list_index">
+                {{# each episode}}
+                    <div class="item card_index_item">
+                        <a href="/phim/{{this.episode_id}}/{{this.episode_name_ascii}}/{{this._id}}" data-toggle="tooltip" data-placement="right" title="{{this.episode_name}}">
+                            <span class="overly"></span>
+                            <img src="/images/image_avatar/{{this.episode_image}}" alt="{{this.episode_image}}" class="thumb img-responsive">
+                            <div class="more">
+                                <span class="chapter">{{this.episode_film}}</span>
+                                <span class="view">20</span>
+                                <span class="cmt">10</span>
+                            </div>
+                            <div class="title">
+                                <h3 class="title_item">
+                                    {{this.episode_name}}
+                                </h3>
+                            </div>
+                        </a>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            {{> rank_left}}
+        </div>
+    </div>
+
+

@@ -1,0 +1,195 @@
+{{> Admin_layout}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5000/API/202cb962ac59075b964b07152d234b70',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var IdYear = document.getElementById("Listyear").value;
+                var outt = '';
+                var i;
+                for (i = 0;i < data.length; i++){
+                    var isSelected = '';
+                    if(IdYear === data[i]._id){
+                        isSelected = 'selected';
+                    }
+                    outt += '<option name="year_id" '+isSelected+' value="'+data[i]._id+'">'+
+                            data[i].year_name + '</option>';
+                }
+                document.getElementById("year_id").innerHTML = outt;
+            }
+        });
+    });
+</script>
+<script>
+    function checkExitInListJson(item,listJson) {
+        var res = listJson.split(",");
+        // var obj = JSON.parse(listJson);
+        for(var i=0; i<res.length; i++){
+            if(res[i] === item){
+                return true;
+            }
+        }
+        return false;
+    }
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5000/API/f5bb0c8de146c67b44babbf4e6584cc0',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var ListCat = document.getElementById("ListCat").value;
+                var out = '';
+                var i;
+                for (i = 0;i < data.length; i++){
+
+                    var isChecked = '';
+                    if(checkExitInListJson(data[i]._id, ListCat )){
+                        isChecked = 'checked';
+                    }
+                    //check cat
+                    var StrID = "Click" + i;
+                    out += '<input '+isChecked+' onclick="myFunction()" class="form-check-input cat" id="'+ StrID +'" ' +
+                            'type="checkbox" value="'+ data[i]._id +'">' +
+                            data[i].cat_name_title + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                }
+                document.getElementById("cat_id").innerHTML = out;
+            }
+        });
+    });
+</script>
+<script>
+    function myFunction() {
+        var arr = [];
+        // var click = document.forms[0];
+        var countCat = $('.cat').length;
+        for (var j = 0; j < countCat;j++){
+            // console.log(click.length);
+            var chkCAT = $('#Click'+ j);
+            if(chkCAT.is(':checked')){
+                arr.push(chkCAT.val());
+            }
+        }
+        $('#cat_idList').attr('value',arr);
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        var hide = document.getElementById("Hide").value;
+        var ott = '';
+        var arr = [{'id':'0','name':'Ẩn'},{'id':'1','name':'Hiện'}];
+        for (var i = 0;i < arr.length; i++){
+            var isCheck = '';
+            if(hide === arr[i].id){
+                isCheck = 'checked';
+            }
+            ott += '<label for="inline-radio1" class="form-check-label "><input type="radio" '+isCheck+' id="inline-radio1" name="episode_hide" value="'+arr[i].id+'" class="form-check-input">'+arr[i].name+'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+        }
+        document.getElementById("ListHide").innerHTML = ott;
+    })
+</script>
+<style>
+    li{list-style: none}
+</style>
+<div class="col-lg-10">
+    <div class="card">
+        <div class="card-header">
+            <strong>{{item.episode_name}}</strong>
+        </div>
+        <form action="/admin/editMovie?_csrf={{csrfToken}}" method="post" class="form-horizontal">
+            <div class="card-body card-block">
+                <input type="text" value="{{item.listCatAndEpi}}" id="ListCat" hidden>
+                <input type="text" value="{{item.year_order}}" id="Listyear" hidden>
+                <input type="text" value="{{item.episode_hide}}" id="Hide" hidden>
+                {{#if success}}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ success }}</li>
+                    </div>
+                {{/if}}
+                {{#if err }}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ err }}</li>
+                    </div>
+                {{/if}}
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_id" class=" form-control-label">Mã Phim</label></div>
+                    <div class="col-12 col-md-9">
+                        <input value="{{item.episode_id}}" disabled type="text" id="episode_id" name="episode_id" placeholder="Nhập mã phim" class="form-control">
+                    </div>
+                    <input type="text" value="{{item.episode_id}}" name="episode_id" hidden>
+                    <input type="text" value="{{item._id}}" name="_id" hidden>
+                    <input type="text" value="{{item.episode_name_ascii}}" name="episode_name_ascii" hidden>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_name" class=" form-control-label">Tên phim</label></div>
+                    <div class="col-12 col-md-9"><input value="{{item.episode_name}}" type="text" id="episode_name" name="episode_name" placeholder="Nhập tên phim" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_film" class=" form-control-label">Số Tập dự kiến</label></div>
+                    <div class="col-12 col-md-9"><input value="{{item.episode_film}}" type="text" id="episode_film" name="episode_film" placeholder="vd: 12/12 chapter" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_season" class=" form-control-label">Season:</label></div>
+                    <div class="col-12 col-md-9"><input value="{{item.episode_season}}" type="text" id="episode_season" name="episode_season" placeholder="Mùa thứ" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_info" class=" form-control-label">Nội dụng</label></div>
+                    <div class="col-12 col-md-9"><textarea name="episode_info" id="episode_info" rows="9" placeholder="Nội dung bộ phim" class="form-control">{{item.episode_info}}</textarea></div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="select" class=" form-control-label">Năm Phát Hành</label></div>
+                    <div class="col-12 col-md-9">
+                        <select name="year_id" id="year_id" class="form-control">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Thể loại</label></div>
+                    <div class="col col-md-9">
+                        <div class="form-check-inline form-check">
+
+                            <input type="text" hidden id="cat_idList" name="cat_idList" value="{{item.listCatAndEpi}}">
+                            <label for="cat_id" class="form-check-label" id="cat_id">
+                            </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Inline Radios</label></div>
+                    <div class="col col-md-9">
+                        <div class="form-check-inline form-check" name="episode_hide" id="ListHide">
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_back" class=" form-control-label">Ảnh bìa</label></div>
+                    <div class="col-12 col-md-9">
+                        <img class="img-responsive image_details" style="max-width: 200px" src="/images/image_avatar/{{item.episode_back}}" alt="Bộ phim {{item.episode_name}}">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_image" class=" form-control-label">Ảnh Avatar</label></div>
+                    <div class="col-12 col-md-9">
+                        <img class="img-responsive image_details" style="max-width: 50px" src="/images/image_avatar/{{item.episode_image}}" alt="Bộ phim {{item.episode_name}}">
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-dot-circle-o"></i> Thêm Phim
+                </button>
+                <button type="reset" class="btn btn-danger btn-sm" value="">
+                    <i class="fa fa-ban"></i> Hủy
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{{> Admin_footer}}

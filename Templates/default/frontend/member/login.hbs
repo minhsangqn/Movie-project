@@ -1,0 +1,58 @@
+<div class="alert alert-success">
+<div class="container">
+
+    <div class="col-sm-6 col-sm-offset-3">
+
+        <form action="/thanh-vien/dang-nhap" method="POST" class="form-horizontal" role="form">
+
+            <div class="form-group">
+                <legend>{{__ 'Thành viên đăng nhập'}} <span class="pull-right"><a href="/thanh-vien/dang-ky">{{__ 'Tạo tài khoản mới'}}</a></span></legend>
+            </div>
+
+            {{#if hasErrors}}
+                <div class="row">
+                    <div class="alert alert-danger">
+                        {{#each messages}}
+                            <p>{{this}}</p>
+                        {{/each}}
+                    </div>
+                </div>
+            {{/if}}
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button onclick="window.location.href='/thanh-vien/facebook'" type="button" class="btn-fb btn btn-primary col-sm-12">{{__ 'Đăng nhập Facebook'}}</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button onclick="window.location.href='/thanh-vien/google'" type="button" class="btn-gg btn btn-danger col-sm-12">{{__ 'Đăng nhập Google'}}</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="loginOr text-center col-sm-12">{{__ 'Or'}}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">{{__ 'Địa chỉ Email'}}</label>
+                <input type="text" name="email" class="form-control" id="email" placeholder="{{__ 'Nhập địa chỉ email của bạn'}}" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">{{__ 'Mật khẩu'}}</label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="{{__ 'Nhập địa chỉ mật khẩu của bạn'}}" />
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+                    <button type="submit" class="btn btn-primary pull-right">{{__ 'Đăng nhập'}}</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+</div>

@@ -1,0 +1,36 @@
+{{> Admin_layout}}
+<style>
+    li{list-style: none}
+</style>
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <strong>{{item.year_name}}</strong>
+        </div>
+        <form action="/admin/editYear" method="post" class="form-horizontal">
+            <div class="card-body card-block">
+                {{#if err }}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ err }}</li>
+                    </div>
+                {{/if}}
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="year_id" class=" form-control-label">ID Năm</label></div>
+                    <div class="col-12 col-md-9"><input type="text" id="year_id" name="year_id" placeholder="Nhập ID năm" class="form-control" value="{{item.year_id}}" disabled></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="year_name" class=" form-control-label">Năm phát hành</label></div>
+                    <div class="col-12 col-md-9"><input type="text" id="year_name" name="year_name" placeholder="Năm phát hành phim" class="form-control" value="{{item.year_name}}"></div>
+                </div>
+                <input type="hidden" name="_id" value="{{item._id}}" />
+            </div>
+            <div class="card-footer">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+                <button type="submit" class="btn btn-primary btn-sm" value="">
+                    <i class="fa fa-dot-circle-o"></i> Sửa Năm
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{{> Admin_footer}}

@@ -1,0 +1,75 @@
+{{> Admin_layout}}
+<style>
+    li{list-style: none}
+</style>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Danh Sách Phim</strong>
+            <a href="/admin/addMovie">
+                <button type="button" class="btn btn-success btn-sm" style="float: right">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                {{#if err }}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ err }}</li>
+                    </div>
+                {{/if}}
+                {{#if success }}
+                    <div class="alert alert-success" role="alert">
+                        <li>{{ success }}</li>
+                    </div>
+                {{/if}}
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col"><i class="fa fa-list"></i></th>
+                    <th scope="col">ID Phim</th>
+                    <th scope="col">Tên phim</th>
+                    <th scope="col">Tên viết tắt</th>
+                    <th scope="col">Số tập</th>
+                    <th scope="col">Nội dung</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Thời gian</th>
+                    <th>Tuỳ chọn</th>
+                    <th>Thêm phim</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{# each item}}
+
+                    <tr>
+                        <th scope="row">#</th>
+                        <td style="display: none">{{this._id}}</td>
+                        <td>{{this.episode_id}}</td>
+                        <td><b>{{this.episode_name}}</b><br>
+                            <!--<img src="/images/image_avatar/{{this.episode_image}}" alt="{{this.episode_image}}" class="thumb img-responsive">-->
+                        </td>
+                        <td>{{this.episode_name_ascii}}</td>
+                        <td>{{this.episode_film}}</td>
+                        <td>{{limit_text this.episode_info}}</td>
+                        <td>{{hide_show this.episode_hide}}</td>
+                        <td>{{this.create_at}}</td>
+                        <td style="text-align: center;width: 10%">
+                            <a href="/admin/editMovie/{{episode_name_ascii}}/{{episode_id}}"><i class="fa fa-pencil"></i></a>
+                            &nbsp&nbsp&nbsp&nbsp
+                            <a onclick="return confirm('Bạn có chắc muốn xóa')" href="/admin/deleteMovie/{{_id}}"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                        <td>
+                            <a href="/admin/chapter/{{episode_id}}/{{_id}}">
+                                <button type="button" class="btn btn-outline-success btn-sm"><i class="fa fa-upload"></i>&nbsp; Thêm tập</button>
+                            </a>
+                        </td>
+                    </tr>
+
+                {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{{> Admin_footer}}

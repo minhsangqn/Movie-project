@@ -1,0 +1,57 @@
+{{> Admin_layout}}
+<style>
+    li{list-style: none}
+</style>
+<div class="col-lg-8">
+    <div class="card">
+        <div class="card-header">
+            <strong class="card-title">Danh Sách Thể Loại</strong>
+            <a href="/admin/addCat">
+                <button type="button" class="btn btn-success btn-sm" style="float: right">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                {{#if err }}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ err }}</li>
+                    </div>
+                {{/if}}
+                {{#if success }}
+                    <div class="alert alert-success" role="alert">
+                        <li>{{ success }}</li>
+                    </div>
+                {{/if}}
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col"><i class="fa fa-list"></i></th>
+                    <th scope="col">ID Thể Loại</th>
+                    <th scope="col">Tên Thể Loại</th>
+                    <th scope="col">Tên Viết Tắt</th>
+                    <th>Tuỳ chọn</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{# each item}}
+                    <tr>
+                        <th scope="row">#</th>
+                        <td style="display: none">{{this._id}}</td>
+                        <td>{{this.cat_id}}</td>
+                        <td>{{this.cat_name_title}}</td>
+                        <td>{{this.cat_name_ascii}}</td>
+                        <td style="text-align: center">
+                            <a href="/admin/editCat/{{cat_id}}"><i class="fa fa-pencil"></i></a>
+                            &nbsp&nbsp&nbsp&nbsp
+                            <a onclick="return confirm('Bạn có chắc muốn xóa')" href="/admin/deleteCat/{{_id}}"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{{> Admin_footer}}

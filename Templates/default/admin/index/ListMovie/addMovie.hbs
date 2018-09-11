@@ -1,0 +1,151 @@
+{{> Admin_layout}}
+<script src="/adminStyle/assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5000/API/202cb962ac59075b964b07152d234b70',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var outt = '';
+                var j;
+                for (j = 0;j < data.length; j++){
+                    outt += '<option name="year_id" value="'+ data[j]._id +'">'+
+                            data[j].year_name + '</option>';
+                }
+                document.getElementById("year_id").innerHTML = outt;
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5000/API/f5bb0c8de146c67b44babbf4e6584cc0',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var out = '';
+                var i;
+                for (i = 0;i < data.length; i++){
+                    var StrID = "Click" + i;
+                    out += '<input onclick="myFunction()" class="form-check-input cat" id="'+ StrID +'" type="checkbox" ' +
+                            'value="'+ data[i]._id +'">' +data[i].cat_name_title + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                }
+                document.getElementById("cat_id").innerHTML = out;
+            }
+        });
+    });
+</script>
+<script>
+    function myFunction() {
+        var arr = [];
+        // var click = document.forms[0];
+        var countCat = $('.cat').length;
+        for (var j = 0; j < countCat;j++){
+            // console.log(click.length);
+            var chkCAT = $('#Click'+ j);
+            if(chkCAT.is(':checked')){
+                arr.push(chkCAT.val());
+            }
+        }
+        $('#cat_idList').attr('value',arr);
+    }
+</script>
+
+<style>
+    li{list-style: none}
+</style>
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <strong>Thêm Phim MỚi</strong>
+        </div>
+        <form action="/admin/addMovie?_csrf={{csrfToken}}" method="post" class="form-horizontal"  enctype="multipart/form-data">
+            <div class="card-body card-block">
+                {{#if success}}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ success }}</li>
+                    </div>
+                {{/if}}
+                {{#if err }}
+                    <div class="alert alert-danger" role="alert">
+                            <li>{{ err }}</li>
+                    </div>
+                {{/if}}
+
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_id" class=" form-control-label">Mã Phim:</label></div>
+                    <div class="col-12 col-md-9"><input type="text" id="episode_id" name="episode_id" placeholder="Nhập mã phim" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_name" class=" form-control-label">Tên phim:</label></div>
+                    <div class="col-12 col-md-9"><input type="text" id="episode_name" name="episode_name" placeholder="Nhập tên phim" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_film" class=" form-control-label">Số Tập dự kiến: </label></div>
+                    <div class="col-12 col-md-9"><input type="text" id="episode_film" name="episode_film" placeholder="vd: 12/12 chapter" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_season" class=" form-control-label">Season:</label></div>
+                    <div class="col-12 col-md-9"><input type="text" id="episode_season" name="episode_season" placeholder="Mùa thứ" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_info" class=" form-control-label">Nội dụng:</label></div>
+                    <div class="col-12 col-md-9"><textarea name="episode_info" id="episode_info" rows="9" placeholder="Nội dung bộ phim" class="form-control"></textarea></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="select" class=" form-control-label">Năm Phát Hành:</label></div>
+                    <div class="col-12 col-md-9">
+                        <select name="year_id" id="year_id" class="form-control">
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Thể loại:</label></div>
+                    <div class="col col-md-9">
+                        <div class="form-check-inline form-check">
+                            <input type="text" hidden id="cat_idList" name="cat_idList">
+                            <label for="cat_id" class="form-check-label" id="cat_id">
+                            </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Tùy chọn:</label></div>
+                    <div class="col col-md-9">
+                        <div class="form-check-inline form-check" name="episode_hide">
+                            <label for="inline-radio1" class="form-check-label ">
+                                <input type="radio" id="inline-radio1" name="episode_hide" value="0" class="form-check-input">Ẩn
+                            </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label for="episode_hide" class="form-check-label ">
+                                <input type="radio" id="inline-radio2" name="episode_hide" value="1" class="form-check-input" checked>Hiện
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_back" class=" form-control-label">Ảnh bìa:</label></div>
+                    <div class="col-12 col-md-9"><input type="file" id="episode_back" name="episode_back" class="form-control-file"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="episode_image" class=" form-control-label">Ảnh Avatar:</label></div>
+                    <div class="col-12 col-md-9"><input type="file" id="episode_image" name="episode_image" class="form-control-file"></div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <!--<input type="hidden" name="_csrf" value="{{csrfToken}}" />-->
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-dot-circle-o"></i> Thêm Phim
+                </button>
+                <button type="reset" class="btn btn-danger btn-sm" value="">
+                    <i class="fa fa-ban"></i> Hủy
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{{> Admin_footer}}

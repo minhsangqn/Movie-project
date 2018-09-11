@@ -1,0 +1,40 @@
+{{> Admin_layout}}
+<style>
+    li{list-style: none}
+</style>
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <strong>Tập: {{item.chapter_num}}</strong>
+        </div>
+        <form action="/admin/editChapter" method="post" class="form-horizontal">
+            <div class="card-body card-block">
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="chapter_id" class=" form-control-label">Mã Phim:</label></div>
+                    <div class="col-12 col-md-9"><input value="{{item.chapter_id}}" type="text" class="form-control" disabled></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="chapter_url" class=" form-control-label">Link phim:</label></div>
+                    <div class="col-12 col-md-9"><input value="{{item.chapter_url}}" type="text" id="chapter_url" name="chapter_url" placeholder="Link phim" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="chapter_num" class=" form-control-label">Tập:</label></div>
+                    <div class="col-12 col-md-9"><input value="{{item.chapter_num}}" type="text" id="chapter_num" name="chapter_num" placeholder="vd: 1" class="form-control"></div>
+                </div>
+                <input type="text" value="{{item._id}}" name="_id" hidden>
+                <input type="text" value="{{item.listEpisode.[0]._id}}" name="episode_id" hidden>
+                <input type="text" name="chapter_id" value="{{item.chapter_id}}" hidden>
+            </div>
+            <div class="card-footer">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+                <button type="submit" class="btn btn-primary btn-sm" value="">
+                    <i class="fa fa-dot-circle-o"></i> Thêm Tập
+                </button>
+                <button type="reset" class="btn btn-danger btn-sm" value="">
+                    <i class="fa fa-ban"></i> Hủy
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{{> Admin_footer}}

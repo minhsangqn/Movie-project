@@ -1,0 +1,87 @@
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5000/API/202cb962ac59075b964b07152d234b70',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data, textStatus, xhr) {
+                var outt = '';
+                var j;
+                for (j = 0;j < data.length; j++){
+                    outt += '<li><a href="/phim/'+ data[j].year_id +'">' +
+                            data[j].year_name + '</a></li>';
+                }
+                document.getElementById("yearType").innerHTML = outt;
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5000/API/f5bb0c8de146c67b44babbf4e6584cc0',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var out = '';
+                var i;
+                for (i = 0;i < data.length; i++){
+                    out += '<li><a href="/phim/'+ data[i].cat_name_ascii +'">' +
+                            data[i].cat_name_title + '</a></li>';
+                }
+                document.getElementById("categoryType").innerHTML = out;
+            }
+        });
+    });
+</script>
+
+
+<header>
+    <div class="header">
+        <div class="container">
+            <div class="header-logo"><a class="logo" href="/" title=""><span>PHIM</span></a></div>
+            <div class="widget_search">
+                <form method="GET" id="form-search" action="tim-kiem/">
+                    <input type="text" class="  search-query form-control" placeholder="Search" />
+                </form>
+                <div class="search-suggest" style="display: none;">
+                    <ul style="margin-bottom: 0;" id="search-suggest-list"></ul>
+                </div>
+            </div>
+            <div class="widget_user_header">
+                {{#if logged}}
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><span class="fa fa-user-circle-o"></span> {{member.info.lastname}}
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="/thanh-vien/tai-khoan"><span class="glyphicon glyphicon-user"></span> Cá nhân</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Cài đặt</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/thanh-vien/thoat"><span class="glyphicon glyphicon-off"></span> Thoát</a></li>
+                        </ul>
+                    </div>
+                 {{else}}
+                    <a class="button-register" rel="nofollow" href="/thanh-vien/dang-ky"></a>
+                    <a class="button-login" rel="nofollow" href="/thanh-vien/dang-nhap"></a>
+                 {{/if}}
+            </div>
+        </div>
+    </div>
+</header>
+<div class="clear"></div>
+<div id="menu">
+    <ul>
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="#">Thể loại</a>
+            <ul class="sub-menu" id="categoryType">
+            </ul>
+        </li>
+        <li><a href="#">Theo năm</a>
+            <ul class="sub-menu" id="yearType">
+            </ul>
+        </li>
+        <li><a href="#">Lịch chiếu phim</a></li>
+        <li><a href="#">Tin tức</a></li>
+        <li><a href="#">Diễn đàn</a></li>
+    </ul>
+</div>

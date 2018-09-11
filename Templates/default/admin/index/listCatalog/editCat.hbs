@@ -1,0 +1,43 @@
+{{> Admin_layout}}
+<style>
+    li{list-style: none}
+</style>
+<div class="col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <strong>Sửa Thể Loại</strong>
+        </div>
+        <form action="/admin/editCat" method="post" class="form-horizontal">
+            <div class="card-body card-block">
+                {{#if err }}
+                    <div class="alert alert-danger" role="alert">
+                        <li>{{ err }}</li>
+                    </div>
+                {{/if}}
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="cat_id" class=" form-control-label">ID Thể loại</label></div>
+                    <div class="col-12 col-md-9"><input disabled value="{{item.cat_id}}" type="text" id="cat_id" name="cat_id" placeholder="Nhập ID thể loại" class="form-control"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-3"><label for="cat_name_title" class=" form-control-label">Năm phát hành</label></div>
+                    <div class="col-12 col-md-9"><input value="{{item.cat_name_title}}" type="text" id="cat_name_title" name="cat_name_title" placeholder="Tên thể loại" class="form-control"></div>
+                </div>
+                <!--<div class="row form-group">-->
+                    <!--<div class="col col-md-3"><label for="cat_name_ascii" class=" form-control-label">Tên viết tắt</label></div>-->
+                    <!--<div class="col-12 col-md-9"><input value="{{item.cat_name_ascii}}" type="text" id="cat_name_ascii" name="cat_name_ascii" placeholder="Tên viết tắt không dấu" class="form-control"></div>-->
+                <!--</div>-->
+                <input type="hidden" name="_id" value="{{item._id}}" />
+            </div>
+            <div class="card-footer">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+                <button type="submit" class="btn btn-primary btn-sm" value="">
+                    <i class="fa fa-dot-circle-o"></i> Thêm Thể Loại
+                </button>
+                <button type="reset" class="btn btn-danger btn-sm" value="">
+                    <i class="fa fa-ban"></i> Hủy
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{{> Admin_footer}}

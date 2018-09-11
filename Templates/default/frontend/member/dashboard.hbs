@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="alert alert-success">
+        <h2>Thông tin thành viên</h2>
+        {{#ifCond member.roles "==" "ADMIN"}}
+            Administrator
+        {{/ifCond}}
+        {{#ifCond member.roles "==" "MEMBER"}}
+            MEMBER
+        {{/ifCond}}
+    </div>
+</div>

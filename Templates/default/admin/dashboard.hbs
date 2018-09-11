@@ -1,0 +1,8 @@
+{{> Admin_layout}}
+    {{#ifCond member.roles "==" "ADMIN"}}
+        Administrator
+    {{/ifCond}}
+    {{#ifCond member.roles "==" "MEMBER"}}
+        Mod
+    {{/ifCond}}
+{{> Admin_footer}}
