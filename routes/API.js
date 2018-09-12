@@ -42,9 +42,9 @@ router.get('/c5e549a0721069a573eeaba1677ce509', (req,res) => {
 });
 //================================get chapter==================//
 router.post('/endpoint', function (req,res) {
-     var obj = {"err":"Lỗi server"};
+     // var obj = {"err":"Lỗi server"};
     var id = req.body.id;
-    console.log("vao");
+    console.log("vao: "+req.body.id);
     chapter.findOne({"_id":Object(id)})
     .then(obj => {
         console.log("DATA: "+obj);

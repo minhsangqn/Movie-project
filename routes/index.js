@@ -67,11 +67,15 @@ router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
     // console.log("id"+ episode_id);
     home_controller.get_viewMovie(episode_id)
         .then(result => {
-            console.log("DATA: "+ result.viewEpi);
+            // console.log("DATA: "+result.viewEpi[0].num);
+            console.log("DATA: "+JSON.stringify(result.viewEpi[0]));
+            var idChapter = JSON.stringify(result.viewEpi[0]);
+
             var name = result.name;
             res.render('frontend/Movie/viewMovie',{
                 viewEpi: result.viewEpi,
                 name:result.name,
+                chapterone: idChapter,
                 pageTitle: req.__(name)}
             )
         })
@@ -80,7 +84,6 @@ router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
             res.redirect('/');
         });
 });
-
 //=========================END VIEW MOVIE============================//
 
 

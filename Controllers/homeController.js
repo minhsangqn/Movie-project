@@ -79,10 +79,9 @@ exports.details = (name,episode_id) =>
                     .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
                         .then(data =>{
                             var name = data.episode_name;
-
                             resolve({status: 200,episode: data,name: name});
                         })
-                        .catch(err =>{ // tu
+                        .catch(err =>{
                             console.log('err');
                             reject({status: 500, message: req.__('Loi server')});
                         });
@@ -114,7 +113,7 @@ exports.get_viewMovie = (episode_id) =>
                     for (var i = 0;i<arrCT.length;i++){
                         idCT.push({"id":arrCT[i]._id,"num":arrCT[i].chapter_num})
                     }
-                    // console.log("ARR: "+idCT);
+                    console.log("ARR: "+idCT[0].num);
                     resolve({status: 200, name: name,viewEpi:idCT });
                 }
             })

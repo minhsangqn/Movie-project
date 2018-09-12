@@ -5,6 +5,7 @@ body {
   background: #282828;
   color: #000;
 }
+
 a{
   color: #46e1ff;
   text-decoration: none !important;
@@ -339,11 +340,11 @@ legend{
 /*-------------------------------------------Detail movie--------------------------------*/
 .title_details{
   padding: 11px 10px 11px 20px;
-  background: #161e2a url("/images/card_index/item_bg.gif") repeat;
+  background: #111 ;
 }
 .h1_title_details{
   color: #6a3;
-  font-size: 22px;
+  font-size: 15px;
   font-weight: 400;
   display: block;
   margin: 0;
@@ -411,6 +412,14 @@ legend{
   border-radius: 3px;
   display: inline;
   margin: 0 10px -4px 2px;
+}
+.title-evaluate{
+  font-size: 20px;
+  color: #dacb46;
+}
+.num-rating{
+  font-size: 12px;
+  color: #ddd;
 }
 /*-------------------------------------------End Detail movie--------------------------------*/
 /*-----------------------------------------------VIEW MOVIE--------------------------------------------*/
