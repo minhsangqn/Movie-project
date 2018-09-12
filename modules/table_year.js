@@ -1,6 +1,6 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var tableYearSchema = new Schema({
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const tableYearSchema = new Schema({
     year_id: String,
     year_name: String
 });

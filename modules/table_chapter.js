@@ -1,6 +1,6 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var tableChapterSchema = new Schema({
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const tableChapterSchema = new Schema({
     chapter_id: String,
     listEpisode: [{type: Schema.ObjectId, ref: 'table_episode'}],
     chapter_url: String,

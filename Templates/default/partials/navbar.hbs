@@ -1,3 +1,4 @@
+
 <script>
     $(document).ready(function () {
         $.ajax({
@@ -18,20 +19,20 @@
 </script>
 <script>
     $(document).ready(function () {
-        $.ajax({
-            url: 'http://localhost:5000/API/f5bb0c8de146c67b44babbf4e6584cc0',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                var out = '';
-                var i;
-                for (i = 0;i < data.length; i++){
-                    out += '<li><a href="/phim/'+ data[i].cat_name_ascii +'">' +
-                            data[i].cat_name_title + '</a></li>';
+            $.ajax({
+                url: 'http://localhost:5000/API/f5bb0c8de146c67b44babbf4e6584cc0',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var out = '';
+                    var i;
+                    for (i = 0; i < data.length; i++) {
+                        out += '<li><a href="/phim/' + data[i].cat_name_ascii + '">' +
+                                data[i].cat_name_title + '</a></li>';
+                    }
+                    document.getElementById("categoryType").innerHTML = out;
                 }
-                document.getElementById("categoryType").innerHTML = out;
-            }
-        });
+            });
     });
 </script>
 
@@ -74,6 +75,8 @@
         <li><a href="/">Trang chủ</a></li>
         <li><a href="#">Thể loại</a>
             <ul class="sub-menu" id="categoryType">
+                <li>a</li>
+                <li>b</li>
             </ul>
         </li>
         <li><a href="#">Theo năm</a>

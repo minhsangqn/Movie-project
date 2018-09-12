@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var Category = require("../modules/table_cat");
-var Year = require("../modules/table_year");
-var chapter = require("../modules/table_chapter");
+const express = require('express');
+const router = express.Router();
+const Category = require("../modules/table_cat");
+const Year = require("../modules/table_year");
+const chapter = require("../modules/table_chapter");
 
 //===========================API============================================//
 //product
@@ -43,7 +43,7 @@ router.get('/c5e549a0721069a573eeaba1677ce509', (req,res) => {
 //================================get chapter==================//
 router.post('/endpoint', function (req,res) {
      // var obj = {"err":"Lỗi server"};
-    var id = req.body.id;
+    const id = req.body.id;
     console.log("vao: "+req.body.id);
     chapter.findOne({"_id":Object(id)})
     .then(obj => {

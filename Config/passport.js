@@ -1,11 +1,11 @@
-var validator = require('express-validator');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var settings = require('../config/settings');
-var Member = require('../modules/member');
-var cfgAuth = require('./auth');
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const settings = require('../config/settings');
+const Member = require('../modules/member');
+const cfgAuth = require('./auth');
 
 var provider = null;
 
@@ -58,7 +58,7 @@ passport.use('local.register', new LocalStrategy({
                 message: req.__('Địa chỉ email được sử dụng, vui lòng nhập một email khác.')
             });
         }
-        var newMember = new Member();
+        const newMember = new Member();
         newMember.info.firstname = req.body.firstname;
         newMember.info.lastname = req.body.lastname;
         newMember.local.email = req.body.email;
@@ -96,10 +96,10 @@ passport.use('local.login', new LocalStrategy({
     req.checkBody('email', req.__('Địa chỉ email không hợp lệ, vui lòng thử lại.')).notEmpty().isEmail();
     req.checkBody('password', req.__('Sai mật khẩu. Xin vui lòng thử lại.')).notEmpty();
 
-    var errors = req.validationErrors();
+    const errors = req.validationErrors();
 
     if (errors) {
-        var messages = [];
+        const messages = [];
         errors.forEach(function(error) {
             messages.push(error.msg);
         });

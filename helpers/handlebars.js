@@ -1,8 +1,8 @@
-var i18n = require('i18n');
-var moment = require('moment');
+const i18n = require('i18n');
+const moment = require('moment');
 
-var register = function (Handlebars) {
-    var helpers = {
+const register = function (Handlebars) {
+    const helpers = {
         __: function (req, res) {
             return i18n.__.apply(this, arguments);
         },
@@ -50,7 +50,7 @@ var register = function (Handlebars) {
 
 
     if (Handlebars && typeof Handlebars.registerHelper === "function"){
-        for (var prop in helpers){
+        for (const prop in helpers){
             Handlebars.registerHelper(prop, helpers[prop]);
         }
     } else {

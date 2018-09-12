@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var csrf = require('csurf');
-var member_Controller = require('../controllers/memberController');
-var csrfProtected = csrf();
+const express = require('express');
+const router = express.Router();
+const csrf = require('csurf');
+const member_Controller = require('../controllers/memberController');
+const csrfProtected = csrf();
 router.use(csrfProtected);
 
 

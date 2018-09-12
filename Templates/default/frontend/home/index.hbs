@@ -4,11 +4,11 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-<!--<div class="body_style"></div>-->
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
             <div class="title_body">Phim Mới Cập Nhật</div>
             <div class="list_index">
+
                 {{# each episode}}
                     <div class="item card_index_item">
                         <a href="/phim/{{this.episode_id}}/{{this.episode_name_ascii}}" data-toggle="tooltip" data-placement="right" title="{{this.episode_name}}">
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-lg-4 rank">
             {{> rank_left}}
         </div>
     </div>

@@ -1,6 +1,6 @@
-var mongoose = require("mongoose");
-var  Schema = mongoose.Schema;
-var tableCommentSchama = new Schema({
+const mongoose = require("mongoose");
+const  Schema = mongoose.Schema;
+const tableCommentSchama = new Schema({
     comment_id: String,
     comment_film: String,
     comment_poster: String,

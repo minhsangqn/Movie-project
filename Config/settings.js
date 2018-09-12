@@ -1,4 +1,4 @@
-var settings = {
+const settings = {
     siteName: 'Xem Phim Mới Nhất',
     siteAdmin:'Quan trị viên',
     defaultTemplate :'default',

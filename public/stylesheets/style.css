@@ -5,7 +5,6 @@ body {
   background: #282828;
   color: #000;
 }
-
 a{
   color: #46e1ff;
   text-decoration: none !important;
@@ -18,6 +17,7 @@ a{
 /*cau hinh bootstrap*/
 .container{
   max-width: 1000px;
+  width: 1000px !important;
 }
 .navbar {
   border-radius: 0px !important;
@@ -55,7 +55,12 @@ a{
   display: inline-block;
   float: right;
   margin-top: 10px;
+    margin-bottom: 5px;
   color: #ddd;
+}
+.dropdown-menu{
+    left: unset!important;
+    right: 0;
 }
 .widget_user_header .button-register {
   background: transparent url("/images/image_back.png") no-repeat 0 0;
@@ -546,5 +551,20 @@ video {
 @media screen and (max-width: 775px){
   .page_details{
     width: 100% !important;
+  }
+}
+
+/*=========================================992============================================*/
+@media(min-width: 992px){
+  .col-lg-8{
+    width: 680px !important;
+  }
+  .col-lg-4{
+    width: 320px !important;
+  }
+}
+@media(max-width: 992px){
+  .rank{
+    display: block;
   }
 }

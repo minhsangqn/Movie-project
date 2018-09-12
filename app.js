@@ -1,22 +1,22 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var i18n = require('i18n');
-var logger = require('morgan');
-var expHbs = require('express-handlebars');
-var mongoose = require('mongoose');
-var session = require('express-session');
-var passport = require('passport');
-var flash = require('connect-flash');
-var validator = require('express-validator');
-var settings = require('./config/settings');
-var database = require('./config/database');
-var index = require('./routes/index');
-var routeMember = require('./routes/member');
-var routeAdmin = require('./routes/admin');
-var routerAPI = require('./routes/API');
-var app = express();
-
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const i18n = require('i18n');
+const logger = require('morgan');
+const expHbs = require('express-handlebars');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const flash = require('connect-flash');
+const validator = require('express-validator');
+const settings = require('./config/settings');
+const database = require('./config/database');
+const index = require('./routes/index');
+const routeMember = require('./routes/member');
+const routeAdmin = require('./routes/admin');
+const routerAPI = require('./routes/API');
+const app = express();
+const requestIp = require('request-ip');
 
 
 mongoose.connect(database.dbStr);
@@ -27,7 +27,7 @@ mongoose.connection.on('error', function(err) {
 require('./config/passport');
 
 // view engine setup
-var hbsConfig = expHbs.create({
+const hbsConfig = expHbs.create({
     helpers: require('./helpers/handlebars.js').helpers,
     layoutsDir:  path.join(__dirname, '/templates/'+ settings.defaultTemplate +'/layouts'),
     defaultLayout: path.join(__dirname, '/templates/' + settings.defaultTemplate +'/layouts/layout'),
@@ -85,6 +85,13 @@ app.use(function(req, res, next) {
     next();
 });
 
+const getIP = require('ipware')().get_ip;
+app.use(function(req, res, next) {
+    const ipInfo = getIP(req);
+    console.log(ipInfo);
+    // { clientIp: '127.0.0.1', clientIpRoutable: false }
+    next();
+});
 
 
 //khai bao router
@@ -96,7 +103,7 @@ app.use('/API', routerAPI);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

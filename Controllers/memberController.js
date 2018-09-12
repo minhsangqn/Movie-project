@@ -1,7 +1,7 @@
-var passport = require('passport');
+const passport = require('passport');
 
 exports.get_register = function (req, res, next) {
-    var messages = req.flash('error');
+    const messages = req.flash('error');
     res.render('frontend/member/register',{
         pageTitle: req.__('Đăng ký thành viên'),
         csrfToken: req.csrfToken(),
@@ -24,7 +24,7 @@ exports.get_profile = function (req,res, next) {
 };
 // GET Login
 exports.get_login = function(req, res, next) {
-    var messages = req.flash('error');
+    const messages = req.flash('error');
     console.log('err: '+ messages);
     res.render('frontend/member/login', {
         pageTitle: req.__('Thành viên đăng nhập'),

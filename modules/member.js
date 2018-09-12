@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
-var memberSchema = new Schema({
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt-nodejs');
+const memberSchema = new Schema({
     info: {
         firstname: String,
         lastname: String,
@@ -44,7 +44,7 @@ var memberSchema = new Schema({
 // Mã hóa mật khẩu
 memberSchema.methods.encryptPassword = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
-}
+};
 
 // Giải mã mật khẩu
 memberSchema.methods.validPassword = function(password) {

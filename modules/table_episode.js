@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-var tableEpiosodeSchema = new Schema({
+const tableEpiosodeSchema = new Schema({
     episode_id: String,
     episode_name: String,
     episode_name_ascii: String,
