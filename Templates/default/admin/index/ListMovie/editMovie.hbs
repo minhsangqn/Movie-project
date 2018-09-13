@@ -44,7 +44,7 @@
                 var out = '';
                 var i;
                 for (i = 0;i < data.length; i++){
-
+                    console.log(data[i]._id+"//"+ListCat);
                     var isChecked = '';
                     if(checkExitInListJson(data[i]._id, ListCat )){
                         isChecked = 'checked';
@@ -93,7 +93,7 @@
 <style>
     li{list-style: none}
 </style>
-<div class="col-lg-10">
+<div class="col-lg-6">
     <div class="card">
         <div class="card-header">
             <strong>{{item.episode_name}}</strong>
@@ -115,10 +115,10 @@
                 {{/if}}
 
                 <div class="row form-group">
-                    <div class="col col-md-3"><label for="episode_id" class=" form-control-label">Mã Phim</label></div>
-                    <div class="col-12 col-md-9">
-                        <input value="{{item.episode_id}}" disabled type="text" id="episode_id" name="episode_id" placeholder="Nhập mã phim" class="form-control">
-                    </div>
+                    <!--<div class="col col-md-3"><label for="episode_id" class=" form-control-label">Mã Phim</label></div>-->
+                    <!--<div class="col-12 col-md-9">-->
+                        <!--<input value="{{item.episode_id}}" disabled type="text" id="episode_id" name="episode_id" placeholder="Nhập mã phim" class="form-control">-->
+                    <!--</div>-->
                     <input type="text" value="{{item.episode_id}}" name="episode_id" hidden>
                     <input type="text" value="{{item._id}}" name="_id" hidden>
                     <input type="text" value="{{item.episode_name_ascii}}" name="episode_name_ascii" hidden>

@@ -40,7 +40,7 @@
                     <div class="col-md-6 movie_image">
                         <div class="movie_meta_info">
                             <div class="movie_dl">
-                                <b class="movie_dl">Trạng thái: <dd class="movie_chapter">{{episode.episode_film}} Đậu xanh</dd></b><br>
+                                <b class="movie_dl">Trạng thái: <dd class="movie_chapter">{{episode.episode_film}}</dd></b><br>
                                 <b class="movie_dl">Thể loại:</b>
                                 {{#each episode.listEpisode}}
                                     <a href="#"><span class="span_movie">{{this.cat_name_title}}</span></a>,
@@ -70,5 +70,5 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 col-xs-12">{{> rank_left}}</div>
+    <div class="col-md-4 col-sm-12 col-xs-12 rank">{{> rank_left}}</div>
 </div>

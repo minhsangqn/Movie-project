@@ -5,13 +5,13 @@
     });
 </script>
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-md-8">
             <div class="title_body">Phim Mới Cập Nhật</div>
             <div class="list_index">
 
                 {{# each episode}}
                     <div class="item card_index_item">
-                        <a href="/phim/{{this.episode_id}}/{{this.episode_name_ascii}}" data-toggle="tooltip" data-placement="right" title="{{this.episode_name}}">
+                        <a class="movie_item" href="/phim/{{this.episode_id}}/{{this.episode_name_ascii}}" data-toggle="tooltip" data-placement="right" title="{{this.episode_name}}">
                             <span class="overly"></span>
                             <img src="/images/image_avatar/{{this.episode_image}}" alt="{{this.episode_image}}" class="thumb img-responsive">
                             <div class="more">
@@ -27,10 +27,11 @@
                         </a>
                     </div>
                 {{/each}}
+
             </div>
         </div>
 
-        <div class="col-lg-4 rank">
+        <div class="col-md-4 col-sm-4 rank">
             {{> rank_left}}
         </div>
     </div>

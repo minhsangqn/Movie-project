@@ -53,7 +53,19 @@
         $('#cat_idList').attr('value',arr);
     }
 </script>
+<script>
+    function makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+        for (var i = 0; i < 5; i++){
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        document.getElementById("idRamdom").value = text;
+        document.getElementById("episode_id").value = text;
+    }
+    window.onload = makeid;
+</script>
 <style>
     li{list-style: none}
 </style>
@@ -61,8 +73,9 @@
     <div class="card">
         <div class="card-header">
             <strong>Thêm Phim MỚi</strong>
+            <!--<button onclick="makeid()">CLICK</button>-->
         </div>
-        <form action="/admin/addMovie?_csrf={{csrfToken}}" method="post" class="form-horizontal"  enctype="multipart/form-data">
+        <form id="addMovie" action="/admin/addMovie?_csrf={{csrfToken}}" method="post" class="form-horizontal"  enctype="multipart/form-data">
             <div class="card-body card-block">
                 {{#if success}}
                     <div class="alert alert-danger" role="alert">
@@ -76,8 +89,11 @@
                 {{/if}}
 
                 <div class="row form-group">
-                    <div class="col col-md-3"><label for="episode_id" class=" form-control-label">Mã Phim:</label></div>
-                    <div class="col-12 col-md-9"><input type="text" id="episode_id" name="episode_id" placeholder="Nhập mã phim" class="form-control"></div>
+                    <!--<div class="col col-md-3"><label for="episode_id" class=" form-control-label">Mã Phim:</label></div>-->
+                    <div class="col-12 col-md-9">
+                        <!--<input disabled type="text" id="episode_id" placeholder="Nhập mã phim" class="form-control">-->
+                        <input type="text" name="episode_id" id="idRamdom" hidden>
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="episode_name" class=" form-control-label">Tên phim:</label></div>

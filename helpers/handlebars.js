@@ -45,6 +45,10 @@ const register = function (Handlebars) {
             }else{
                 return  'Ẩn';
             }
+        },
+        data_num: function (date_num) {
+            var date_num = new Date(parseInt(date_num, 10)* 1000);
+            return date_num
         }
     };
 

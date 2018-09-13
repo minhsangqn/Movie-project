@@ -34,6 +34,8 @@ exports.post_addMovie = (episode_season,episode_back,episode_image,episode_id,ep
                     console.log('1.1');
                     reject({status: 400, err:"Trùng ID! Vui lòng nhập lại ID khác."});
                 }else{
+                    var arr = cat_id.split(',');
+                    console.log(cat_id);
                     console.log('1.2');
                     var d = new Date();
                     var timeStamp = d.getTime();
@@ -42,6 +44,7 @@ exports.post_addMovie = (episode_season,episode_back,episode_image,episode_id,ep
                         episode_name: episode_name,
                         episode_name_ascii: slug(episode_name),
                         episode_film: episode_film,
+                        episode_view: '0',
                         episode_info: episode_info,
                         episode_hide: episode_hide,
                         episode_image: episode_image,
@@ -50,20 +53,14 @@ exports.post_addMovie = (episode_season,episode_back,episode_image,episode_id,ep
                         episode_season:episode_season
                     });
                     MovieNew.save(function (err) {
-                        episode.findByIdAndUpdate({"_id": ObjectId(MovieNew._id)},{$push: {"listEpisode:": arr,"year_order": year_id}},
-                            {safe: true, upsert: true, new: true},
+                        console.log("ARR PUSH LIST: "+arr);
+                        episode.findByIdAndUpdate({"_id": ObjectId(MovieNew._id)},{$push: {"listEpisode": arr,"year_order": year_id}},
+                            {safe: true, upsert: true, new: true,multi: true},
                             function (err) {
                                 console.log("ADD list");
                                 resolve({status: 201, msg: "Tạo mới thành công!"});
                             })
                     });
-                    console.log(cat_id);
-
-                    //'5b7bc1e28a3beb18b83d6dac','5b7bc1e28a3beb18b83d6dad',//chuỗi hiện có
-                    //"\'5b7bc1e28a3beb18b83d6dac\',\'5b7bc1e28a3beb18b83d6dad\'," //ep vào [] thành
-                    //var arr = ['5b7bc1e28a3beb18b83d6dac','5b7bc1e28a3beb18b83d6dad',];// cần
-
-                    var arr = cat_id.split(',');
                     cat.update({_id:{$in: arr}},{$push: {"listEpisode": MovieNew._id}},
                         {safe: true, upsert: true, new: true,multi: true},
                         function (err) {
@@ -114,7 +111,7 @@ exports.get_editMovie = (episode_id) =>
                     console.log("1.1");
                     reject({status:  404, err: 'ID không tồn tại!'});
                 }else{
-                    console.log("DU LIEU: "+ episo.year_order);
+                    console.log("DU LIEU: "+ episo.listEpisode);
                     resolve({status: 200, item:episo});
                 }
             })
@@ -125,7 +122,6 @@ exports.get_editMovie = (episode_id) =>
 
 exports.post_editMovie = (id,episode_id,episode_name,episode_film,episode_season,episode_info,year_id,cat_id,episode_hide) =>
     new Promise((resolve, reject) => {
-        // console.log('INPUT: '+id+"//"+ episode_id+"//"+episode_season+"/"+episode_name+"/"+episode_film+"//"+episode_info+"//"+episode_hide+"/"+year_id+"/"+cat_id);
         episode.findOne({'episode_id':episode_id})
             .then(() =>{
                 // console.log("1");

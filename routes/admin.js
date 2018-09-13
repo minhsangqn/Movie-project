@@ -56,10 +56,8 @@ router.post('/addBack',uploadBack.any('episode_back'), function (req,res,next) {
 router.post('/addMovie', upload.any(), function(req, res, next) {
     // console.log(req.files);
     // res.send("UPLOAD THANH CONG: "+ req.files[0].filename + "ID: "+ req.files[1].filename);
-
     const episode_id = req.body.episode_id;
     const episode_name = req.body.episode_name;
-    // var episode_name_ascii = req.body.episode_name_ascii;
     const episode_film = req.body.episode_film;
     const episode_info = req.body.episode_info;
     const year_id = req.body.year_id;
@@ -69,8 +67,7 @@ router.post('/addMovie', upload.any(), function(req, res, next) {
     const episode_image = req.files[1].filename;
     const episode_season = req.body.episode_season;
 
-    if(!episode_season+!episode_back+!episode_image+!episode_id + !episode_name +!episode_film + !episode_info +!year_id +!cat_id +!episode_hide){
-        console.log(episode_season,episode_back+episode_id + episode_name +episode_film + episode_info +"ID:"+year_id +cat_id +episode_hide);
+    if(!episode_season+!episode_image+!episode_id + !episode_name +!episode_film + !episode_info +!year_id +!cat_id +!episode_hide){
         req.flash('err', 'Vui lòng nhập đầy đủ dữ liệu');
         res.redirect('/admin/addMovie');
     }else {
@@ -96,7 +93,7 @@ router.get('/editMovie/:episode_name_ascii/:episode_id',(req,res) => {
     const episode_name_ascii = req.param('episode_name_ascii');
     auth_controller.get_editMovie(episode_id)
         .then(result =>{
-            // console.log("CAT: "+ result);
+            console.log("CAT: "+ result);
             res.render('admin/index/listMovie/editMovie', {
                 err: req.flash('err'),
                 success: req.flash('success'),

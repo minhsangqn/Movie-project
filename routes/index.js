@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const getIP = require('ipware')().get_ip;
 //Require Controller modules
 home_controller = require('../controllers/homeController');
 
@@ -28,14 +29,16 @@ router.get('/phim/:episode_id/:name/', (req,res) => {
 
 router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
     const episode_id = req.param("episode_id");
-    // console.log("id"+ episode_id);
+    const ipInfo = getIP(req);
+    console.log("IP: "+ipInfo.clientIp);
+
     home_controller.get_viewMovie(episode_id)
         .then(result => {
-            // console.log("DATA: "+result.viewEpi[0].num);
-            console.log("DATA: "+JSON.stringify(result.viewEpi[0]));
-            const idChapter = JSON.stringify(result.viewEpi[0]);
 
+            // console.log("DATA: "+JSON.stringify(result.viewEpi[0]));
+            const idChapter = JSON.stringify(result.viewEpi[0]);
             const name = result.name;
+
             res.render('frontend/Movie/viewMovie',{
                 viewEpi: result.viewEpi,
                 name:result.name,

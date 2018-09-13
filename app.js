@@ -88,7 +88,7 @@ app.use(function(req, res, next) {
 const getIP = require('ipware')().get_ip;
 app.use(function(req, res, next) {
     const ipInfo = getIP(req);
-    console.log(ipInfo);
+    // console.log("IP: "+ipInfo.clientIp);
     // { clientIp: '127.0.0.1', clientIpRoutable: false }
     next();
 });

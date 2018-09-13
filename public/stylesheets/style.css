@@ -2,7 +2,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   line-height: 1.428571429;
   background-color: #192536!important;
-  background: #282828;
+  /*background: #282828;*/
   color: #000;
 }
 a{
@@ -16,8 +16,8 @@ a{
 }
 /*cau hinh bootstrap*/
 .container{
-  max-width: 1000px;
-  width: 1000px !important;
+  /*max-width: 1000px !important;*/
+  /*width: 1000px !important;*/
 }
 .navbar {
   border-radius: 0px !important;
@@ -55,12 +55,7 @@ a{
   display: inline-block;
   float: right;
   margin-top: 10px;
-    margin-bottom: 5px;
   color: #ddd;
-}
-.dropdown-menu{
-    left: unset!important;
-    right: 0;
 }
 .widget_user_header .button-register {
   background: transparent url("/images/image_back.png") no-repeat 0 0;
@@ -196,10 +191,6 @@ legend{
   font-weight: 700;
   padding: 10px;
   text-transform: uppercase;
-}
-.list_index{
-  margin-top: 10px;
-  /*text-align: center;*/
 }
 .item.card_index_item{
   width: 155px;
@@ -345,11 +336,11 @@ legend{
 /*-------------------------------------------Detail movie--------------------------------*/
 .title_details{
   padding: 11px 10px 11px 20px;
-  background: #111 ;
+  background: #161e2a url("/images/card_index/item_bg.gif") repeat;
 }
 .h1_title_details{
   color: #6a3;
-  font-size: 15px;
+  font-size: 22px;
   font-weight: 400;
   display: block;
   margin: 0;
@@ -380,6 +371,10 @@ legend{
   /*display: block;*/
   /*margin-top: 10px;*/
 }
+.dropdown-menu{
+  left: unset!important;
+  right: 0 !important;
+}
 .page_details{
   padding: 10px;
   width: 660px;
@@ -399,7 +394,7 @@ legend{
 }
 .span_movie{color: #46e1ff !important;}
 
- span span_movie:hover{
+span span_movie:hover{
   color: #fffd23;
 }
 
@@ -418,33 +413,26 @@ legend{
   display: inline;
   margin: 0 10px -4px 2px;
 }
-.title-evaluate{
-  font-size: 20px;
-  color: #dacb46;
-}
-.num-rating{
-  font-size: 12px;
-  color: #ddd;
-}
 /*-------------------------------------------End Detail movie--------------------------------*/
 /*-----------------------------------------------VIEW MOVIE--------------------------------------------*/
 /*.vjs-matrix.video-js {*/
-  /*color: #00ff00;*/
+/*color: #00ff00;*/
 /*}*/
 
 /*!* Change the border of the big play button. *!*/
 /*.vjs-matrix .vjs-big-play-button {*/
-  /*border-color: #00ff00;*/
+/*border-color: #00ff00;*/
 /*}*/
 
 /*!* Change the color of various "bars". *!*/
 /*.vjs-matrix .vjs-volume-level,*/
 /*.vjs-matrix .vjs-play-progress,*/
 /*.vjs-matrix .vjs-slider-bar {*/
-  /*background: #00ff00;*/
+/*background: #00ff00;*/
 /*}*/
 video {
   width: 100%;
+  height: auto;
 }
 .play_actions{
   margin: 14px 0 14px;
@@ -509,9 +497,9 @@ video {
     width: 660px;
   }
   /*.background_details .image_avatar .image_thumb{*/
-    /*width: 180px;*/
-    /*height: 275px;*/
-    /*border: 3px solid #fff;*/
+  /*width: 180px;*/
+  /*height: 275px;*/
+  /*border: 3px solid #fff;*/
   /*}*/
 }
 @media (max-width: 1200px) {
@@ -554,17 +542,14 @@ video {
   }
 }
 
-/*=========================================992============================================*/
-@media(min-width: 992px){
-  .col-lg-8{
-    width: 680px !important;
-  }
-  .col-lg-4{
-    width: 320px !important;
-  }
+@media (min-width: 992px) {
+  .container{width: 1000px !important;}
 }
-@media(max-width: 992px){
+@media (max-width: 980px) {
   .rank{
-    display: block;
+    display: none;
+  }
+  .list_index{
+    margin:20px;
   }
 }
