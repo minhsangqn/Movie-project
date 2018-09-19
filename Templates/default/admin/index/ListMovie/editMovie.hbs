@@ -79,7 +79,7 @@
     $(document).ready(function () {
         var hide = document.getElementById("Hide").value;
         var ott = '';
-        var arr = [{'id':'0','name':'Ẩn'},{'id':'1','name':'Hiện'}];
+        var arr = [{'id':'Ẩn','name':'Ẩn'},{'id':'Hiện','name':'Hiện'}];
         for (var i = 0;i < arr.length; i++){
             var isCheck = '';
             if(hide === arr[i].id){
@@ -115,10 +115,6 @@
                 {{/if}}
 
                 <div class="row form-group">
-                    <!--<div class="col col-md-3"><label for="episode_id" class=" form-control-label">Mã Phim</label></div>-->
-                    <!--<div class="col-12 col-md-9">-->
-                        <!--<input value="{{item.episode_id}}" disabled type="text" id="episode_id" name="episode_id" placeholder="Nhập mã phim" class="form-control">-->
-                    <!--</div>-->
                     <input type="text" value="{{item.episode_id}}" name="episode_id" hidden>
                     <input type="text" value="{{item._id}}" name="_id" hidden>
                     <input type="text" value="{{item.episode_name_ascii}}" name="episode_name_ascii" hidden>
@@ -149,8 +145,8 @@
                 </div>
 
                 <div class="row form-group">
-                    <div class="col col-md-3"><label class=" form-control-label">Thể loại</label></div>
-                    <div class="col col-md-9">
+                    <div class="col-sm-12 col-md-3"><label class=" form-control-label">Thể loại</label></div>
+                    <div class="col-sm-12 col-md-9">
                         <div class="form-check-inline form-check">
 
                             <input type="text" hidden id="cat_idList" name="cat_idList" value="{{item.listEpisode}}">

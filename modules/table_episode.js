@@ -16,6 +16,7 @@ const tableEpiosodeSchema = new Schema({
     episode_season: String,
     create_at: Number,
     episode_hide: String,
+    savemovie:[{type: Schema.ObjectId,ref: 'member'}],
     listEpisode: [{type: Schema.ObjectId, ref: 'table_cat'}],
     year_order: [{type: Schema.ObjectId, ref: 'table_year'}]
 });

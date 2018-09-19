@@ -13,12 +13,16 @@ router.get('/phim/:nav', home_controller.get_phim);
 router.get('/phim/:episode_id/:name/', (req,res) => {
     const name = req.param('name');
     const episode_id = req.param('episode_id');
+    const ipInfo = getIP(req);
 
     home_controller.details(name,episode_id)
         .then(result => {
-            console.log("ID Chapter: "+result.episode.episode_order);
+            // console.log("ID Chapter: "+result.episode.episode_order);
             const Titile = result.name;
+            const ipclient = ipInfo.clientIp;
+            console.log("IpClient: "+ipclient);
             res.render('frontend/Movie/movieDetails', {
+                ipclient: ipclient,
                 episode:result.episode,
                 pageTitle: req.__(Titile)})
         })
@@ -29,19 +33,18 @@ router.get('/phim/:episode_id/:name/', (req,res) => {
 
 router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
     const episode_id = req.param("episode_id");
-    const ipInfo = getIP(req);
-    console.log("IP: "+ipInfo.clientIp);
 
     home_controller.get_viewMovie(episode_id)
         .then(result => {
 
-            // console.log("DATA: "+JSON.stringify(result.viewEpi[0]));
+            // console.log("DATA: "+JSON.stringify(result.viewEpi));
             const idChapter = JSON.stringify(result.viewEpi[0]);
             const name = result.name;
 
             res.render('frontend/Movie/viewMovie',{
                 viewEpi: result.viewEpi,
                 name:result.name,
+                title_cat: result.title_cat,
                 chapterone: idChapter,
                 pageTitle: req.__(name)}
             )

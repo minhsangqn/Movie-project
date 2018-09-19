@@ -1,18 +1,33 @@
-var episode = require("../modules/table_episode");
-var ObjectId = require('mongodb').ObjectId;
-var Category = require("../modules/table_cat");
-var Year = require("../modules/table_year");
+const episode = require("../modules/table_episode");
+const ObjectId = require('mongodb').ObjectId;
+const Category = require("../modules/table_cat");
+const Year = require("../modules/table_year");
 
 //-----------------------load index product------------------
-exports.index = function (req, res, next) {
-    episode.find(function(err,docs) {
-       var episodeChunks = [];
-       for (var i = 0; i < docs.length; i++){
-           episodeChunks.push(docs.slice(i));
-       }
-        res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
-    });
+exports.index = function(req,res,next){
+    episode.find().sort({_id: -1})
+        .then(docs =>{
+            // var episodeChunks =[];
+            // for (var i = 0; i<docs.length;i++){
+            //     episodeChunks.push(docs.slice(i));
+            // }
+            res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
+        })
+        .catch(err =>{
+            console.log('err');
+            reject({status: 500, message: req.__('Loi server')});
+        });
 };
+// exports.index = function (req, res, next) {
+//     episode.find().sort({_id: -1})
+//     (function(err,docs) {
+//        var episodeChunks = [];
+//        for (var i = 0; i < docs.length; i++){
+//            episodeChunks.push(docs.slice(i));
+//        }
+//         res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
+//     });
+// };
 //=========================get_phim=================
 exports.get_phim = function(req, res, next){
     var phim = req.param('nav');
@@ -57,7 +72,7 @@ exports.details = (name,episode_id) =>
 exports.get_viewMovie = (episode_id) =>
     new Promise((resolve, reject) =>{
         episode.findOne({episode_id: episode_id})
-            .populate({path: "episode_order"})
+            .populate({path: "episode_order listEpisode"})
             .then(vie =>{
                 if(vie.length === 0){
                     // console.log('khong');
@@ -65,14 +80,17 @@ exports.get_viewMovie = (episode_id) =>
                         message: req.__('Không tìm thấy phim!')
                     });
                 }else{
+                    // console.log("DATA1: "+ vie.listEpisode);
+                    var title_cat = vie.listEpisode;
                     var name  = vie.episode_name;
                     var arrCT = vie.episode_order;
+                    // console.log("NUM: "+arrCT);
                     var idCT = [];
                     for (var i = 0;i<arrCT.length;i++){
                         idCT.push({"id":arrCT[i]._id,"num":arrCT[i].chapter_num})
                     }
                     // console.log("ARR: "+idCT[0].num);
-                    resolve({status: 200, name: name,viewEpi:idCT });
+                    resolve({status: 200, title_cat: title_cat, name: name,viewEpi:idCT });
                 }
             })
             .catch(err => {

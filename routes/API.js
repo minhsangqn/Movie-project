@@ -3,7 +3,7 @@ const router = express.Router();
 const Category = require("../modules/table_cat");
 const Year = require("../modules/table_year");
 const chapter = require("../modules/table_chapter");
-
+const episoder = require("../modules/table_episode")
 //===========================API============================================//
 //product
 router.get("/f5bb0c8de146c67b44babbf4e6584cc0", (req, res) => {
@@ -31,6 +31,18 @@ router.get("/202cb962ac59075b964b07152d234b70", (req, res) =>{
 //chapter
 router.get('/c5e549a0721069a573eeaba1677ce509', (req,res) => {
     chapter.find().sort({year_id: -1}).exec()
+        .then(doc => {
+            console.log(doc);
+            res.status(200).json(doc);
+        })
+        .catch(err => {
+            res.status(500).json({error: err});
+        });
+
+});
+//list
+router.get('/c5e549a0721069a573eeaba1677ce508', (req,res) => {
+    episoder.find().sort({_id: -1}).exec()
         .then(doc => {
             console.log(doc);
             res.status(200).json(doc);

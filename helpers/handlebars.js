@@ -29,10 +29,10 @@ const register = function (Handlebars) {
             moment.locale('vi');
             return moment(date).format(format);
         },
-        limit_text: function (str) {
-            if (str.length > 100)
-                return str.substring(0,10) + '...';
-            return str;
+        limit_user:function(user){
+            if (user.length > 100)
+                return user.substring(0,5) + '...';
+            return user;
         },
         limit_url: function(url){
             if (url.length > 100)

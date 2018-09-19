@@ -44,7 +44,7 @@ exports.post_addMovie = (episode_season,episode_back,episode_image,episode_id,ep
                         episode_name: episode_name,
                         episode_name_ascii: slug(episode_name),
                         episode_film: episode_film,
-                        episode_view: '0',
+                        episode_view: '1',
                         episode_info: episode_info,
                         episode_hide: episode_hide,
                         episode_image: episode_image,
@@ -127,7 +127,7 @@ exports.post_editMovie = (id,episode_id,episode_name,episode_film,episode_season
                 // console.log("1");
                 var arr = cat_id.split(',');
                 episode.findByIdAndUpdate({'_id': ObjectId(id)},
-                    {$set: {episode_season: episode_season,episode_name:episode_name,episode_film,episode_info:episode_info,episode_hide:episode_hide,"listEpisode":arr,"year_order": year_id}})
+                    {$set: {episode_season: episode_season,episode_name:episode_name,episode_name_ascii: slug(episode_name),episode_film,episode_info:episode_info,episode_hide:episode_hide,"listEpisode":arr,"year_order": year_id}})
                     .then(() =>{
                         for (var i = 0; i<arr.length;i++){
                             cat.findByIdAndUpdate({'_id':ObjectId(arr[i])},{$set:{"listEpisode":id}})
@@ -158,34 +158,43 @@ exports.get_delectMovie = id =>
         episode.findByIdAndRemove({'_id': ObjectId(id)})
 
             .then(doc => {
-                var episode_back = doc.episode_back;
-                var episode_image = doc.episode_image;
+                console.log('LOG: '+doc.episode_order);
+                const idChapter = doc.episode_order;
+                const episode_back = doc.episode_back;
+                const episode_image = doc.episode_image;
                 fs.unlinkSync(filePath+episode_image);
                 fs.unlinkSync(filePath+episode_back);
+
+                for (var i = 0; i<idChapter.length;i++){
+                    chapter.findByIdAndRemove({'_id': ObjectId(idChapter[i])}, function (err) {
+                        console.log('dele Chapter');
+                        resolve({status: 200, msg: "Đã xóa chapter!"});
+                    });
+                }
 
                 year.update({},{$pull: {year_order: ObjectId(id)}}, {multi: true})
                     .then(()=>{
                         cat.update({},{$pull: {listEpisode: ObjectId(id)}}, {multi: true})
                             .then(() =>{
-                                console.log('1.1');
+                                console.log('3');
                                 resolve({status: 200, msg: "Đã xóa cat!"});
                             })
                             .catch(err =>{
-                                console.log('2.1');
+                                console.log('That bai');
                                 reject({status: 500, err: "Thất bại !"});
                             });
-                        console.log('1.1');
+                        console.log('5');
                         resolve({status: 200, msg: "Đã xóa year!"});
                     })
                     .catch(err =>{
-                        console.log('2.1');
+                        console.log('6');
                         reject({status: 500, err: "Thất bại !"});
                     });
-                console.log('1.1');
+                console.log('7');
                 resolve({status: 200, msg: "Đã xóa !"});
             })
             .catch(err =>{
-                console.log('2.1');
+                console.log('8');
                 reject({status: 500, err: "Thất bại !"});
             });
     });

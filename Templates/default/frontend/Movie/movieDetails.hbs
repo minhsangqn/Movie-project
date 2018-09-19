@@ -1,74 +1,182 @@
-<style>
-    .list_rank_movie{
-        padding: 0px!important;
-        margin: 0px !important;
-    }
-</style>
-<div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="title_details">
-            <h1 class="h1_title_details">{{episode.episode_name}}</h1>
-        </div>
-        <div class="background_details">
-            <img class="img-responsive image_details" src="/images/image_avatar/{{episode.episode_back}}" alt="Bộ phim {{episode.episode_name}}">
-            <div class="image_avatar">
-                <img class="img-responsive image_thumb" src="/images/image_avatar/{{episode.episode_image}}" alt="Bộ phim {{episode.episode_name}}">
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-8 col-sm-12 col-xs-12">
-        <div class="back_view_details page_details">
-            <div class="info_details">
-                <div class="row">
-                    <div class="col-md-6 movie_details">
-                        <div class="movie_view_details">
-                            <button type="button" class="btn btn-primary">Lưu Vào Cá Nhân</button>
-                            <a href="/xem-phim/{{episode.episode_id}}/{{episode.episode_name_ascii}}">
-                                <button type="button" class="btn btn-danger">Xem Phim</button>
-                            </a>
-                            <div class="body_style"></div>
-                            <div class="movie_meta_info">
-                                <p class="title-evaluate">Đánh giá phim <span class="num-rating">(3 lượt)</span></p>
-                                <div id="star" data-score="10" style="cursor: pointer; width: 200px;">
+<!--<style>-->
+    <!--.list_rank_movie{-->
+        <!--padding: 0px!important;-->
+        <!--margin: 0px !important;-->
+    <!--}-->
+<!--</style>-->
+<!--<script>-->
+    <!--function view_movie() {-->
+        <!--var ip = "{{ipclient}}";-->
+        <!--alert("IP: "+ip)-->
+<!--</script>-->
+<!--<div class="row">-->
+    <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
+        <!--<div class="title_details">-->
+            <!--<h1 class="h1_title_details">{{episode.episode_name}}/{{ipclient}}</h1>-->
 
+        <!--</div>-->
+        <!--<div class="background_details">-->
+            <!--<img class="img-responsive image_details" src="/images/image_avatar/{{episode.episode_back}}" alt="Bộ phim {{episode.episode_name}}">-->
+            <!--<div class="image_avatar">-->
+                <!--<img class="img-responsive image_thumb" src="/images/image_avatar/{{episode.episode_image}}" alt="Bộ phim {{episode.episode_name}}">-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+    <!--<div class="col-md-8 col-sm-12 col-xs-12">-->
+        <!--<div class="back_view_details page_details">-->
+            <!--<div class="info_details">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-6 movie_details">-->
+                        <!--<div class="movie_view_details">-->
+                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-floppy-remove"></span>&ndash;&gt;-->
+                            <!--<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> Lưu</button>-->
+                            <!--<a href="/xem-phim/{{episode.episode_id}}/{{episode.episode_name_ascii}}">-->
+                                <!--<button onclick="view_movie()" type="button" class="btn btn-danger"> Xem Phim</button>-->
+                            <!--</a>-->
+                            <!--<div class="body_style"></div>-->
+                            <!--<div class="movie_meta_info">-->
+                                <!--<p class="title-evaluate">Đánh giá phim <span class="num-rating">(3 lượt)</span></p>-->
+                                <!--<div id="star" data-score="10" style="cursor: pointer; width: 200px;">-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-6 movie_image">-->
+                        <!--<div class="movie_meta_info">-->
+                            <!--<div class="movie_dl">-->
+                                <!--<b class="movie_dl">Trạng thái: <dd class="movie_chapter">{{episode.episode_film}}</dd></b><br>-->
+                                <!--<b class="movie_dl">Thể loại:</b>-->
+                                <!--{{#each episode.listEpisode}}-->
+                                    <!--<a href="#"><span class="span_movie">{{this.cat_name_title}}</span></a>,-->
+                                <!--{{/each}}-->
+                                <!--<br>-->
+                                <!--<b class="movie_dl">Season: </b><span class="span_movie"> {{episode.episode_season}}</span><br>-->
+                                <!--<b class="movie_dl">Năm: </b>-->
+                                    <!--<span class="span_movie">-->
+                                        <!--<a href="#" style="color: #46e1ff !important;">{{episode.year_order.[0].year_name}}</a>-->
+                                    <!--</span><br>-->
+                                <!--<b class="movie_dl">Lượt xem: {{episode.episode_view}}</b>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-12">-->
+                        <!--<div class="body_style"></div>-->
+                        <!--<div class="movie_meta_info">-->
+                            <!--<h2 style="color: darkgoldenrod">Nội dung:</h2>-->
+                            <!--<div class="info_nd">-->
+                                <!--{{episode.episode_info}}-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-4 sibar_left">-->
+        <!--{{> sibar_left}}-->
+    <!--</div>-->
+<!--</div>-->
+<div class="banner-top"></div>
+<ol class="breadcrumb">
+    <li>
+        <a href="/">
+            <span>HOME</span>
+        </a>
+    </li>
+    {{#each episode.listEpisode}}
+    <li>
+        <a href="">
+            <span>{{this.cat_name_title}}</span>
+        </a>
+    </li>
+    {{/each}}
+    <li class="active">
+        <span>{{episode.episode_name}}</span>
+    </li>
+</ol>
+<div class="row">
+    <div class="col-md-8">
+        <div class="movie_info">
+            <div class="block_movie_info movie_info_box">
+                <div class="block_wrapper page_single" itemscope itemtype="https://schema.org/Movie">
+                    <div class="movie_info">
+                        <div class="block_movie_info movie_info_box">
+                            <div class="row">
+                                <div class="col-6 movie_detail">
+                                    <h1 class="movie_title">
+                                        <span class="title" itemprop="name">{{episode.episode_name}}</span>
+                                    </h1>
+                                    <div class="movie_meta_info">
+                                        <div class="movie_dl">
+                                            <dt class="movie_dl">Trạng thái: </dt>
+                                            <dd class="movie_dd imdb">{{episode.episode_film}}</dd>
+                                            <br>
+                                            <dt class="movie_dl">Thể loại: </dt>
+                                            <dd class="movie_dd dd_cat">
+                                                {{#each episode.listEpisode}}
+                                                <a href="">{{this.cat_name_title}}</a>
+                                                    <span>,</span>
+                                                {{/each}}
+                                            </dd>
+                                            <br>
+                                            <dt class="movie_dl">Season: </dt>
+                                            <dd class="movie_dd dd_cat">
+                                                <span>{{episode.episode_season}}</span>
+                                            </dd>
+                                            <br>
+                                            <dt class="movie_dl">Năm: </dt>
+                                            <dd class="movie_dd dd_cat">
+                                                <span>{{episode.year_order.[0].year_name}}</span>
+                                            </dd>
+                                            <br>
+                                            <dt class="movie_dl">Lượt xem: </dt>
+                                            <dd class="movie_dd dd_cat">
+                                                <span>{{episode.episode_view}}</span>
+                                            </dd>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="box_rating">
+                                        <p>Đánh giá phim<span class="num_rating"> (1 lượt)</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-6 movie_image">
+                                    <div class="movie_l_img">
+                                        <img class="img-responsive image_thumb" src="/images/image_avatar/{{episode.episode_image}}" alt="Bộ phim {{episode.episode_name}}">
+                                        <ul class="btn_block">
+                                            <li class="item">
+                                                <a href="" class="btn btn_green">Lưu Phim</a>
+                                            </li>
+                                            <li class="item">
+                                                <a href="/xem-phim/{{episode.episode_id}}/{{episode.episode_name_ascii}}" class="btn btn_red">Xem Phim</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 movie_image">
-                        <div class="movie_meta_info">
-                            <div class="movie_dl">
-                                <b class="movie_dl">Trạng thái: <dd class="movie_chapter">{{episode.episode_film}}</dd></b><br>
-                                <b class="movie_dl">Thể loại:</b>
-                                {{#each episode.listEpisode}}
-                                    <a href="#"><span class="span_movie">{{this.cat_name_title}}</span></a>,
-                                {{/each}}
-                                <br>
-                                <b class="movie_dl">Season: </b><span class="span_movie"> {{episode.episode_season}}</span><br>
-                                <b class="movie_dl">Năm: </b>
-                                    <span class="span_movie">
-                                        <a href="#" style="color: #46e1ff !important;">{{episode.year_order.[0].year_name}}</a>
-                                    </span><br>
-                                <b class="movie_dl">Lượt xem: {{episode.episode_view}}</b>
+                    <article class="block_movie_content">
+                        <h2 class="movie_detail_h2">Nội dung phim</h2>
+                        <div class="content" style="max-height: 800px;">
+                            {{episode.episode_info}}
+                            <br>
+                            <br>
+                            <div style="text-align: center">
+                                <img class="img-responsive image_details" src="/images/image_avatar/{{episode.episode_back}}" alt="Bộ phim {{episode.episode_name}}">
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="body_style"></div>
-                        <div class="movie_meta_info">
-                            <h2 style="color: darkgoldenrod">Nội dung:</h2>
-                            <div class="info_nd">
-                                {{episode.episode_info}}
-                            </div>
-                        </div>
-                    </div>
-
+                    </article>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 col-xs-12 rank">{{> rank_left}}</div>
+    <div class="col-md-4 sibar_left">
+        {{> sibar_left}}
+    </div>
 </div>

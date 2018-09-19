@@ -1,50 +1,70 @@
 <script type="text/javascript" charset="utf-8" async="" src="http://ssl.p.jwpcdn.com/player/v/7.8.7/provider.html5.js"></script>
 <script>window.HELP_IMPROVE_VIDEOJS = false;</script>
-<div class="col-md-8 col-sm-12 col-xs-12">
-        <div class="back_view_details page_details">
-            <div class="info_details">
-                <div class="title_details">
-                    <h1 class="h1_title_details">{{name}} | Tập <span id="chapter_number"></span> </h1>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="body_style"></div>
-                        <div class="movie_meta_info">
-                            <div class="info_nd">
-                                <div class="jw-video jw-reset">
-                                    <video height="450" id="player" class="jw-video jw-reset"></video>
-                                </div>
-                            </div>
-                            <!--<video loop autoplay controls="true" width='100%' height='100%' src='https://video.xx.fbcdn.net/v/t42.9040-2/10000000_2044691669193429_2712328304769105920_n.mp4?_nc_cat=0&efg=eyJybHIiOjE1MDAsInJsYSI6NDA5NiwidmVuY29kZV90YWciOiJzdmVfaGQifQ%3D%3D&rl=1500&vabr=604&oh=5d3583c2c3c25d8c8731f356aba33bc2&oe=5B9B9CFE' type='video/mp4'></video>-->
-                        </div>
-                        <div class="play_actions">
-                            <ul class="list-inline">
-                                <li><a id="" class="previous_ep_btn">
-                                    <span class="glyphicon glyphicon-step-forward"></span> Tập Trước.</a>
-                                </li>
-                                <li><a href="" class="next_ep_btn">
-                                    <span class="glyphicon glyphicon-step-backward"></span> Tập Tiếp Theo.</a>
-                                </li>
-                                <li>
-                                    <a href="" class="next_ep_btn">
-                                        <span class="glyphicon glyphicon-plus"></span> Theo Dõi.
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="movie_meta_info">
-                            <div class="info_nd" id="chapNum">
-                                {{#each viewEpi}}
-                                    <button type="button" value="{{this.id}}" onClick="reply_click(this.id)" class="btn btn-success btn-xs IdMovie">{{this.num}}</button>&nbsp
-                                {{/each}}
-                            </div>
-                        </div>
-                    </div>
+<div class="banner-top"></div>
+<ol class="breadcrumb">
+    <li>
+        <a href="/">
+            <span>HOME</span>
+        </a>
+    </li>
+    {{#each title_cat}}
+        <li>
+            <a href="">
+                <span>{{this.cat_name_title}}</span>
+            </a>
+        </li>
+    {{/each}}
+    <li>
+        <a href="">
+            <span>{{name}}</span>
+        </a>
+    </li>
+    <li class="active">
+        <span id="chapter_number"></span>
+    </li>
+</ol>
+<div class="row">
+    <div class="col-md-8">
+        <div class="block_wrapper page_single">
+            <div class="jw-video jw-reset">
+                <video height="450" id="player" class="jw-video jw-reset"></video>
+            </div>
+            <div class="user_action">
+                <div class="play_actions">
+                    <ul class="list-inline">
+                        <li><a id="" class="previous_ep_btn">
+                            <span class="glyphicon glyphicon-step-forward"></span> Tập Trước</a>
+                        </li>
+                        <li><a href="" class="next_ep_btn">
+                            <span class="glyphicon glyphicon-step-backward"></span> Tập Tiếp Theo</a>
+                        </li>
+                        <li><a href="" class="next_ep_btn">
+                            <span class="glyphicon glyphicon-plus"></span> Theo Dõi</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            <div class="box_rating">
+                <p>Đánh giá phim<span class="num_rating"> (1 lượt)</span></p>
+            </div>
+            <div class="box_num">
+                <ul id="chapNum" class="chap_num">
+                    {{#each viewEpi}}
+                        <li>
+                            <button type="button" value="{{this.id}}" onClick="reply_click(this.id)" class="btn btn_black IdMovie">{{this.num}}</button>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="block_wrapper2 page_single block_comment">
+            <h4>Bình luận về phim</h4>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 col-xs-12 rank">{{> rank_left}}</div>
+    <div class="col-md-4 sibar_left">
+        {{> sibar_left}}
+    </div>
+</div>
     <input type="text" id="data_movie" value="{{chapterone}}" hidden>
 </div>
 <script type="text/javascript" src="/jwplayer-7.12.1/jwplayer.js?v1"></script>
@@ -70,6 +90,7 @@
                 width: '100%',
                 height: 470,
                 autostart: 'true',
+                preload: 'metadata'
             });
             var bumpIt = () => {
                 var vol = player.getVolume();
@@ -88,6 +109,7 @@
     function reply_click(clicked_id) {
 
         var id = document.getElementById(clicked_id).value;
+        // console.log(id);
         var data = {id};
         // console.log("DATA: "+data.id);
         $.ajax({

@@ -1,6 +1,7 @@
 {{> Admin_layout}}
 <style>
-    li{list-style: none}
+    ul{list-style-type: none;}
+    li{list-style: none;float: left;margin: 5px}
 </style>
 <div class="col-lg-8">
     <div class="card">
@@ -29,29 +30,34 @@
                     <th scope="col"><i class="fa fa-list"></i></th>
                     <th scope="col">ID Thể Loại</th>
                     <th scope="col">Tên Thể Loại</th>
-                    <th scope="col">Tên Viết Tắt</th>
                     <th>Tuỳ chọn</th>
                 </tr>
                 </thead>
-                <tbody>
+
                 {{# each item}}
+                <tbody>
                     <tr>
                         <th scope="row">#</th>
                         <td style="display: none">{{this._id}}</td>
                         <td>{{this.cat_id}}</td>
                         <td>{{this.cat_name_title}}</td>
-                        <td>{{this.cat_name_ascii}}</td>
                         <td style="text-align: center">
-                            <a href="/admin/editCat/{{cat_id}}"><i class="fa fa-pencil"></i></a>
-                            &nbsp&nbsp&nbsp&nbsp
-                            <a onclick="return confirm('Bạn có chắc muốn xóa')" href="/admin/deleteCat/{{_id}}"><i class="fa fa-trash-o"></i></a>
+                            <ul>
+                                <li>
+                                    <a href="/admin/editCat/{{cat_id}}"><i class="fa fa-pencil"></i></a>
+                                </li>
+                                <li>
+                                    <a onclick="return confirm('Bạn có chắc muốn xóa')" href="/admin/deleteCat/{{_id}}"><i class="fa fa-trash-o"></i></a>
+                                </li>
+                            </ul>
                         </td>
                     </tr>
-                {{/each}}
                 </tbody>
+                {{/each}}
             </table>
-
         </div>
     </div>
 </div>
 {{> Admin_footer}}
+
+

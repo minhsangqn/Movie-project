@@ -1,6 +1,7 @@
 {{> Admin_layout}}
 <style>
-    li{list-style: none}
+    ul{list-style-type: none;}
+    li{list-style: none;float: left;margin: 5px}
 </style>
 <div class="col-lg-6">
     <div class="card">
@@ -40,9 +41,14 @@
                     <td>{{this.year_id}}</td>
                     <td>{{this.year_name}}</td>
                     <td style="text-align: center">
-                        <a href="/admin/editYear/{{year_id}}"><i class="fa fa-pencil"></i></a>
-                        &nbsp&nbsp&nbsp&nbsp
-                        <a onclick="return confirm('Bạn có chắc muốn xóa')" href="/admin/deleteYear/{{_id}}"><i class="fa fa-trash-o"></i></a>
+                        <ul>
+                            <li>
+                                <a href="/admin/editYear/{{year_id}}"><i class="fa fa-pencil"></i></a>
+                            </li>
+                            <li>
+                                <a onclick="return confirm('Bạn có chắc muốn xóa')" href="/admin/deleteYear/{{_id}}"><i class="fa fa-trash-o"></i></a>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
                 {{/each}}

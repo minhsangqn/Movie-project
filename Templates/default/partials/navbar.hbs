@@ -5,7 +5,7 @@
             url: 'http://localhost:5000/API/202cb962ac59075b964b07152d234b70',
             type: 'GET',
             dataType: 'json',
-            success: function (data, textStatus, xhr) {
+            success: function (data) {
                 var outt = '';
                 var j;
                 for (j = 0;j < data.length; j++){
@@ -35,39 +35,50 @@
             });
     });
 </script>
-
-
 <header>
-    <div class="header">
-        <div class="container">
-            <div class="header-logo"><a class="logo" href="/" title=""><span>PHIM</span></a></div>
-            <div class="widget_search">
-                <form method="GET" id="form-search" action="tim-kiem/">
-                    <input type="text" class="  search-query form-control" placeholder="Search" />
-                </form>
-                <div class="search-suggest" style="display: none;">
-                    <ul style="margin-bottom: 0;" id="search-suggest-list"></ul>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebSiteName</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-center">
+                <div class="form-search">
+                    <form method="GET" id="form-search" action="tim-kiem/">
+                        <input type="text" class="search-query form-control" placeholder="Search" />
+                    </form>
                 </div>
-            </div>
-            <div class="widget_user_header">
+            </ul>
+            <ul class="nav navbar-nav navbar-right option-type">
                 {{#if logged}}
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><span class="fa fa-user-circle-o"></span> {{member.info.lastname}}
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="/thanh-vien/tai-khoan"><span class="glyphicon glyphicon-user"></span> Cá nhân</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Cài đặt</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/thanh-vien/thoat"><span class="glyphicon glyphicon-off"></span> Thoát</a></li>
-                        </ul>
+                    <div class="User_login">
+                        <div class="dropdown">
+                            <div data-toggle="dropdown">
+                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
+                                <span class="use_ava">{{member.local.email}}</span>
+                            </div>
+                            <ul class="dropdown-menu">
+                                <li><a href="/thanh-vien/tai-khoan"><span class="glyphicon glyphicon-user"></span> Cá nhân <span class="badge">2</span></a></li>
+                                <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Cài đặt</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/thanh-vien/thoat"><span class="glyphicon glyphicon-off"></span> Thoát</a></li>
+                            </ul>
+                        </div>
                     </div>
-                 {{else}}
-                    <a class="button-register" rel="nofollow" href="/thanh-vien/dang-ky"></a>
-                    <a class="button-login" rel="nofollow" href="/thanh-vien/dang-nhap"></a>
-                 {{/if}}
-            </div>
+                    {{else}}
+                        <li><a href="/thanh-vien/dang-nhap" class="login">Đăng nhập</a></li>
+                        <li class="brick"><a>|</a></li>
+                        <li><a href="/thanh-vien/dang-ky" class="login">Đăng ký</a></li>
+                    {{/if}}
+            </ul>
         </div>
     </div>
+</nav>
 </header>
 <div class="clear"></div>
 <div id="menu">

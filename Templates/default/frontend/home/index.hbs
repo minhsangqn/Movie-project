@@ -4,36 +4,40 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="title_body">Phim Mới Cập Nhật</div>
-            <div class="list_index">
-
-                {{# each episode}}
-                    <div class="item card_index_item">
-                        <a class="movie_item" href="/phim/{{this.episode_id}}/{{this.episode_name_ascii}}" data-toggle="tooltip" data-placement="right" title="{{this.episode_name}}">
-                            <span class="overly"></span>
-                            <img src="/images/image_avatar/{{this.episode_image}}" alt="{{this.episode_image}}" class="thumb img-responsive">
-                            <div class="more">
-                                <span class="chapter">{{this.episode_film}}</span>
-                                <span class="view">20</span>
-                                <span class="cmt">10</span>
-                            </div>
-                            <div class="title">
-                                <h3 class="title_item">
-                                    {{this.episode_name}}
-                                </h3>
-                            </div>
-                        </a>
-                    </div>
-                {{/each}}
-
+<div class="row">
+    <div class="col-md-8">
+        <div class="movie_list_index home_v1">
+            <div class="title_movie">
+                <h3 class="title">Movie Mới Cập Nhật</h3>
+            </div>
+            <div class="clear"></div>
+            <div class="last_film_box_wrapper">
+                <div class="content">
+                    <ul class="last_film_box">
+                        {{# each episode}}
+                            <li>
+                                <a href="/phim/{{this.episode_id}}/{{this.episode_name_ascii}}" data-toggle="tooltip" data-placement="right" title="{{this.episode_name}}" class="movie_item m_block">
+                                    <div class="block_wrapper">
+                                        <div class="movie_thumbnail ratio_box ratio">
+                                            <div class="public_film_item_thumb ratio_content" style="background-image: url('/images/image_avatar/{{this.episode_image}}')"></div>
+                                        </div>
+                                        <div class="movie_meta">
+                                            <div class="movie_title">{{this.episode_name}}</div>
+                                            <span class="com_left">{{this.episode_season}}</span>
+                                            <span class="viewed_rigth">{{this.episode_view}}</span>
+                                            <span class="ribbon">{{this.episode_film}}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
             </div>
         </div>
-
-        <div class="col-md-4 col-sm-4 rank">
-            {{> rank_left}}
-        </div>
     </div>
-
-
+    <!--<div class="clear"></div>-->
+    <div class="col-md-4 sibar_left">
+        {{> sibar_left}}
+    </div>
+</div>
