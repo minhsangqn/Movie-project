@@ -1,86 +1,70 @@
-<!--<style>-->
-    <!--.list_rank_movie{-->
-        <!--padding: 0px!important;-->
-        <!--margin: 0px !important;-->
-    <!--}-->
-<!--</style>-->
-<!--<script>-->
-    <!--function view_movie() {-->
-        <!--var ip = "{{ipclient}}";-->
-        <!--alert("IP: "+ip)-->
-<!--</script>-->
-<!--<div class="row">-->
-    <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
-        <!--<div class="title_details">-->
-            <!--<h1 class="h1_title_details">{{episode.episode_name}}/{{ipclient}}</h1>-->
 
-        <!--</div>-->
-        <!--<div class="background_details">-->
-            <!--<img class="img-responsive image_details" src="/images/image_avatar/{{episode.episode_back}}" alt="Bộ phim {{episode.episode_name}}">-->
-            <!--<div class="image_avatar">-->
-                <!--<img class="img-responsive image_thumb" src="/images/image_avatar/{{episode.episode_image}}" alt="Bộ phim {{episode.episode_name}}">-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<div class="row">-->
-    <!--<div class="col-md-8 col-sm-12 col-xs-12">-->
-        <!--<div class="back_view_details page_details">-->
-            <!--<div class="info_details">-->
-                <!--<div class="row">-->
-                    <!--<div class="col-md-6 movie_details">-->
-                        <!--<div class="movie_view_details">-->
-                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-floppy-remove"></span>&ndash;&gt;-->
-                            <!--<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-saved"></span> Lưu</button>-->
-                            <!--<a href="/xem-phim/{{episode.episode_id}}/{{episode.episode_name_ascii}}">-->
-                                <!--<button onclick="view_movie()" type="button" class="btn btn-danger"> Xem Phim</button>-->
-                            <!--</a>-->
-                            <!--<div class="body_style"></div>-->
-                            <!--<div class="movie_meta_info">-->
-                                <!--<p class="title-evaluate">Đánh giá phim <span class="num-rating">(3 lượt)</span></p>-->
-                                <!--<div id="star" data-score="10" style="cursor: pointer; width: 200px;">-->
+<script>
+    function view_movie() {
+        var ip = "{{ipclient}}";
+        alert("IP: "+ip)
+    }
+    function save_movie() {
+        var IdUse = document.getElementById("IdUser");
+        if (IdUse !== null){
+            var IdUser = document.getElementById("IdUser").value;
+            var IdMovie = document.getElementById("IdMovie").value;
+            var IDEvent_movie = document.getElementById("IDEvent_movie").value;
+            var Name_move = document.getElementById("Name_move").value;
+            var Name_move_ascii = document.getElementById("Name_move_ascii").value;
+            var notSave = document.getElementById("btn_save").value;
+            // alert(IdUser +"/"+ IdMovie+"/"+notSave);
+            var data = {IdUser,IdMovie,notSave,IDEvent_movie,Name_move,Name_move_ascii};
+            console.log('1');
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: 'http://localhost:5000/API/6d3e2d986f8fc589babced246675da13',
+                success: function (data) {
+                    console.log("DATA: "+data);
+                    if(data === '1'){
+                        document.getElementById("btn_save").style.background = "#296d91";
+                        $('#btn_save').attr('value',data);
+                        document.getElementById("btn_save").innerText = 'Đã Lưu';
+                    }else{
+                        document.getElementById("btn_save").style.background = "#78dd28";
+                        $('#btn_save').attr('value',data);
+                        document.getElementById("btn_save").innerText = 'Lưu Phim';
 
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="col-md-6 movie_image">-->
-                        <!--<div class="movie_meta_info">-->
-                            <!--<div class="movie_dl">-->
-                                <!--<b class="movie_dl">Trạng thái: <dd class="movie_chapter">{{episode.episode_film}}</dd></b><br>-->
-                                <!--<b class="movie_dl">Thể loại:</b>-->
-                                <!--{{#each episode.listEpisode}}-->
-                                    <!--<a href="#"><span class="span_movie">{{this.cat_name_title}}</span></a>,-->
-                                <!--{{/each}}-->
-                                <!--<br>-->
-                                <!--<b class="movie_dl">Season: </b><span class="span_movie"> {{episode.episode_season}}</span><br>-->
-                                <!--<b class="movie_dl">Năm: </b>-->
-                                    <!--<span class="span_movie">-->
-                                        <!--<a href="#" style="color: #46e1ff !important;">{{episode.year_order.[0].year_name}}</a>-->
-                                    <!--</span><br>-->
-                                <!--<b class="movie_dl">Lượt xem: {{episode.episode_view}}</b>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                    }
+                }
+            })
+        }else{
+            alert('Bạn chưa đăng nhập')
+        }
+    }
+    $(document).ready(function () {
+        var IdUser = document.getElementById("IdUser").value;
+        var IdMovie = document.getElementById("IdMovie").value;
+        var data = {IdUser,IdMovie};
+        // console.log('LOG: '+IdUser);
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: 'http://localhost:5000/API/90f751119bc098ffc8097de4ff8fd0ae',
+            success: function (data) {
+                // console.log("DATA SAVE OR NOT SAVE: "+data);
+                if(data === '1'){
+                    document.getElementById("btn_save").style.background = "#296d91";
+                    $('#btn_save').attr('value',data);
+                    document.getElementById("btn_save").innerText = 'Đã Lưu';
+                }else{
+                    document.getElementById("btn_save").style.background = "#78dd28";
+                    $('#btn_save').attr('value',data);
+                    document.getElementById("btn_save").innerText = 'Lưu Phim';
 
-                    <!--<div class="col-md-12">-->
-                        <!--<div class="body_style"></div>-->
-                        <!--<div class="movie_meta_info">-->
-                            <!--<h2 style="color: darkgoldenrod">Nội dung:</h2>-->
-                            <!--<div class="info_nd">-->
-                                <!--{{episode.episode_info}}-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="col-md-4 sibar_left">-->
-        <!--{{> sibar_left}}-->
-    <!--</div>-->
-<!--</div>-->
+                }
+            }
+        });
+    });
+</script>
 <div class="banner-top"></div>
 <ol class="breadcrumb">
     <li>
@@ -102,6 +86,10 @@
 <div class="row">
     <div class="col-md-8">
         <div class="movie_info">
+            <input type="text" id="IdMovie" value="{{episode._id}}" hidden>
+            <input type="text" id="IDEvent_movie" value="{{episode.episode_id}}" hidden>
+            <input type="text" id="Name_move" value="{{episode.episode_name}}" hidden>
+            <input type="text" id="Name_move_ascii" value="{{episode.episode_name_ascii}}" hidden>
             <div class="block_movie_info movie_info_box">
                 <div class="block_wrapper page_single" itemscope itemtype="https://schema.org/Movie">
                     <div class="movie_info">
@@ -149,10 +137,10 @@
                                     <div class="movie_l_img">
                                         <img class="img-responsive image_thumb" src="/images/image_avatar/{{episode.episode_image}}" alt="Bộ phim {{episode.episode_name}}">
                                         <ul class="btn_block">
-                                            <li class="item">
-                                                <a href="" class="btn btn_green">Lưu Phim</a>
+                                            <li class="item" onclick="save_movie()">
+                                                <button value="0" class="btn btn_green" id="btn_save">Lưu Phim</button>
                                             </li>
-                                            <li class="item">
+                                            <li class="item" onclick="view_movie()">
                                                 <a href="/xem-phim/{{episode.episode_id}}/{{episode.episode_name_ascii}}" class="btn btn_red">Xem Phim</a>
                                             </li>
                                         </ul>

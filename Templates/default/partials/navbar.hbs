@@ -35,6 +35,35 @@
             });
     });
 </script>
+<script>
+    $(document).ready(function () {
+        var IdUser = document.getElementById("IdUser").value;
+        var data = {IdUser};
+        // console.log('LOG: '+IdUser);
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: 'http://localhost:5000/API/0cfd653d5d3e1e9fdbb644523d77971d',
+            success: function (data) {
+                var arrNoti = [];
+                // console.log("NOTIFICATION: "+data[1].name);
+                for (var i = 0;i<data.length;i++){
+                    var chapterNew = data[i].newChapter;
+                    chapterNew.reverse();
+                    // console.log(chapterNew[0]);
+                    arrNoti.push(chapterNew[0]);
+                }
+                var arrFor = arrNoti.filter(Boolean);
+                console.log(arrFor);
+                var sizeNoti = arrFor.length;
+                if (sizeNoti !== 0){
+                    document.getElementById("Notifi_mes").innerHTML = '<i class="hasAMess" id="Notifi_mes">'+sizeNoti+'</i>';
+                }
+            }
+        });
+    });
+</script>
 <header>
 <nav class="navbar navbar-inverse">
     <div class="container">
@@ -56,25 +85,67 @@
             </ul>
             <ul class="nav navbar-nav navbar-right option-type">
                 {{#if logged}}
-                    <div class="User_login">
+                <li>
+                    <div class="notification">
                         <div class="dropdown">
-                            <div data-toggle="dropdown">
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
-                                <span class="use_ava">{{member.local.email}}</span>
-                            </div>
-                            <ul class="dropdown-menu">
-                                <li><a href="/thanh-vien/tai-khoan"><span class="glyphicon glyphicon-user"></span> Cá nhân <span class="badge">2</span></a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Cài đặt</a></li>
+                            <a class="notifi_mess" id="dLabel" role="button" data-toggle="dropdown">
+                                <i class="fa fa-bell" style="font-size:16px; color: white;"></i>
+                                <i id="Notifi_mes"></i>
+                            </a>
+                            <ul class="dropdown-menu2 notifications">
+                                <div class="notification-heading">
+                                    <h4 class="menu-title">Thông báo</h4>
+                                </div>
                                 <li class="divider"></li>
-                                <li><a href="/thanh-vien/thoat"><span class="glyphicon glyphicon-off"></span> Thoát</a></li>
+                                <div class="notifications-wrapper">
+
+                                    <a class="content" href="#">
+                                        <div class="notification-item">
+                                            <ul class="notifi_detail">
+                                                <li class="img-notifi">
+                                                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar_notifi">
+                                                </li>
+                                                <li>
+                                                    <h4 class="item-title">Phim <b>Huyền thoại</b> có một tập mới</h4>
+                                                    <h4 class="item_time">Vào lúc 4 giờ trước</h4>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <li class="divider"></li>
+                                <div class="notification-footer">
+                                    <a href="">
+                                        <h4 class="menu-title-footer">Xem tất cả</h4>
+                                    </a>
+                                </div>
                             </ul>
                         </div>
                     </div>
-                    {{else}}
-                        <li><a href="/thanh-vien/dang-nhap" class="login">Đăng nhập</a></li>
-                        <li class="brick"><a>|</a></li>
-                        <li><a href="/thanh-vien/dang-ky" class="login">Đăng ký</a></li>
-                    {{/if}}
+                </li>
+                <li>
+                    <div class="User_login">
+                            <div class="dropdown">
+                                <div data-toggle="dropdown">
+                                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
+                                    <span class="use_ava">{{member.local.email}}</span>
+                                </div>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/thanh-vien/tai-khoan"><span class="glyphicon glyphicon-user"></span> Cá nhân <span class="badge">2</span></a></li>
+                                    <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Cài đặt</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/thanh-vien/thoat"><span class="glyphicon glyphicon-off"></span> Thoát</a></li>
+                                </ul>
+                            </div>
+                    </div>
+                </li>
+                    <input type="text" id="IdUser" value="{{member._id}}" hidden>
+                {{else}}
+                    <li><a href="/thanh-vien/dang-nhap" class="login">Đăng nhập</a></li>
+                    <li class="brick"><a>|</a></li>
+                    <li><a href="/thanh-vien/dang-ky" class="login">Đăng ký</a></li>
+                {{/if}}
             </ul>
         </div>
     </div>

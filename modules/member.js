@@ -36,7 +36,8 @@ const memberSchema = new Schema({
     },
     newsletter: Boolean, // True or false
     roles: String, //ADMIN, MOD, MEMBER, VIP
-    status: String //ACTIVE, INACTIVE, SUSPENDED
+    status: String, //ACTIVE, INACTIVE, SUSPENDED
+    list_save: [{ type: Schema.ObjectId, ref: 'table_notification' }] //event notication
 }, {
     timestamps: true
 });
