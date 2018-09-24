@@ -43,18 +43,11 @@ io.on('connection', function (socket) {
         var ArrayUser = [];
         if (ArrayUser.indexOf(data)<0){
             socket.IDUser = data;
-            console.log("DATA: "+socket.IDUser);
+            // console.log("DATA: "+socket.IDUser);
             if(data !== null){
-                console.log("vao");
                 ArrayUser.push(data);
                 //lay user trong database
                 var UserData = await controll.fetch_dataNoti();
-                console.log("UserData: "+JSON.stringify(UserData));
-                var User = JSON.stringify(UserData);
-                for (var i = 0;i<UserData.length;i++){
-                    var IDUs = UserData[i].id_user_notifi;
-                    console.log("IDUs: "+IDUs);
-                }
 
             }
         }
