@@ -36,19 +36,35 @@ const controll = require("./Controllers/admin/authController");
 //
 //     // socket.emit('news', 'ket noi');
 // });
+var ArrayUser = [];
 io.on('connection', function (socket) {
     console.log("co 1 ket noi: "+ socket.id);
     //console.log(socket.adapter.rooms);//show danh sach room dang co,join:vao room,leave: thoat room
     socket.on('ID_User', async function (data) {
-        var ArrayUser = [];
         if (ArrayUser.indexOf(data)<0){
-            socket.IDUser = data;
-            // console.log("DATA: "+socket.IDUser);
+            ArrayUser.push(data);
             if(data !== null){
-                ArrayUser.push(data);
                 //lay user trong database
                 var UserData = await controll.fetch_dataNoti();
-
+                // console.log(ArrayUser);
+                // console.log(UserData);
+                var ArrUserData;
+                for (var i = 0;i<UserData.length;i++){
+                    // console.log(UserData[i].id_user_notifi);
+                    ArrUserData = UserData[i].id_user_notifi;
+                    console.log(UserData[i].id_user_notifi);
+                }
+                console.log(ArrUserData);
+                console.log(ArrayUser);
+                // for (var ii = 0;ii<ArrayUser.length;ii++){
+                //     for (var iii = 0;iii<ArrUserData.length;iii++){
+                //         console.log(ArrayUser[ii]);
+                //         console.log(ArrUserData[iii]);
+                //         if (ArrayUser[ii] == (ArrUserData[iii])){
+                //             console.log('bang');
+                //         }
+                //     }
+                // }
             }
         }
     });
@@ -58,7 +74,7 @@ io.on('connection', function (socket) {
 //end create server
 mongoose.connect(database.dbStr);
 mongoose.connection.on('error', function(err) {
-    console.log('Error connect to Database: ' + err);
+    console.log('Error connect to Database: '+err);
 });
 
 require('./config/passport');
