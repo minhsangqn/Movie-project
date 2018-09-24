@@ -36,17 +36,27 @@ const controll = require("./Controllers/admin/authController");
 //
 //     // socket.emit('news', 'ket noi');
 // });
-var ArrayUser = [];
 io.on('connection', function (socket) {
     console.log("co 1 ket noi: "+ socket.id);
     //console.log(socket.adapter.rooms);//show danh sach room dang co,join:vao room,leave: thoat room
     socket.on('ID_User', async function (data) {
+        var ArrayUser = [];
         if (ArrayUser.indexOf(data)<0){
-            ArrayUser.push(data);
-            var a = ArrayUser.filter(Boolean);
-            console.log(a);
-            var UserData = await controll.fetch_dataNoti();
-            console.log("USER DATA: "+UserData[0].id_user_notifi);
+            socket.IDUser = data;
+            console.log("DATA: "+socket.IDUser);
+            if(data !== null){
+                console.log("vao");
+                ArrayUser.push(data);
+                //lay user trong database
+                var UserData = await controll.fetch_dataNoti();
+                console.log("UserData: "+JSON.stringify(UserData));
+                var User = JSON.stringify(UserData);
+                for (var i = 0;i<UserData.length;i++){
+                    var IDUs = UserData[i].id_user_notifi;
+                    console.log("IDUs: "+IDUs);
+                }
+
+            }
         }
     });
 
