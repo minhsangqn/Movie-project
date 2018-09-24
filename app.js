@@ -33,12 +33,14 @@ const controll = require("./Controllers/admin/authController");
 //         chat.emit('news', res);
 //         console.log('da phat');
 //     });
-//
-//     // socket.emit('news', 'ket noi');
 // });
+
 var ArrayUser = [];
 io.on('connection', function (socket) {
-    console.log("co 1 ket noi: "+ socket.id);
+    console.log("co nguoi ket noi: "+ socket.id);
+    socket.on("disconnect",function () {
+       console.log(socket.id+ " Ngat ket noi");
+    });
     //console.log(socket.adapter.rooms);//show danh sach room dang co,join:vao room,leave: thoat room
     socket.on('ID_User', async function (data) {
         if (ArrayUser.indexOf(data)<0){
@@ -46,29 +48,27 @@ io.on('connection', function (socket) {
             if(data !== null){
                 //lay user trong database
                 var UserData = await controll.fetch_dataNoti();
-                // console.log(ArrayUser);
-                // console.log(UserData);
                 var ArrUserData;
                 for (var i = 0;i<UserData.length;i++){
                     // console.log(UserData[i].id_user_notifi);
                     ArrUserData = UserData[i].id_user_notifi;
                     console.log(UserData[i].id_user_notifi);
                 }
-                console.log(ArrUserData);
-                console.log(ArrayUser);
-                // for (var ii = 0;ii<ArrayUser.length;ii++){
-                //     for (var iii = 0;iii<ArrUserData.length;iii++){
-                //         console.log(ArrayUser[ii]);
-                //         console.log(ArrUserData[iii]);
-                //         if (ArrayUser[ii] == (ArrUserData[iii])){
-                //             console.log('bang');
-                //         }
-                //     }
-                // }
+                // console.log(ArrUserData);
+                // console.log(ArrayUser);
+                for (var ii = 0;ii<ArrayUser.length;ii++){
+                    for (var iii = 0;iii<ArrUserData.length;iii++){
+                        // console.log(ArrayUser[ii]);
+                        // console.log(ArrUserData[iii]);
+                        if (ArrayUser[ii] == (ArrUserData[iii])){
+                            // console.log('bang');
+                            socket.emit('Notifi',UserData);
+                        }
+                    }
+                }
             }
         }
     });
-
 });
 
 //end create server

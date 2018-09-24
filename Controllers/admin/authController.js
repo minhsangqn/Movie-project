@@ -43,10 +43,10 @@ exports.fetch_dataNoti = async function(){
     return notifiData;
 };
 
-exports.fetch_data = function(){
-    let data = "du lieu";
-    return data;
-};
+// exports.fetch_data = function(){
+//     let data = "du lieu";
+//     return data;
+// };
 
 exports.get_addMovie = function (req, res, next) {
     res.render('admin/index/ListMovie/addMovie', {

@@ -40,13 +40,16 @@
     <!--var socket = io('http://localhost:5000');-->
     <!--socket.on('news', function (data) {-->
         <!--console.log("thong bao: "+data);-->
-        <!--// socket.emit('my other event', { my: 'data' });-->
     <!--});-->
 <!--</script>-->
+
 <script>
     var socket = io('http://localhost:5000');
     $(document).ready(function () {
         socket.emit("ID_User",$("#IdUser").val());
+        socket.on('Notifi',  function (data) {
+            console.log("thong bao: "+data);
+        });
     });
 </script>
 
@@ -75,8 +78,9 @@
                     <div class="notification">
                         <div class="dropdown">
                             <a class="notifi_mess" id="dLabel" role="button" data-toggle="dropdown">
-                                <i class="fa fa-bell" style="font-size:16px; color: white;"></i>
-                                <i id="Notifi_mes"></i>
+                                <i class="fa fa-bell" style="font-size:16px; color: white;position: relative">
+                                    <p id="Notifi_mes" class="hasAMess">1</p>
+                                </i>
                             </a>
                             <ul class="dropdown-menu notifications" style="top: 34px;">
                                 <div class="notification-heading">
