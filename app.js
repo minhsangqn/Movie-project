@@ -16,17 +16,51 @@ const routeMember = require('./routes/member');
 const routeAdmin = require('./routes/admin');
 const routerAPI = require('./routes/API');
 const app = express();
-const requestIp = require('request-ip');
+//creater server
+const server = require("http").createServer(app);
+const port        = process.env.PORT || 5000;
+const io = require("socket.io")(server);
+const controll = require("./Controllers/admin/authController");
 
+//SOCKET IO
+//
+// var chat = io.on('connection', function (socket) {
+//     console.log("co 1 ket noi: "+ socket.id);
+//     socket.on('news', function (msg) {
+//         console.log('Nhan');
+//         var res = controll.fetch_data();
+//         console.log(res);
+//         chat.emit('news', res);
+//         console.log('da phat');
+//     });
+//
+//     // socket.emit('news', 'ket noi');
+// });
+var ArrayUser = [];
+io.on('connection', function (socket) {
+    console.log("co 1 ket noi: "+ socket.id);
+    //console.log(socket.adapter.rooms);//show danh sach room dang co,join:vao room,leave: thoat room
+    socket.on('ID_User', async function (data) {
+        if (ArrayUser.indexOf(data)<0){
+            ArrayUser.push(data);
+            var a = ArrayUser.filter(Boolean);
+            console.log(a);
+            var UserData = await controll.fetch_dataNoti();
+            console.log("USER DATA: "+UserData[0].id_user_notifi);
+        }
+    });
 
+});
+
+//end create server
 mongoose.connect(database.dbStr);
 mongoose.connection.on('error', function(err) {
     console.log('Error connect to Database: ' + err);
 });
 
 require('./config/passport');
-
-// view engine setup
+//
+// // view engine setup
 const hbsConfig = expHbs.create({
     helpers: require('./helpers/handlebars.js').helpers,
     layoutsDir:  path.join(__dirname, '/templates/'+ settings.defaultTemplate +'/layouts'),
@@ -61,6 +95,7 @@ i18n.configure({
     autoReload: true,
     updateFiles: true,
     api: {
+
         '__': '__', // Đây là 2 hàm dùng trong template dịch ngôn ngữ nhé. Các bạn cũng có thể thay đổi tên của nó (nên để mặc địch)
         '__n': '__n'
     }
@@ -118,5 +153,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
+server.listen(port, function () {
+    console.log('Server listening at port %d', port);
+});
 module.exports = app;

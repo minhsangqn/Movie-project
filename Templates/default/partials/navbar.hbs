@@ -35,35 +35,21 @@
             });
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<!--<script>-->
+    <!--var socket = io('http://localhost:5000');-->
+    <!--socket.on('news', function (data) {-->
+        <!--console.log("thong bao: "+data);-->
+        <!--// socket.emit('my other event', { my: 'data' });-->
+    <!--});-->
+<!--</script>-->
 <script>
+    var socket = io('http://localhost:5000');
     $(document).ready(function () {
-        var IdUser = document.getElementById("IdUser").value;
-        var data = {IdUser};
-        // console.log('LOG: '+IdUser);
-        $.ajax({
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            url: 'http://localhost:5000/API/0cfd653d5d3e1e9fdbb644523d77971d',
-            success: function (data) {
-                var arrNoti = [];
-                // console.log("NOTIFICATION: "+data[1].name);
-                for (var i = 0;i<data.length;i++){
-                    var chapterNew = data[i].newChapter;
-                    chapterNew.reverse();
-                    // console.log(chapterNew[0]);
-                    arrNoti.push(chapterNew[0]);
-                }
-                var arrFor = arrNoti.filter(Boolean);
-                console.log(arrFor);
-                var sizeNoti = arrFor.length;
-                if (sizeNoti !== 0){
-                    document.getElementById("Notifi_mes").innerHTML = '<i class="hasAMess" id="Notifi_mes">'+sizeNoti+'</i>';
-                }
-            }
-        });
+        socket.emit("ID_User",$("#IdUser").val());
     });
 </script>
+
 <header>
 <nav class="navbar navbar-inverse">
     <div class="container">

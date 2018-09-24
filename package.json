@@ -37,6 +37,7 @@
     "path": "^0.12.7",
     "player.js": "^0.1.0",
     "request-ip": "^2.1.1",
+    "socket.io": "^2.1.1",
     "video.js": "^7.1.0",
     "vietnamese-slug": "^1.1.4"
   }

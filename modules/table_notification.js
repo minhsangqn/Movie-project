@@ -8,4 +8,4 @@ const tableNotificationSchema = new Schema({
     time_notification: String
 });
 mongoose.Promise = global.Promise;
-module.exports = mongoose.model("table_follow", tableNotificationSchema);
+module.exports = mongoose.model("table_notification", tableNotificationSchema);

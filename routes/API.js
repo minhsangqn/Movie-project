@@ -82,32 +82,55 @@ router.post('/6d3e2d986f8fc589babced246675da13', function (req,res) {
 
     console.log("SAVE: "+IdUser+"/"+IdMovie+"/"+notSave);
     if(notSave === '0'){
-        var newFollow = new follow_user({
-            id_follow_save: IDEvent_movie,
-            name_follow_save: Name_move,
-            ascii_follow_save: Name_move_ascii
+        follow_user.findOne({"id_follow": IDEvent_movie})
+            .then(saveMovie =>{
+                if (saveMovie){
+                    console.log("vao if");
+                    console.log("DATA: "+saveMovie);
+                    follow_user.findByIdAndUpdate(saveMovie._id,{$push:{"user_follow":IdUser}},
+                        {safe:true,upsert: true,new: true},
+                        function (err) {
+                            console.log("update if 1");
+                        });
+                } else {
+                    console.log("vao else");
+                    var followSave = new follow_user({
+                        id_follow: IDEvent_movie,
+                        name_follow: Name_move,
+                        ascii_follow: Name_move_ascii
+                    });
+                    followSave.save()
+                        .then(() =>{
+                            var idnew = followSave._id;
+                            follow_user.findByIdAndUpdate(idnew,{$push:{"user_follow":IdUser}},
+                                {safe:true,upsert: true,new: true},
+                                function (err) {
+                                    console.log("update if 2");
+                                });
+
+                        })
+                        .catch(err =>{
+                            res.status(500);
+                        });
+                }
+                episoder.findByIdAndUpdate(IdMovie,{$push: {"savemovie":IdUser}},
+                    {safe: true, upsert: true, new: true},
+                    function (err) {
+                        console.log("else 2");
+                        var b = '1';
+                        res.json(b);
+                    });
+            })
+        .catch(err =>{
+            res.status(500);
         });
-        newFollow.save()
-        .then(() =>{
-            var idnew = newFollow._id;
-            follow_user.findByIdAndUpdate(idnew,{$push:{"user_follow":IdUser}},
-                {safe:true,upsert: true,new: true},
-                function (err) {
-                   console.log("da update user");
-                });
-            episoder.findByIdAndUpdate(IdMovie,{$push: {"savemovie":IdUser}},
-                {safe: true, upsert: true, new: true},
-                function (err) {
-                    console.log("if");
-                    var b = '1';
-                    res.json(b);
-                });
-        })
-            .catch(err =>{
-                res.status(500);
-            });
+
     }else {
-        follow_user.remove({"id_event_save":IDEvent_movie})
+
+        follow_user.update({"id_follow":IDEvent_movie},{$pull:{"user_follow":IdUser}},
+            function (err) {
+                console.log("pull user");
+            })
             .then(() =>{
                 episoder.findByIdAndUpdate(IdMovie,{$pull:{"savemovie":IdUser}},
                     {safe: true, upsert: true, new: true},
@@ -143,29 +166,8 @@ router.post('/90f751119bc098ffc8097de4ff8fd0ae', function (req, res) {
             res.status(500);
         });
     });
-//check notification
-router.post('/0cfd653d5d3e1e9fdbb644523d77971d', function (req,res) {
-    const IdUser = req.body.IdUser;
-    // console.log("ID:"+ IdUser);
-    episoder.find({'savemovie':Object(IdUser)}).sort({episode_order: -1})
-        .then(notifi =>{
-            var ArrNoti= [];
-            for (var i = 0;i<notifi.length;i++){
-                var noti = notifi[i].episode_order;
-                var nameNoti = notifi[i].episode_name;
-                var name = notifi[i].episode_name_ascii;
-                var episode_id = notifi[i].episode_id;
-                // console.log('NOTI: '+notifi[i].episode_order);
-                // console.log('NAME NOTI: '+ notifi[i].episode_name);
-                ArrNoti.push({"newChapter":noti,"newName":nameNoti,"name":name,"episode_id":episode_id});
-            }
-            res.json(ArrNoti);
-        })
-        .catch(err =>{
-            console.log('1.2');
-            res.status(500);
-        });
-});
+
+
 
 
 module.exports = router;

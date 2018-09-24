@@ -387,6 +387,7 @@ router.get('/deleteChapter/:chapter_id/:_id/:listEpisode', (req, res) => {
         .then(result =>{
             console.log('1');
             req.flash('success', result.msg);
+            req.flash('err', result.err);
             res.redirect('/admin/chapter/' + chapter_id +'/'+ idMovie);
         })
         .catch(err =>{

@@ -1,13 +1,27 @@
-var episode = require("../../modules/table_episode");
-var passport = require('passport');
-var year = require("../../modules/table_year");
-var cat = require("../../modules/table_cat");
-var catEpi = require("../../modules/table_catepi");
-var ObjectId = require('mongodb').ObjectId;
-var fs = require('fs');
-var filePath = './public/images/image_avatar/';
-var chapter = require("../../modules/table_chapter");
-var slug = require('vietnamese-slug');
+const episode = require("../../modules/table_episode");
+const passport = require('passport');
+const year = require("../../modules/table_year");
+const cat = require("../../modules/table_cat");
+const ObjectId = require('mongodb').ObjectId;
+const fs = require('fs');
+const filePath = './public/images/image_avatar/';
+const chapter = require("../../modules/table_chapter");
+const follow_user = require("../../modules/table_follow");
+const Notification = require("../../modules/table_notification");
+const server = require("../../app");
+const io = require("socket.io")(server);
+
+
+
+// io.on('connection', function (socket) {
+//     socket.emit('news', { hello: 'world' });
+//     socket.on('my other event', function (data) {
+//         console.log(data);
+//     });
+// });
+
+
+const slug = require('vietnamese-slug');
 exports.get_dashboard = function(req, res, next){
     res.render('admin/dashboard', {
         pageTitle: req.__('Bảng điều khiển'),
@@ -15,6 +29,24 @@ exports.get_dashboard = function(req, res, next){
     });
 };
 //=============================================ADD MOVIE=======================================//
+exports.fetch_dataNoti = async function(){
+    let notifiData = [];
+    await Notification.find({"check_view": false}, function (err,docs) {
+       if (err)
+           console.log("lỗi xảy ra trong cơ sở dữ liệu");
+       else {
+           if(docs) {
+               notifiData.push(...docs);
+           }
+       }
+    });
+    return notifiData;
+};
+
+exports.fetch_data = function(){
+    let data = "du lieu";
+    return data;
+};
 
 exports.get_addMovie = function (req, res, next) {
     res.render('admin/index/ListMovie/addMovie', {
@@ -437,17 +469,57 @@ exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
                     console.log(newChap);
                     newChap.save()
                         .then(result =>{
-                            chapter.findByIdAndUpdate({"_id": ObjectId(newChap._id)},{$push: {"listEpisode": idMovie}},
-                                {safe: true, upsert: true, new: true,multi:true},
-                                function (err) {
-                                    console.log("ADD list");
-                                    resolve({status: 201, msg: "Tạo mới thành công!"});
-                                });
-                            episode.findByIdAndUpdate({"_id": ObjectId(idMovie)}, {$push: {"episode_order":newChap._id}},
-                                {safe: true, upsert: true, new: true},
-                                function (err) {
-                                    console.log("ADD Episode");
-                                    resolve({status: 201, msg: "Tạo mới thành công!"});
+                            //lấy ra IDUser theo dõi và iDMovie để tạo ra một bảng notification
+                            console.log("RESULT: "+result);
+                            follow_user.findOne({"id_follow":chapter_id})
+                                .then(foll =>{
+                                    console.log("FOLL: "+foll+"/"+foll.user_follow);
+                                    var d = new Date();
+                                    var timeStamp = d.getTime();
+                                    var newNotifi = new Notification({
+                                        status_notification:chapter_id,
+                                        message_notification:result.chapter_num,
+                                        check_view: '0',
+                                        time_notification: timeStamp
+                                    });
+                                    newNotifi.save(function () {
+                                        var IdAllUser = foll.user_follow;
+                                        for (var i = 0;i<IdAllUser.length;i++){
+
+                                            console.log("IDUSEALL: "+IdAllUser[i]);
+                                            var IDNotification = newNotifi._id;
+                                            console.log(IDNotification);
+
+                                            Notification.findByIdAndUpdate({"_id": ObjectId(IDNotification)},
+                                                {$push: {"id_user_notifi": IdAllUser[i]}},
+                                                {safe: true, upsert: true, new: true,multi:true},
+                                                function (err) {
+                                                    console.log("ADD USER AS NOTIFI");
+                                                    resolve({status: 201, msg: "Tạo mới thành công!"});
+                                                });
+                                        }
+                                    });
+                                    chapter.findByIdAndUpdate({"_id": ObjectId(newChap._id)},{$push: {"listEpisode": idMovie}},
+                                        {safe: true, upsert: true, new: true,multi:true},
+                                        function (err) {
+                                            console.log("ADD list");
+                                            resolve({status: 201, msg: "Tạo mới thành công!"});
+                                        });
+                                    episode.findByIdAndUpdate({"_id": ObjectId(idMovie)}, {$push: {"episode_order":newChap._id}},
+                                        {safe: true, upsert: true, new: true},
+                                        function (err) {
+                                            console.log("ADD Episode");
+                                            resolve({status: 201, msg: "Tạo mới thành công!"});
+                                        });
+                                    //Phat thong bao cho nguoi dung
+                                    // exports.fetch_data = function(){
+                                    //     var data = "du lieu";
+                                    //     return data;
+                                    // };
+                                    //ket thuc phat thong bao cho nguoi dung
+                                })
+                                .catch(err =>{
+                                    reject({status: 500, err: 'Tạo mới không thành công!'});
                                 });
                         })
                         .catch(err =>{
@@ -469,10 +541,10 @@ exports.get_deleteChapter = (id,idMovie) =>
                     {safe: true, upsert: true, new:true},
                     function (err) {
                         console.log("DELE list");
-                        resolve({status: 201, msg: "Đã xóa !"});
+                        resolve({status: 201, err: "Đã xóa !"});
                        });
                 console.log('1.1');
-                resolve({status: 200, msg: "Đã xóa !"});
+                resolve({status: 200, err: "Đã xóa !"});
             })
             .catch(err =>{
                 console.log('2.1');
