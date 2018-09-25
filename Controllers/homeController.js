@@ -7,10 +7,6 @@ const Year = require("../modules/table_year");
 exports.index = function(req,res,next){
     episode.find().sort({_id: -1})
         .then(docs =>{
-            // var episodeChunks =[];
-            // for (var i = 0; i<docs.length;i++){
-            //     episodeChunks.push(docs.slice(i));
-            // }
             res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
         })
         .catch(err =>{

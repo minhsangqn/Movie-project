@@ -18,7 +18,8 @@ const tableEpiosodeSchema = new Schema({
     episode_hide: String,
     savemovie:[{type: Schema.ObjectId,ref: 'member'}],
     listEpisode: [{type: Schema.ObjectId, ref: 'table_cat'}],
-    year_order: [{type: Schema.ObjectId, ref: 'table_year'}]
+    year_order: [{type: Schema.ObjectId, ref: 'table_year'}],
+    nominations: String
 });
 
 module.exports = mongoose.model("table_episode", tableEpiosodeSchema);
