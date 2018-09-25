@@ -12,15 +12,6 @@ const server = require("../../app");
 const io = require("socket.io")(server);
 
 
-
-// io.on('connection', function (socket) {
-//     socket.emit('news', { hello: 'world' });
-//     socket.on('my other event', function (data) {
-//         console.log(data);
-//     });
-// });
-
-
 const slug = require('vietnamese-slug');
 exports.get_dashboard = function(req, res, next){
     res.render('admin/dashboard', {
@@ -29,6 +20,7 @@ exports.get_dashboard = function(req, res, next){
     });
 };
 //=============================================ADD MOVIE=======================================//
+//find notification not id
 exports.fetch_dataNoti = async function(){
     let notifiData = [];
     await Notification.find({"check_view": false}, function (err,docs) {
@@ -43,10 +35,20 @@ exports.fetch_dataNoti = async function(){
     return notifiData;
 };
 
-// exports.fetch_data = function(){
-//     let data = "du lieu";
-//     return data;
-// };
+let IdChapter;
+exports.fetch_dataNotiID = async function(){
+    let notifiData = [];
+    await Notification.find({"_id":IdChapter,"check_view": false}, function (err,docs) {
+        if (err)
+            console.log("lỗi xảy ra trong cơ sở dữ liệu");
+        else {
+            if(docs) {
+                notifiData.push(...docs);
+            }
+        }
+    });
+    return notifiData;
+};
 
 exports.get_addMovie = function (req, res, next) {
     res.render('admin/index/ListMovie/addMovie', {
@@ -498,6 +500,8 @@ exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
                                                     resolve({status: 201, msg: "Tạo mới thành công!"});
                                                 });
                                         }
+                                        //PUSH ID
+                                        IdChapter = newNotifi._id;
                                     });
                                     chapter.findByIdAndUpdate({"_id": ObjectId(newChap._id)},{$push: {"listEpisode": idMovie}},
                                         {safe: true, upsert: true, new: true,multi:true},
@@ -512,10 +516,7 @@ exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
                                             resolve({status: 201, msg: "Tạo mới thành công!"});
                                         });
                                     //Phat thong bao cho nguoi dung
-                                    // exports.fetch_data = function(){
-                                    //     var data = "du lieu";
-                                    //     return data;
-                                    // };
+
                                     //ket thuc phat thong bao cho nguoi dung
                                 })
                                 .catch(err =>{

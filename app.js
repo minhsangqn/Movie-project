@@ -21,55 +21,56 @@ const server = require("http").createServer(app);
 const port        = process.env.PORT || 5000;
 const io = require("socket.io")(server);
 const controll = require("./Controllers/admin/authController");
-
+const episode = require("./modules/table_episode");
 //SOCKET IO
-//
-// var chat = io.on('connection', function (socket) {
-//     console.log("co 1 ket noi: "+ socket.id);
-//     socket.on('news', function (msg) {
-//         console.log('Nhan');
-//         var res = controll.fetch_data();
-//         console.log(res);
-//         chat.emit('news', res);
-//         console.log('da phat');
-//     });
-// });
-
 var ArrayUser = [];
-io.on('connection', function (socket) {
+
+var load = io.on('connection', function (socket) {
     console.log("co nguoi ket noi: "+ socket.id);
-    socket.on("disconnect",function () {
-       console.log(socket.id+ " Ngat ket noi");
-    });
     //console.log(socket.adapter.rooms);//show danh sach room dang co,join:vao room,leave: thoat room
     socket.on('ID_User', async function (data) {
-        if (ArrayUser.indexOf(data)<0){
+        if (ArrayUser.indexOf(data)<0) {
             ArrayUser.push(data);
-            if(data !== null){
-                //lay user trong database
-                var UserData = await controll.fetch_dataNoti();
-                var ArrUserData;
-                for (var i = 0;i<UserData.length;i++){
-                    // console.log(UserData[i].id_user_notifi);
-                    ArrUserData = UserData[i].id_user_notifi;
-                    console.log(UserData[i].id_user_notifi);
-                }
-                // console.log(ArrUserData);
-                // console.log(ArrayUser);
-                for (var ii = 0;ii<ArrayUser.length;ii++){
-                    for (var iii = 0;iii<ArrUserData.length;iii++){
-                        // console.log(ArrayUser[ii]);
-                        // console.log(ArrUserData[iii]);
-                        if (ArrayUser[ii] == (ArrUserData[iii])){
-                            // console.log('bang');
-                            socket.emit('Notifi',UserData);
-                        }
+        }
+        if(data !== null){
+            //lay user trong database
+            var UserData = await controll.fetch_dataNoti();
+            var ArrUserData;
+            for (var i = 0;i<UserData.length;i++){
+                ArrUserData = UserData[i].id_user_notifi;
+            }
+            for (var ii = 0;ii<ArrayUser.length;ii++){
+                for (var iii = 0;iii<ArrUserData.length;iii++){
+                    if (ArrayUser[ii] == (ArrUserData[iii])){
+                        load.emit('Notifi',UserData);
                     }
                 }
             }
         }
     });
+
+    socket.on('news', async function (msg) {
+        var NotifiUser = await controll.fetch_dataNotiID();
+        for (var j =0;j<NotifiUser.length;j++) {
+            var idNo = NotifiUser[j].status_notification;
+            var numchap = NotifiUser[j].message_notification;
+
+            episode.findOne({'episode_id': idNo})
+                .then(data => {
+                    var episode_name = data.episode_name;
+                    var episode_avatar = data.episode_image;
+                    var arraynoti = [];
+                    arraynoti.push({"id":numchap,"episode_name":episode_name,"episode_avatar":episode_avatar});
+                    load.emit('news', arraynoti);
+                });
+        }
+    });
+
+    socket.on("disconnect",function () {
+        console.log(socket.id+ " Ngat ket noi");
+    });
 });
+//SOCKET IO
 
 //end create server
 mongoose.connect(database.dbStr);

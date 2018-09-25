@@ -25,7 +25,7 @@ exports.get_profile = function (req,res, next) {
 // GET Login
 exports.get_login = function(req, res, next) {
     const messages = req.flash('error');
-    console.log('err: '+ messages);
+    // console.log('err: '+ messages);
     res.render('frontend/member/login', {
         pageTitle: req.__('Thành viên đăng nhập'),
         csrfToken: req.csrfToken(),
@@ -36,7 +36,7 @@ exports.get_login = function(req, res, next) {
 
 // POST Login
 exports.post_login = passport.authenticate('local.login', {
-    successRedirect: '/thanh-vien/tai-khoan',
+    successRedirect: '/',
     failureRedirect: '/thanh-vien/dang-nhap',
     badRequestMessage: 'Các trường điều bắt buộc',
     failureFlash: true

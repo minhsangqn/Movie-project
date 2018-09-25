@@ -191,6 +191,42 @@ ul.notifi_detail li{
   color: #90949c;
   font-size: 1.2rem;
 }
+
+/*NOTI ALERT*/
+.alert-message
+{
+  margin: 20px;
+  padding: 20px;
+  border-left: 3px solid #eee !important;
+  z-index: 3;
+}
+.notifi{
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+}
+.alert-message h4
+{
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.alert-message p:last-child
+{
+  margin-bottom: 0;
+}
+.alert-message-info
+{
+  background-color: #f4f8fa;
+  border-color: #5bc0de !important;
+}
+.alert-message-info h4
+{
+  color: #5bc0de !important;
+}
+.alert{
+   border-radius: unset !important;
+}
 /*================================END NAV OPTION========================================*/
 /*==================================MENU SECOND============================================*/
 .clear {
@@ -742,7 +778,6 @@ ul.chap_num li.btn:hover{
 
 /*===========================================FOOTER MOVIE SITE===========================================================*/
 .footer{
-  border-top: 10px solid #192536;
   background-color: #222222;
   border-bottom: 2px solid black;
 }

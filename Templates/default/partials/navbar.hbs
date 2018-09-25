@@ -36,23 +36,26 @@
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-<!--<script>-->
-    <!--var socket = io('http://localhost:5000');-->
-    <!--socket.on('news', function (data) {-->
-        <!--console.log("thong bao: "+data);-->
-    <!--});-->
-<!--</script>-->
 
 <script>
     var socket = io('http://localhost:5000');
     $(document).ready(function () {
         socket.emit("ID_User",$("#IdUser").val());
-        socket.on('Notifi',  function (data) {
-            console.log("thong bao: "+data);
-        });
+        socket.on("Notifi", function (data) {
+            for (var i = 0;i<data.length;i++){
+                // console.log("NOI DUNG: "+data[i].status_notification);
+                // console.log("TAP: "+data[i].message_notification);
+            }
+            var dataSize = data.length;
+            document.getElementById("Notifi_mes").innerHTML = '<p class="hasAMess">'+dataSize+'</p>'
+        })
+    });
+    socket.on('news', function (data) {
+        console.log(data);
+        document.getElementById("NotiCationTrue").innerHTML = '<div class="alert alert-message alert-message-info col-md-4 notifi"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><div class="notifi_detail row"><div class="img-notifi col-md-3 col-sm-3"><img src="/images/image_avatar/'+data[0].episode_avatar+'" alt="Avatar" class="avatar_notifi"></div> <div class="col-md-9 col-sm-9"><h4 class="item-title">Phim <b>'+data[0].episode_name+'</b> bạn theo dõi đã có tâp'+data[0].id+'</h4> </div> </div></div>'
     });
 </script>
-
+<div id="NotiCationTrue"></div>
 <header>
 <nav class="navbar navbar-inverse">
     <div class="container">
@@ -79,7 +82,7 @@
                         <div class="dropdown">
                             <a class="notifi_mess" id="dLabel" role="button" data-toggle="dropdown">
                                 <i class="fa fa-bell" style="font-size:16px; color: white;position: relative">
-                                    <p id="Notifi_mes" class="hasAMess">1</p>
+                                    <div id="Notifi_mes"></div>
                                 </i>
                             </a>
                             <ul class="dropdown-menu notifications" style="top: 34px;">
@@ -91,15 +94,16 @@
 
                                     <a class="content" href="#">
                                         <div class="notification-item">
-                                            <ul class="notifi_detail">
-                                                <li class="img-notifi">
+                                            <div class="notifi_detail row">
+                                                <div class="img-notifi col-md-3">
                                                     <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar_notifi">
-                                                </li>
-                                                <li>
-                                                    <h4 class="item-title">Phim <b>Huyền thoại</b> có một tập mới</h4>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <h4 class="item-title">
+                                                        <b>Huyền thoại một thanh kiếm da có một</b> đã có một tập mới</h4>
                                                     <h4 class="item_time">Vào lúc 4 giờ trước</h4>
-                                                </li>
-                                            </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </a>
 
