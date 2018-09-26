@@ -2,15 +2,12 @@ const episode = require("../modules/table_episode");
 const ObjectId = require('mongodb').ObjectId;
 const Category = require("../modules/table_cat");
 const Year = require("../modules/table_year");
-
+const member_Controller = require("./memberController");
 //-----------------------load index product------------------
-exports.index = function(req,res,next){
+exports.index = function(req,res){
     episode.find().sort({_id: -1})
         .then(docs =>{
-            // var episodeChunks =[];
-            // for (var i = 0; i<docs.length;i++){
-            //     episodeChunks.push(docs.slice(i));
-            // }
+            console.log(req.user.username);
             res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
         })
         .catch(err =>{
