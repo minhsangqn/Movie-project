@@ -7,7 +7,6 @@ const member_Controller = require("./memberController");
 exports.index = function(req,res){
     episode.find().sort({_id: -1})
         .then(docs =>{
-            console.log(req.user.username);
             res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
         })
         .catch(err =>{

@@ -980,7 +980,7 @@ ul.link li a{
   }
   /*NAVBAR RESPONSE*/
   .navbarRespon{display: none!important;}
-  .active {
+  .activeNav {
     left: 0 !important;
     box-shadow: 0 0 10px #999 !important;
   }
