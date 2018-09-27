@@ -27,30 +27,32 @@ var ArrayUser = [];
 
 var load = io.on('connection', function (socket) {
     console.log("co nguoi ket noi: "+ socket.id);
-    //console.log(socket.adapter.rooms);//show danh sach room dang co,join:vao room,leave: thoat room
-    socket.on('ID_User', async function (data) {
-        if (ArrayUser.indexOf(data)<0) {
-            ArrayUser.push(data);
-        }
-        if(data !== null){
-            //lay user trong database
-            var UserData = await controll.fetch_dataNoti();
-            var ArrUserData;
-            for (var i = 0;i<UserData.length;i++){
-                ArrUserData = UserData[i].id_user_notifi;
-            }
-            for (var ii = 0;ii<ArrayUser.length;ii++){
-                for (var iii = 0;iii<ArrUserData.length;iii++){
-                    if (ArrayUser[ii] == (ArrUserData[iii])){
-                        load.emit('Notifi',UserData);
-                    }
-                }
-            }
-        }
-    });
+    // console.log(socket.adapter.rooms);//show danh sach room dang co,join:vao room,leave: thoat room
+    // socket.on('ID_User', async function (data) {
+    //     if (ArrayUser.indexOf(data)<0) {
+    //         ArrayUser.push(data);
+    //     }
+    //     if(data !== null){
+    //         //lay user trong database
+    //         var UserData = await controll.fetch_dataNoti();
+    //         var ArrUserData;
+    //         for (var i = 0;i<UserData.length;i++){
+    //             ArrUserData = UserData[i].id_user_notifi;
+    //         }
+    //         for (var ii = 0;ii<ArrayUser.length;ii++){
+    //             for (var iii = 0;iii<ArrUserData.length;iii++){
+    //                 if (ArrayUser[ii] == (ArrUserData[iii])){
+    //                     console.log(UserData);
+    //                     load.emit('Notifi',UserData);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // });
 
     socket.on('news', async function (msg) {
         var NotifiUser = await controll.fetch_dataNotiID();
+        console.log("NO:"+NotifiUser);
         for (var j =0;j<NotifiUser.length;j++) {
             var idNo = NotifiUser[j].status_notification;
             var numchap = NotifiUser[j].message_notification;
@@ -61,7 +63,11 @@ var load = io.on('connection', function (socket) {
                     var episode_avatar = data.episode_image;
                     var arraynoti = [];
                     arraynoti.push({"id":numchap,"episode_name":episode_name,"episode_avatar":episode_avatar});
+                    console.log(arraynoti);
                     load.emit('news', arraynoti);
+                })
+                .catch(err =>{
+                    console.log(err);
                 });
         }
     });

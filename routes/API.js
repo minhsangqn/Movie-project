@@ -167,7 +167,31 @@ router.post('/90f751119bc098ffc8097de4ff8fd0ae', function (req, res) {
         });
     });
 
+//check notification userLogin
+router.post('/0cfd653d5d3e1e9fdbb644523d77971d', function (req,res) {
+   const iduser = req.body.memberId;
+   console.log(iduser);
+    Notification.find({"id_user_notifi": iduser})
+        .then(noti =>{
+            res.json(noti);
+        })
+        .catch(err =>{
+            res.status(500);
+        })
+});
+//check user view notication
+router.post('/1b3bab5327802e69c787a86976bc3d6d', function (req,res) {
+   const iduser = req.body.idUser;
+   const checkView = req.body.checkview;
+   //cho nay update view = true roi tra ve cho ben data sau do show ra danh sach notication
+    Notification.findByIdAndUpdate({"id_user_notifi": iduser})
+        .then(noti =>{
 
-
+            res.json(noti);
+        })
+        .catch(err =>{
+            res.status(500);
+        })
+});
 
 module.exports = router;

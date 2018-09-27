@@ -22,17 +22,17 @@ exports.get_dashboard = function(req, res, next){
 //=============================================ADD MOVIE=======================================//
 //find notification not id
 exports.fetch_dataNoti = async function(){
-    let notifiData = [];
-    await Notification.find({"check_view": false}, function (err,docs) {
-       if (err)
-           console.log("lỗi xảy ra trong cơ sở dữ liệu");
-       else {
-           if(docs) {
-               notifiData.push(...docs);
-           }
-       }
-    });
-    return notifiData;
+    // let notifiData = [];
+    // await Notification.find({"check_view": false}, function (err,docs) {
+    //    if (err)
+    //        console.log("lỗi xảy ra trong cơ sở dữ liệu");
+    //    else {
+    //        if(docs) {
+    //            notifiData.push(...docs);
+    //        }
+    //    }
+    // });
+    // return notifiData;
 };
 
 let IdChapter;
@@ -442,7 +442,7 @@ exports.get_delectCat = (id) =>
 //================================CHAPTER======================================//
 exports.get_addChapter = (chapter_id,_id) =>
     new Promise((resolve,reject) =>{
-        episode.findOne({'_id': ObjectId(_id)})
+        episode.findOne({'_id': ObjectId(_id)}).sort({_id: -1})
             .populate({path: "episode_order"})
             //noi bang chapter
             .then(chapter => {

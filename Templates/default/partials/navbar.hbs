@@ -33,6 +33,37 @@
                     document.getElementById("categoryType").innerHTML = out;
                 }
             });
+        if(document.getElementById("IdUser") != null){
+            var memberId = document.getElementById("IdUser").value;
+            console.log("IDMEMBER: "+memberId);
+            var data = {memberId};
+            $.ajax({
+                type:'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: 'http://localhost:5000/API/0cfd653d5d3e1e9fdbb644523d77971d',
+                success:function (data) {
+                    console.log(data);
+                    var SizeNoti = data.length;
+                    $("#Notifi_mes").html('<p class="hasAMess">'+SizeNoti+'</p>');
+                    // alert(SizeNoti);
+                }
+            }) ;
+        }
+        $("#notiMess").click(function () {
+            var idUser = $("#IdUser");
+            var checkview = 'true';
+            var dataNo = {idUser,checkview};
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(dataNo),
+                contentType: 'application/json',
+                url: 'http://localhost:5000/API/1b3bab5327802e69c787a86976bc3d6d',
+                success: function (dataNo) {
+                    console.log(dataNo);
+                }
+            })
+        });
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -40,19 +71,10 @@
 <script>
     var socket = io('http://localhost:5000');
     $(document).ready(function () {
-        socket.emit("ID_User",$("#IdUser").val());
-        socket.on("Notifi", function (data) {
-            for (var i = 0;i<data.length;i++){
-                // console.log("NOI DUNG: "+data[i].status_notification);
-                // console.log("TAP: "+data[i].message_notification);
-            }
-            var dataSize = data.length;
-            document.getElementById("Notifi_mes").innerHTML = '<p class="hasAMess">'+dataSize+'</p>'
-        })
-    });
-    socket.on('news', function (data) {
-        console.log(data);
-        document.getElementById("NotiCationTrue").innerHTML = '<div class="alert alert-message alert-message-info col-md-4 notifi"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><div class="notifi_detail row"><div class="img-notifi col-md-3 col-sm-3"><img src="/images/image_avatar/'+data[0].episode_avatar+'" alt="Avatar" class="avatar_notifi"></div> <div class="col-md-9 col-sm-9"><h4 class="item-title">Phim <b>'+data[0].episode_name+'</b> bạn theo dõi đã có tâp'+data[0].id+'</h4> </div> </div></div>'
+        socket.on('news', function (data) {
+            console.log(data);
+            $("#NotiCationTrue").html('<div class="alert alert-message alert-message-info col-md-4 notifi"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><div class="notifi_detail row"><div class="img-notifi col-md-3 col-sm-3"><img src="/images/image_avatar/' + data[0].episode_avatar + '" alt="Avatar" class="avatar_notifi"></div> <div class="col-md-9 col-sm-9"><h4 class="item-title">Phim <b>' + data[0].episode_name + '</b> bạn theo dõi đã có tâp' + data[0].id + '</h4> </div> </div></div>');
+        });
     });
 </script>
 <div id="NotiCationTrue"></div>
@@ -77,7 +99,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right option-type">
                 {{#if logged}}
-                <li>
+                <li id="notiMess">
                     <div class="notification">
                         <div class="dropdown">
                             <a class="notifi_mess" id="dLabel" role="button" data-toggle="dropdown">
@@ -95,10 +117,10 @@
                                     <a class="content" href="#">
                                         <div class="notification-item">
                                             <div class="notifi_detail row">
-                                                <div class="img-notifi col-md-3">
+                                                <div class="img-notifi col-md-3 col-sm-3">
                                                     <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar_notifi">
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-md-9 col-sm-9">
                                                     <h4 class="item-title">
                                                         <b>Huyền thoại một thanh kiếm da có một</b> đã có một tập mới</h4>
                                                     <h4 class="item_time">Vào lúc 4 giờ trước</h4>
