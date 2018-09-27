@@ -2,11 +2,15 @@ const episode = require("../modules/table_episode");
 const ObjectId = require('mongodb').ObjectId;
 const Category = require("../modules/table_cat");
 const Year = require("../modules/table_year");
-const member_Controller = require("./memberController");
+const Notification = require("../modules/table_notification");
 //-----------------------load index product------------------
 exports.index = function(req,res){
     episode.find().sort({_id: -1})
         .then(docs =>{
+            if(req.user) {
+                let idUser = req.user._id;
+                Notification.find({"id_user_notifi": idUser})
+            }
             res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
         })
         .catch(err =>{
@@ -14,16 +18,6 @@ exports.index = function(req,res){
             reject({status: 500, message: req.__('Loi server')});
         });
 };
-// exports.index = function (req, res, next) {
-//     episode.find().sort({_id: -1})
-//     (function(err,docs) {
-//        var episodeChunks = [];
-//        for (var i = 0; i < docs.length; i++){
-//            episodeChunks.push(docs.slice(i));
-//        }
-//         res.render('frontend/home/index', {pageTitle: req.__('Trang chủ'), episode: docs});
-//     });
-// };
 //=========================get_phim=================
 exports.get_phim = function(req, res, next){
     var phim = req.param('nav');
