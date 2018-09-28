@@ -53,23 +53,23 @@ var load = io.on('connection', function (socket) {
     socket.on('news', async function (msg) {
         var NotifiUser = await controll.fetch_dataNotiID();
         console.log("NO:"+NotifiUser);
-        for (var j =0;j<NotifiUser.length;j++) {
-            var idNo = NotifiUser[j].status_notification;
-            var numchap = NotifiUser[j].message_notification;
-
-            episode.findOne({'episode_id': idNo})
-                .then(data => {
-                    var episode_name = data.episode_name;
-                    var episode_avatar = data.episode_image;
-                    var arraynoti = [];
-                    arraynoti.push({"id":numchap,"episode_name":episode_name,"episode_avatar":episode_avatar});
-                    console.log(arraynoti);
-                    load.emit('news', arraynoti);
-                })
-                .catch(err =>{
-                    console.log(err);
-                });
-        }
+        // for (var j =0;j<NotifiUser.length;j++) {
+        //     var idNo = NotifiUser[j].status_notification;
+        //     var numchap = NotifiUser[j].message_notification;
+        //
+        //     episode.findOne({'episode_id': idNo})
+        //         .then(data => {
+        //             var episode_name = data.episode_name;
+        //             var episode_avatar = data.episode_image;
+        //             var arraynoti = [];
+        //             arraynoti.push({"id":numchap,"episode_name":episode_name,"episode_avatar":episode_avatar});
+        //             console.log(arraynoti);
+        //             load.emit('news', arraynoti);
+        //         })
+        //         .catch(err =>{
+        //             console.log(err);
+        //         });
+        // }
     });
 
     socket.on("disconnect",function () {

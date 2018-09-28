@@ -35,7 +35,7 @@
             });
         if(document.getElementById("IdUser") != null){
             var memberId = document.getElementById("IdUser").value;
-            console.log("IDMEMBER: "+memberId);
+            // console.log("IDMEMBER: "+memberId);
             var data = {memberId};
             $.ajax({
                 type:'POST',
@@ -43,7 +43,6 @@
                 contentType: 'application/json',
                 url: 'http://localhost:5000/API/0cfd653d5d3e1e9fdbb644523d77971d',
                 success:function (data) {
-                    console.log(data);
                     var SizeNoti = data.length;
                     $("#Notifi_mes").html('<p class="hasAMess">'+SizeNoti+'</p>');
                     // alert(SizeNoti);
@@ -51,16 +50,18 @@
             }) ;
         }
         $("#notiMess").click(function () {
-            var idUser = $("#IdUser");
-            var checkview = 'true';
-            var dataNo = {idUser,checkview};
+            var idUser = document.getElementById("IdUser").value;
+            var data = {idUser};
             $.ajax({
                 type: 'POST',
-                data: JSON.stringify(dataNo),
+                data: JSON.stringify(data),
                 contentType: 'application/json',
                 url: 'http://localhost:5000/API/1b3bab5327802e69c787a86976bc3d6d',
-                success: function (dataNo) {
-                    console.log(dataNo);
+                success: function (data) {
+                    console.log("DATA: "+data);
+                    // for (let ii = 0;ii<data.length;ii++){
+                    //     console.log("NAME FOR: "+data[ii].chapter);
+                    // }
                 }
             })
         });

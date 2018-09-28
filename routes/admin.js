@@ -357,6 +357,7 @@ router.post('/chapter', (req,res) =>{
     const idMovie = req.body._id;
     const chapter_url = req.body.chapter_url;
     const chapter_num = req.body.chapter_num;
+    console.log("ID EPISODE: "+idMovie);
     console.log(chapter_id+"/"+idMovie+"/"+chapter_url+"/"+chapter_num);
     if(!chapter_url+ !chapter_num){
         req.flash('err','Vui lòng nhập đầy đủ dữ liệu');

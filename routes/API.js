@@ -170,8 +170,8 @@ router.post('/90f751119bc098ffc8097de4ff8fd0ae', function (req, res) {
 //check notification userLogin
 router.post('/0cfd653d5d3e1e9fdbb644523d77971d', function (req,res) {
    const iduser = req.body.memberId;
-   console.log(iduser);
-    Notification.find({"id_user_notifi": iduser})
+   // console.log(iduser);
+    Notification.find({"id_user_notifi": iduser,"check_view": false})
         .then(noti =>{
             res.json(noti);
         })
@@ -182,12 +182,42 @@ router.post('/0cfd653d5d3e1e9fdbb644523d77971d', function (req,res) {
 //check user view notication
 router.post('/1b3bab5327802e69c787a86976bc3d6d', function (req,res) {
    const iduser = req.body.idUser;
-   const checkView = req.body.checkview;
-   //cho nay update view = true roi tra ve cho ben data sau do show ra danh sach notication
-    Notification.findByIdAndUpdate({"id_user_notifi": iduser})
-        .then(noti =>{
+    Notification.find({"id_user_notifi": iduser,"check_view": false})
+        .then(data =>{
+            // for chay sau
+            for (let i =0;i<data.length;i++){
+                console.log("ID: "+data[i]._id);
+                let idNo = data[i]._id;
+                Notification.findByIdAndUpdate({'_id': idNo},{$set: {check_view: 'true'}})
+                    .then(Notifi =>{
+                        console.log("Da xem");
+                    })
+                    .catch(err => {
+                        res.status(500);
+                    });
+            }
+            // callback chay truoc nen sinh ra gui tin nhan check view loi
+            Notification.find({"id_user_notifi": iduser,"check_view": true})
+                .populate({path: "status_notification"})
+                .then(have =>{
+                    console.log("HAVE: "+have);
+                    res.json(have);
+                    // console.log("episode: "+event);
+                    // episoder.find({"episode_id":event})
+                    //     .then(epi =>{
+                    //         console.log("EPI: "+epi.episode_name);
+                    //         let name = epi.episode_name;
+                    //         let NotiMess = [({"name": name,"chapter": chapter,"timeNoti": timeNoti})];
+                    //         console.log("NotiMess: "+NotiMess);
+                    //         res.json(NotiMess);
+                    //     })
+                    //     .catch(err =>{
+                    //         res.status(500);
+                    //     })
+                })
+                .catch(err =>{
 
-            res.json(noti);
+                });
         })
         .catch(err =>{
             res.status(500);

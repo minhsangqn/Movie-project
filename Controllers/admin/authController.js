@@ -479,7 +479,7 @@ exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
                                     var d = new Date();
                                     var timeStamp = d.getTime();
                                     var newNotifi = new Notification({
-                                        status_notification:chapter_id,
+                                        status_notification:idMovie,
                                         message_notification:result.chapter_num,
                                         check_view: '0',
                                         time_notification: timeStamp
