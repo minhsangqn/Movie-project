@@ -44,8 +44,24 @@
                 url: 'http://localhost:5000/API/0cfd653d5d3e1e9fdbb644523d77971d',
                 success:function (data) {
                     var SizeNoti = data.length;
-                    $("#Notifi_mes").html('<p class="hasAMess">'+SizeNoti+'</p>');
-                    // alert(SizeNoti);
+                    if (SizeNoti === 0){
+                        $("#notiMess").click(function () {
+                        var memberId = document.getElementById("IdUser").value;
+                        console.log("IDMEMBER: "+memberId);
+                        var dataID = {memberId};
+                        $.ajax({
+                            type:'POST',
+                            data: JSON.stringify(dataID),
+                            contentType: 'application/json',
+                            url: 'http://localhost:5000/API/faa0374d862abd5a68f19447cd641db1',
+                            success:function (dataID) {
+                                console.log(dataID)
+                            }
+                        });
+                        });
+                    }else{
+                        $("#Notifi_mes").html('<p class="hasAMess">'+SizeNoti+'</p>');
+                    }
                 }
             }) ;
         }
@@ -59,9 +75,10 @@
                 url: 'http://localhost:5000/API/1b3bab5327802e69c787a86976bc3d6d',
                 success: function (data) {
                     console.log("DATA: "+data);
-                    // for (let ii = 0;ii<data.length;ii++){
-                    //     console.log("NAME FOR: "+data[ii].chapter);
-                    // }
+                    for (let ii = 0;ii<data.length;ii++){
+                        console.log("chapter: "+data[ii].message_notification);
+                        console.log("Name: "+data[ii].status_notification[0].episode_name)
+                    }
                 }
             })
         });

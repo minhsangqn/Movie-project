@@ -184,40 +184,46 @@ router.post('/1b3bab5327802e69c787a86976bc3d6d', function (req,res) {
    const iduser = req.body.idUser;
     Notification.find({"id_user_notifi": iduser,"check_view": false})
         .then(data =>{
-            // for chay sau
-            for (let i =0;i<data.length;i++){
-                console.log("ID: "+data[i]._id);
-                let idNo = data[i]._id;
-                Notification.findByIdAndUpdate({'_id': idNo},{$set: {check_view: 'true'}})
-                    .then(Notifi =>{
-                        console.log("Da xem");
-                    })
-                    .catch(err => {
-                        res.status(500);
+                let cou = 0;
+                for (let i =0;i<data.length;i++){
+                    console.log("i: "+i);
+                    console.log("data.length: "+data.length);
+                    console.log("ID: "+data[i]._id);
+                    let idNo = data[i]._id;
+                    Notification.findByIdAndUpdate({'_id': idNo},{$set: {check_view: 'true'}}, function (err) {
+                        if (err){
+                            console.log("loi");
+                        } else{
+                            console.log("da xem");
+                        }
                     });
-            }
-            // callback chay truoc nen sinh ra gui tin nhan check view loi
-            Notification.find({"id_user_notifi": iduser,"check_view": true})
-                .populate({path: "status_notification"})
-                .then(have =>{
-                    console.log("HAVE: "+have);
-                    res.json(have);
-                    // console.log("episode: "+event);
-                    // episoder.find({"episode_id":event})
-                    //     .then(epi =>{
-                    //         console.log("EPI: "+epi.episode_name);
-                    //         let name = epi.episode_name;
-                    //         let NotiMess = [({"name": name,"chapter": chapter,"timeNoti": timeNoti})];
-                    //         console.log("NotiMess: "+NotiMess);
-                    //         res.json(NotiMess);
-                    //     })
-                    //     .catch(err =>{
-                    //         res.status(500);
-                    //     })
-                })
-                .catch(err =>{
+                    if(cou == data.length - 1){
+                        console.log("vao");
+                        Notification.find({"id_user_notifi": iduser,"check_view": true})
+                            .populate({path: "status_notification"})
+                            .then(have =>{
+                                console.log("HAVE: "+have);
+                                res.json(have);
+                            })
+                            .catch(err =>{
 
-                });
+                            });
+                    }
+                    cou++;
+                }
+        })
+        .catch(err =>{
+            res.status(500);
+        })
+});
+
+//
+router.post('/faa0374d862abd5a68f19447cd641db1', function (req,res) {
+    const iduser = req.body.memberId;
+    Notification.find({"id_user_notifi": iduser,"check_view": true})
+        .populate({path: "status_notification"})
+        .then(noti =>{
+            res.json(noti);
         })
         .catch(err =>{
             res.status(500);
