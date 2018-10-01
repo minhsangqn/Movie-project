@@ -122,12 +122,16 @@ a{
 }
 .notifications a.content {
   text-decoration:none;
-  background:#ccc;
+}
+a.isNoti .notification-item:hover{
+  text-decoration:none;
+  background: #e6e6e6;
+  /*none visited #edf2fa*/
 }
 .notification-item {
   padding:6px 30px 5px 12px;
   border-bottom: 1px solid #cccccc6b;
-  background:#cccccc6b;
+  background: white;
   border-radius:4px;
 }
 .dropdown-menu .divider {
@@ -179,8 +183,8 @@ i.fa-bell:active{
 }
 .avatar_notifi{
   vertical-align: middle;
-  width: 60px;
-  height: auto;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   margin-right: 12px;
 }

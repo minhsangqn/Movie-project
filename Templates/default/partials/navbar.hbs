@@ -47,7 +47,7 @@
                     if (SizeNoti === 0){
                         $("#notiMess").click(function () {
                         var memberId = document.getElementById("IdUser").value;
-                        console.log("IDMEMBER: "+memberId);
+                        // console.log("IDMEMBER: "+memberId);
                         var dataID = {memberId};
                         $.ajax({
                             type:'POST',
@@ -55,7 +55,11 @@
                             contentType: 'application/json',
                             url: 'http://localhost:5000/API/faa0374d862abd5a68f19447cd641db1',
                             success:function (dataID) {
-                                console.log(dataID)
+                                var outt = '';
+                                for (let iii = 0;iii<dataID.length;iii++){
+                                    outt += '<a class="content isNoti" href="/phim/'+dataID[iii].status_notification[0].episode_id+'/'+dataID[iii].status_notification[0].episode_name_ascii+'"><div class="notification-item"><div class="notifi_detail row"><div class="img-notifi col-md-3 col-sm-3"><img src="/images/image_avatar/'+dataID[iii].status_notification[0].episode_image+'" alt="Avatar" class="avatar_notifi"></div><div class="col-md-9 col-sm-9"><h4 class="item-title"><b>'+dataID[iii].status_notification[0].episode_name+'</b>đã có tập <span>'+dataID[iii].message_notification+'</span></h4><h4 class="item_time">Vào lúc 4 giờ trước</h4></div></div></div></a>';
+                                    $("#NotifiUser").html(outt);
+                                }
                             }
                         });
                         });
@@ -74,10 +78,10 @@
                 contentType: 'application/json',
                 url: 'http://localhost:5000/API/1b3bab5327802e69c787a86976bc3d6d',
                 success: function (data) {
-                    console.log("DATA: "+data);
+                    var outt = '';
                     for (let ii = 0;ii<data.length;ii++){
-                        console.log("chapter: "+data[ii].message_notification);
-                        console.log("Name: "+data[ii].status_notification[0].episode_name)
+                        outt += '<a class="content" href="/phim/'+data[ii].status_notification[0].episode_id+'/'+data[ii].status_notification[0].episode_name_ascii+'"><div class="notification-item"><div class="notifi_detail row"><div class="img-notifi col-md-3 col-sm-3"><img src="/images/image_avatar/'+data[ii].status_notification[0].episode_image+'" alt="Avatar" class="avatar_notifi"></div><div class="col-md-9 col-sm-9"><h4 class="item-title"><b>'+data[ii].status_notification[0].episode_name+'</b>đã có tập <span>'+data[ii].message_notification+'</span></h4><h4 class="item_time">Vào lúc 4 giờ trước</h4></div></div></div></a>';
+                        $("#NotifiUser").html(outt);
                     }
                 }
             })
@@ -89,10 +93,14 @@
 <script>
     var socket = io('http://localhost:5000');
     $(document).ready(function () {
-        socket.on('news', function (data) {
-            console.log(data);
-            $("#NotiCationTrue").html('<div class="alert alert-message alert-message-info col-md-4 notifi"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><div class="notifi_detail row"><div class="img-notifi col-md-3 col-sm-3"><img src="/images/image_avatar/' + data[0].episode_avatar + '" alt="Avatar" class="avatar_notifi"></div> <div class="col-md-9 col-sm-9"><h4 class="item-title">Phim <b>' + data[0].episode_name + '</b> bạn theo dõi đã có tâp' + data[0].id + '</h4> </div> </div></div>');
-        });
+        if(document.getElementById("IdUser") != null) {
+            var idUser = document.getElementById("IdUser").value;
+            socket.emit('isUser', idUser);
+            socket.on('news', function (data) {
+                console.log(data);
+                $("#NotiCationTrue").html('<div class="alert alert-message alert-message-info col-md-4 col-sm-4 notifi"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a><div class="notifi_detail row"><div class="img-notifi col-md-3 col-sm-3"><img src="/images/image_avatar/' + data[0].episode_avatar + '" alt="Avatar" class="avatar_notifi"></div><div class="col-md-9 col-sm-9"><h4 class="item-title">Phim <b>' + data[0].episode_name + '</b> bạn theo dõi đã có tâp' + data[0].id + '</h4> </div> </div></div>');
+            });
+        }
     });
 </script>
 <div id="NotiCationTrue"></div>
@@ -132,20 +140,7 @@
                                 <li class="divider"></li>
                                 <div class="notifications-wrapper">
 
-                                    <a class="content" href="#">
-                                        <div class="notification-item">
-                                            <div class="notifi_detail row">
-                                                <div class="img-notifi col-md-3 col-sm-3">
-                                                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar_notifi">
-                                                </div>
-                                                <div class="col-md-9 col-sm-9">
-                                                    <h4 class="item-title">
-                                                        <b>Huyền thoại một thanh kiếm da có một</b> đã có một tập mới</h4>
-                                                    <h4 class="item_time">Vào lúc 4 giờ trước</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    <div id="NotifiUser"></div>
 
                                 </div>
                                 <li class="divider"></li>

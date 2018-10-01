@@ -303,35 +303,35 @@ exports.get_editYear = (_id) =>
 
 exports.post_edityear = (year_id, year_name, id) =>
     new Promise((resolve, reject) => {
-        console.log('Year_name: '+ year_name);
+        // console.log('Year_name: '+ year_name);
         year.findOne({'year_id':year_id})
             .then(() =>{
                 year.findByIdAndUpdate({'_id': ObjectId(id)},{$set: {year_name: year_name}})
                 .then(() =>{
-                    console.log('1.1');
+                    // console.log('1.1');
                     resolve({status: 200, msg: "Cập nhật thành công !"});
                 })
                 .catch(err =>{
-                    console.log('1.2');
+                    // console.log('1.2');
                     reject({status: 500, err: "Thất bại !"});
                 })
             })
             .catch(err =>{
-                console.log('2.1');
+                // console.log('2.1');
                 reject({status: 500,err: "Lỗi server"});
             });
     });
 
 exports.get_delectYear = (id) =>
     new Promise((resolve, reject) => {
-        console.log('id: '+id);
+        // console.log('id: '+id);
         year.findByIdAndRemove({'_id': ObjectId(id)})
             .then(() => {
-                console.log('1.1');
+                // console.log('1.1');
                 resolve({status: 200, msg: "Đã xóa !"});
             })
             .catch(err =>{
-                console.log('2.1');
+                // console.log('2.1');
                 reject({status: 500, err: "Thất bại !"});
             });
     });
@@ -411,23 +411,23 @@ exports.post_editCat = (cat_id, cat_name_title,id) =>
                 cat.findByIdAndUpdate({'_id': ObjectId(id)},{$set:
                         {cat_name_title: cat_name_title,cat_name_ascii:slug(cat_name_title)}})
                     .then(() =>{
-                        console.log('1.1');
+                        // console.log('1.1');
                         resolve({status: 200, msg: "Cập nhật thành công !"});
                     })
                     .catch(err =>{
-                        console.log('1.2');
+                        // console.log('1.2');
                         reject({status: 500, err: "Thất bại !"});
                     })
             })
             .catch(err =>{
-                console.log('2.1');
+                // console.log('2.1');
                 reject({status: 500,err: "Lỗi server"});
             });
     });
 
 exports.get_delectCat = (id) =>
     new Promise((resolve, reject) => {
-        console.log('id: '+id);
+        // console.log('id: '+id);
         cat.findByIdAndRemove({'_id': ObjectId(id)})
             .then(() => {
                 console.log('1.1');
@@ -459,23 +459,23 @@ exports.get_addChapter = (chapter_id,_id) =>
 
 exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
     new Promise((resolve, reject) => {
-        console.log(chapter_id+"/"+idMovie+"/"+chapter_url+"/"+chapter_num);
+        // console.log(chapter_id+"/"+idMovie+"/"+chapter_url+"/"+chapter_num);
         chapter.findOne({"chapter_id": chapter_id})
             .then(req =>{
-                console.log('vao');
+                // console.log('vao');
                     var newChap = new chapter({
                         chapter_id: chapter_id,
                         chapter_url: chapter_url,
                         chapter_num: chapter_num
                     });
-                    console.log(newChap);
+                    // console.log(newChap);
                     newChap.save()
                         .then(result =>{
                             //lấy ra IDUser theo dõi và iDMovie để tạo ra một bảng notification
-                            console.log("RESULT: "+result);
+                            // console.log("RESULT: "+result);
                             follow_user.findOne({"id_follow":chapter_id})
                                 .then(foll =>{
-                                    console.log("FOLL: "+foll+"/"+foll.user_follow);
+                                    // console.log("FOLL: "+foll+"/"+foll.user_follow);
                                     var d = new Date();
                                     var timeStamp = d.getTime();
                                     var newNotifi = new Notification({
@@ -488,15 +488,15 @@ exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
                                         var IdAllUser = foll.user_follow;
                                         for (var i = 0;i<IdAllUser.length;i++){
 
-                                            console.log("IDUSEALL: "+IdAllUser[i]);
+                                            // console.log("IDUSEALL: "+IdAllUser[i]);
                                             var IDNotification = newNotifi._id;
-                                            console.log(IDNotification);
+                                            // console.log(IDNotification);
 
                                             Notification.findByIdAndUpdate({"_id": ObjectId(IDNotification)},
                                                 {$push: {"id_user_notifi": IdAllUser[i]}},
                                                 {safe: true, upsert: true, new: true,multi:true},
                                                 function (err) {
-                                                    console.log("ADD USER AS NOTIFI");
+                                                    // console.log("ADD USER AS NOTIFI");
                                                     resolve({status: 201, msg: "Tạo mới thành công!"});
                                                 });
                                         }
@@ -506,13 +506,13 @@ exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
                                     chapter.findByIdAndUpdate({"_id": ObjectId(newChap._id)},{$push: {"listEpisode": idMovie}},
                                         {safe: true, upsert: true, new: true,multi:true},
                                         function (err) {
-                                            console.log("ADD list");
+                                            // console.log("ADD list");
                                             resolve({status: 201, msg: "Tạo mới thành công!"});
                                         });
                                     episode.findByIdAndUpdate({"_id": ObjectId(idMovie)}, {$push: {"episode_order":newChap._id}},
                                         {safe: true, upsert: true, new: true},
                                         function (err) {
-                                            console.log("ADD Episode");
+                                            // console.log("ADD Episode");
                                             resolve({status: 201, msg: "Tạo mới thành công!"});
                                         });
                                     //Phat thong bao cho nguoi dung

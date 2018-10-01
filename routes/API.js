@@ -184,12 +184,12 @@ router.post('/1b3bab5327802e69c787a86976bc3d6d', function (req,res) {
    const iduser = req.body.idUser;
     Notification.find({"id_user_notifi": iduser,"check_view": false})
         .then(data =>{
-                let cou = 0;
-                for (let i =0;i<data.length;i++){
-                    console.log("i: "+i);
-                    console.log("data.length: "+data.length);
-                    console.log("ID: "+data[i]._id);
-                    let idNo = data[i]._id;
+                var cou = 0;
+                for (var i =0;i<data.length;i++){
+
+                    // console.log("data.length: " +i +": "+data.length);
+
+                    var idNo = data[i]._id;
                     Notification.findByIdAndUpdate({'_id': idNo},{$set: {check_view: 'true'}}, function (err) {
                         if (err){
                             console.log("loi");
@@ -202,7 +202,7 @@ router.post('/1b3bab5327802e69c787a86976bc3d6d', function (req,res) {
                         Notification.find({"id_user_notifi": iduser,"check_view": true})
                             .populate({path: "status_notification"})
                             .then(have =>{
-                                console.log("HAVE: "+have);
+                                // console.log("HAVE: "+have);
                                 res.json(have);
                             })
                             .catch(err =>{
@@ -220,9 +220,11 @@ router.post('/1b3bab5327802e69c787a86976bc3d6d', function (req,res) {
 //
 router.post('/faa0374d862abd5a68f19447cd641db1', function (req,res) {
     const iduser = req.body.memberId;
+    // console.log(iduser);
     Notification.find({"id_user_notifi": iduser,"check_view": true})
         .populate({path: "status_notification"})
         .then(noti =>{
+            // console.log(noti);
             res.json(noti);
         })
         .catch(err =>{
@@ -231,3 +233,4 @@ router.post('/faa0374d862abd5a68f19447cd641db1', function (req,res) {
 });
 
 module.exports = router;
+

@@ -23,7 +23,6 @@ const io = require("socket.io")(server);
 const controll = require("./Controllers/admin/authController");
 const episode = require("./modules/table_episode");
 //SOCKET IO
-var ArrayUser = [];
 
 var load = io.on('connection', function (socket) {
     console.log("co nguoi ket noi: "+ socket.id);
@@ -49,27 +48,27 @@ var load = io.on('connection', function (socket) {
     //         }
     //     }
     // });
-
-    socket.on('news', async function (msg) {
+    socket.on('isUser', async function (msg) {
         var NotifiUser = await controll.fetch_dataNotiID();
-        console.log("NO:"+NotifiUser);
-        // for (var j =0;j<NotifiUser.length;j++) {
-        //     var idNo = NotifiUser[j].status_notification;
-        //     var numchap = NotifiUser[j].message_notification;
-        //
-        //     episode.findOne({'episode_id': idNo})
-        //         .then(data => {
-        //             var episode_name = data.episode_name;
-        //             var episode_avatar = data.episode_image;
-        //             var arraynoti = [];
-        //             arraynoti.push({"id":numchap,"episode_name":episode_name,"episode_avatar":episode_avatar});
-        //             console.log(arraynoti);
-        //             load.emit('news', arraynoti);
-        //         })
-        //         .catch(err =>{
-        //             console.log(err);
-        //         });
-        // }
+        console.log("IDLogin:"+msg);
+        for (var j =0;j<NotifiUser.length;j++) {
+            var idNo = NotifiUser[j].status_notification;
+            var numchap = NotifiUser[j].message_notification;
+
+            episode.findOne({'_id': idNo,"savemovie":msg})
+                .then(data => {
+                    // console.log("DATA: "+data);
+                    var episode_name = data.episode_name;
+                    var episode_avatar = data.episode_image;
+                    var arraynoti = [];
+                    arraynoti.push({"id":numchap,"episode_name":episode_name,"episode_avatar":episode_avatar});
+                    // console.log(arraynoti);
+                    load.emit('news', arraynoti);
+                })
+                .catch(err =>{
+                    console.log(err);
+                });
+        }
     });
 
     socket.on("disconnect",function () {
