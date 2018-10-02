@@ -31,13 +31,11 @@ router.get('/phim/:episode_id/:name/', (req,res) => {
         });
 });
 
-router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
+router.get('/xem-phim/:episode_id-:episode_name_ascii', (req,res) =>{
     const episode_id = req.param("episode_id");
 
     home_controller.get_viewMovie(episode_id)
         .then(result => {
-
-            // console.log("DATA: "+JSON.stringify(result.viewEpi));
             const idChapter = JSON.stringify(result.viewEpi[0]);
             const name = result.name;
 
@@ -50,13 +48,35 @@ router.get('/xem-phim/:episode_id/:episode_name_ascii', (req,res) =>{
             )
         })
         .catch(err =>{
-            console.log('2');
+            // console.log('2');
             res.redirect('/');
         });
 });
 //=========================END VIEW MOVIE============================//
 
 
+//=========================view chapter movie===========================//
+router.get('/xem-phim/:id_episode-:name_ascii/tap-:num',(req,res) =>{
+    const id_episode = req.param("id_episode");
+    const num = req.param("num");
+    // console.log("NUM: "+id_episode+"/"+num);
+
+    home_controller.get_chapter(id_episode, num)
+        .then(chapter =>{
+            console.log("CHAPTER: "+chapter);
+            // console.log("CHAPTER: "+chapter.arrChapter.title);
+            res.render('frontend/Movie/viewMovie',{
+                arrChapter: chapter.arrChapter,
+                pageTitle: req.__(chapter.arrChapter.name)}
+            )
+        })
+        .catch(err =>{
+            console.log('2');
+            res.redirect('/');
+        });
+});
+
+//======================End view chapter movie===========================//
 
 
 

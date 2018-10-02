@@ -1,4 +1,4 @@
-<script type="text/javascript" charset="utf-8" async="" src="http://ssl.p.jwpcdn.com/player/v/7.8.7/provider.html5.js"></script>
+<!--<script type="text/javascript" charset="utf-8" async="" src="http://ssl.p.jwpcdn.com/player/v/7.8.7/provider.html5.js"></script>-->
 <script>window.HELP_IMPROVE_VIDEOJS = false;</script>
 <div class="banner-top"></div>
 <ol class="breadcrumb">
@@ -51,7 +51,7 @@
                 <ul id="chapNum" class="chap_num">
                     {{#each viewEpi}}
                         <li>
-                            <button type="button" value="{{this.id}}" onClick="reply_click(this.id)" class="btn btn_black IdMovie">{{this.num}}</button>
+                            <a href="/xem-phim/{{this.id_episode}}-{{this.name_ascii}}/tap-{{this.num}}" class="btn btn_black IdMovie">{{this.num}}</a>
                         </li>
                     {{/each}}
                 </ul>
@@ -65,53 +65,19 @@
         {{> sibar_left}}
     </div>
 </div>
-    <input type="text" id="data_movie" value="{{chapterone}}" hidden>
+<input type="text" id="data_movie" value="{{chapterone}}" hidden>
+<input type="text" id="isUrl" value="{{arrChapter.url}}" hidden>
 </div>
 <script type="text/javascript" src="/jwplayer-7.12.1/jwplayer.js?v1"></script>
 <script type="text/javascript">jwplayer.key="dWwDdbLI0ul1clbtlw+4/UHPxlYmLoE9Ii9QEw==";</script>
 
 <script>
     var arrid = document.getElementById("data_movie").value;
-    var arr = JSON.parse(arrid);
-    var id = arr.id;
-    var data = {id};
-    $.ajax({
-        type:'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: 'http://localhost:5000/API/endpoint',
-        success:function (data) {
-            // console.log('success'+ data);
-            document.getElementById("chapter_number").innerHTML = data.chapter_num;
-            // console.log("a "+data.chapter_id);
-            var player = jwplayer('player').setup({
-                file: data.chapter_url,
-                type: 'mp4',
-                width: '100%',
-                height: 470,
-                autostart: 'true',
-                preload: 'metadata'
-            });
-            var bumpIt = () => {
-                var vol = player.getVolume();
-                player.setVolume(vol + 10);
-            }
-            bumpIt();
-        }
-    });
-
-
-    //create ID number chapter
-    var idNum = document.querySelectorAll('.IdMovie');
-    for (var i = 0; i < idNum.length; i++)
-         idNum[i].id = 'ID' + i;
-    //click get id client send id to server
-    function reply_click(clicked_id) {
-
-        var id = document.getElementById(clicked_id).value;
-        // console.log(id);
+    // console.log("ARRID: "+arrid);
+    if (arrid !== ''){
+        var arr = JSON.parse(arrid);
+        var id = arr.id;
         var data = {id};
-        // console.log("DATA: "+data.id);
         $.ajax({
             type:'POST',
             data: JSON.stringify(data),
@@ -123,6 +89,7 @@
                 // console.log("a "+data.chapter_id);
                 var player = jwplayer('player').setup({
                     file: data.chapter_url,
+                    type: 'mp4',
                     width: '100%',
                     height: 470,
                     autostart: 'true',
@@ -131,14 +98,27 @@
                 var bumpIt = () => {
                     var vol = player.getVolume();
                     player.setVolume(vol + 10);
-                }
+                };
                 bumpIt();
             }
         });
     }
-    // Listen to an event
-    // player.on('pause', (event) => {
-    //     alert('Why did my user pause their video instead of watching it?');
-    // });
 
+    var isUrl = document.getElementById("isUrl").value;
+    // console.log("CHAPTER: "+isUrl);
+    if (isUrl !== '') {
+        var player = jwplayer('player').setup({
+            file: isUrl,
+            type: 'mp4',
+            width: '100%',
+            height: 470,
+            autostart: 'true',
+            preload: 'metadata'
+        });
+        var bumpIt = () => {
+            var vol = player.getVolume();
+            player.setVolume(vol + 10);
+        };
+        bumpIt();
+    }
 </script>

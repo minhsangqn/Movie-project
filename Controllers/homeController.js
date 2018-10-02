@@ -1,7 +1,6 @@
 const episode = require("../modules/table_episode");
 const ObjectId = require('mongodb').ObjectId;
-const Category = require("../modules/table_cat");
-const Year = require("../modules/table_year");
+const chapter = require("../modules/table_chapter");
 //-----------------------load index product------------------
 exports.index = function(req,res){
     episode.find().sort({_id: -1})
@@ -26,16 +25,16 @@ exports.get_phim = function(req, res, next){
 exports.details = (name,episode_id) =>
     new Promise((resolve, reject) =>{
         episode.findOne({episode_id: episode_id},{_id:1})
-            // .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
+        // .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
             .then(epi =>{
                 if(epi.length === 0){
                     reject ({status: 404,
                         message: req.__('Không tìm thấy phim!')
                     });
                 }else{
-                    console.log("ID:  "+epi);
+                    // console.log("ID:  "+epi);
                     episode.findOne({"_id":ObjectId(epi._id)})
-                    .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
+                        .populate({path: "listEpisode year_order episode_order", select: "cat_name_title year_name chapter_num"})
                         .then(data =>{
                             var name = data.episode_name;
                             resolve({status: 200,episode: data,name: name});
@@ -70,13 +69,15 @@ exports.get_viewMovie = (episode_id) =>
                     var title_cat = vie.listEpisode;
                     var name  = vie.episode_name;
                     var arrCT = vie.episode_order;
+                    var id_episode = vie.episode_id;
+                    var name_ascii = vie.episode_name_ascii;
                     // console.log("NUM: "+arrCT);
                     var idCT = [];
                     for (var i = 0;i<arrCT.length;i++){
-                        idCT.push({"id":arrCT[i]._id,"num":arrCT[i].chapter_num})
+                        idCT.push({"id":arrCT[i]._id,"num":arrCT[i].chapter_num,"id_episode":id_episode,"name_ascii":name_ascii})
                     }
                     // console.log("ARR: "+idCT[0].num);
-                    resolve({status: 200, title_cat: title_cat, name: name,viewEpi:idCT });
+                    resolve({status: 200, title_cat: title_cat, name: name,viewEpi:idCT});
                 }
             })
             .catch(err => {
@@ -85,3 +86,26 @@ exports.get_viewMovie = (episode_id) =>
             });
     });
 //========================================END VIEW==========================================//
+//=========================================view chapter movie===========================//
+exports.get_chapter = (id_episode, num) =>
+    new Promise((resolve, reject) =>{
+        chapter.findOne({"chapter_id":id_episode,"chapter_num":num})
+            .populate({path: "listEpisode"})
+            .then(chapter =>{
+                // console.log(chapter);
+                var title = chapter.listEpisode[0].episode_name_ascii;
+                var num = chapter.chapter_num;
+                var url = chapter.chapter_url;
+                var name = chapter.listEpisode[0].episode_name;
+                // console.log("CHAPTER: "+title+"/"+num+"/"+url);
+                var arrChapter = ({"title":title,"num":num,"url":url,"name":name});
+                // console.log("ARR: "+arrChapter.title);
+                resolve({status: 200, arrChapter: arrChapter});
+
+            })
+            .catch(err =>{
+                // console.log('2.1'+err);
+                reject({status: 500, message: req.__('Loi server')});
+            });
+    });
+//=====================================End view chapter movie===========================//

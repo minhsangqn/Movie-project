@@ -459,50 +459,78 @@ exports.get_addChapter = (chapter_id,_id) =>
 
 exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
     new Promise((resolve, reject) => {
-        // console.log(chapter_id+"/"+idMovie+"/"+chapter_url+"/"+chapter_num);
+        console.log("LOG: "+chapter_id+"/"+idMovie+"/"+chapter_url+"/"+chapter_num);
         chapter.findOne({"chapter_id": chapter_id})
             .then(req =>{
-                // console.log('vao');
                     var newChap = new chapter({
                         chapter_id: chapter_id,
                         chapter_url: chapter_url,
                         chapter_num: chapter_num
                     });
-                    // console.log(newChap);
+                    console.log("CREAT CHAPTER: "+newChap);
                     newChap.save()
                         .then(result =>{
-                            //lấy ra IDUser theo dõi và iDMovie để tạo ra một bảng notification
-                            // console.log("RESULT: "+result);
+                            console.log("RESULT: "+result);
                             follow_user.findOne({"id_follow":chapter_id})
                                 .then(foll =>{
+                                    console.log("FOLL: "+foll);
+                                    if (foll === null){
+                                        console.log("null");
+                                    } else{
+                                        var d = new Date();
+                                        var timeStamp = d.getTime();
+                                        var newNotifi = new Notification({
+                                            status_notification:idMovie,
+                                            message_notification:result.chapter_num,
+                                            check_view: '0',
+                                            time_notification: timeStamp
+                                        });
+                                        newNotifi.save(function () {
+                                            var IdAllUser = foll.user_follow;
+                                            console.log(IdAllUser);
+                                            for (var i = 0;i<IdAllUser.length;i++){
+                                                var IDNotification = newNotifi._id;
+                                                    Notification.findByIdAndUpdate({"_id": ObjectId(IDNotification)},
+                                                        {$push: {"id_user_notifi": IdAllUser[i]}},
+                                                        {safe: true, upsert: true, new: true,multi:true},
+                                                        function (err) {
+                                                            // console.log("ADD USER AS NOTIFI");
+                                                            resolve({status: 201, msg: "Tạo mới thành công!"});
+                                                        });
+                                                }
+                                                //PUSH ID
+                                                // IdChapter = newNotifi._id;
+                                        })
+                                    }
                                     // console.log("FOLL: "+foll+"/"+foll.user_follow);
-                                    var d = new Date();
-                                    var timeStamp = d.getTime();
-                                    var newNotifi = new Notification({
-                                        status_notification:idMovie,
-                                        message_notification:result.chapter_num,
-                                        check_view: '0',
-                                        time_notification: timeStamp
-                                    });
-                                    newNotifi.save(function () {
-                                        var IdAllUser = foll.user_follow;
-                                        for (var i = 0;i<IdAllUser.length;i++){
-
-                                            // console.log("IDUSEALL: "+IdAllUser[i]);
-                                            var IDNotification = newNotifi._id;
-                                            // console.log(IDNotification);
-
-                                            Notification.findByIdAndUpdate({"_id": ObjectId(IDNotification)},
-                                                {$push: {"id_user_notifi": IdAllUser[i]}},
-                                                {safe: true, upsert: true, new: true,multi:true},
-                                                function (err) {
-                                                    // console.log("ADD USER AS NOTIFI");
-                                                    resolve({status: 201, msg: "Tạo mới thành công!"});
-                                                });
-                                        }
-                                        //PUSH ID
-                                        IdChapter = newNotifi._id;
-                                    });
+                                    // var d = new Date();
+                                    // var timeStamp = d.getTime();
+                                    // var newNotifi = new Notification({
+                                    //     status_notification:idMovie,
+                                    //     message_notification:result.chapter_num,
+                                    //     check_view: '0',
+                                    //     time_notification: timeStamp
+                                    // });
+                                    // newNotifi.save(function () {
+                                    //     // var IdAllUser = foll.user_follow;
+                                    //     // console.log("USER_FOLLOW: "+IdAllUser);
+                                    //     // for (var i = 0;i<IdAllUser.length;i++){
+                                    //     //
+                                    //     //     // console.log("IDUSEALL: "+IdAllUser[i]);
+                                    //     //     var IDNotification = newNotifi._id;
+                                    //     //     // console.log(IDNotification);
+                                    //     //
+                                    //     //     Notification.findByIdAndUpdate({"_id": ObjectId(IDNotification)},
+                                    //     //         {$push: {"id_user_notifi": IdAllUser[i]}},
+                                    //     //         {safe: true, upsert: true, new: true,multi:true},
+                                    //     //         function (err) {
+                                    //     //             // console.log("ADD USER AS NOTIFI");
+                                    //     //             resolve({status: 201, msg: "Tạo mới thành công!"});
+                                    //     //         });
+                                    //     // }
+                                    //     // //PUSH ID
+                                    //     // IdChapter = newNotifi._id;
+                                    // });
                                     chapter.findByIdAndUpdate({"_id": ObjectId(newChap._id)},{$push: {"listEpisode": idMovie}},
                                         {safe: true, upsert: true, new: true,multi:true},
                                         function (err) {
@@ -515,9 +543,6 @@ exports.post_addChapter = (chapter_id, idMovie, chapter_url,chapter_num) =>
                                             // console.log("ADD Episode");
                                             resolve({status: 201, msg: "Tạo mới thành công!"});
                                         });
-                                    //Phat thong bao cho nguoi dung
-
-                                    //ket thuc phat thong bao cho nguoi dung
                                 })
                                 .catch(err =>{
                                     reject({status: 500, err: 'Tạo mới không thành công!'});

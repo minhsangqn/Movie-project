@@ -229,7 +229,33 @@ ul.notifi_detail li{
   color: #5bc0de !important;
 }
 .alert{
-   border-radius: unset !important;
+  border-radius: unset !important;
+}
+/*thong bao khi khong co tin gi*/
+svg.confetti {
+  width: 230px;
+  fill: #c6c6c6;
+  display: block;
+  margin: auto;
+}
+.st0 {
+  fill: #FE60A1;
+}
+.st1 {
+  fill: #8089FF;
+}
+.st2 {
+  fill: #84CE65;
+}
+.st3 {
+  fill: #54CEFF;
+}
+svg.feather {
+  display: block;
+  margin: -95px auto 75px;
+  width: 60px;
+  height: 60px;
+  color: #607D8B;
 }
 /*css search */
 .navbar-search .search-box{
@@ -547,7 +573,7 @@ ol.breadcrumb{
   border-radius: 3px;
 }
 /*ol.breadcrumb > li {*/
-  /*white-space: nowrap;*/
+/*white-space: nowrap;*/
 /*}*/
 .breadcrumb > li {
   display: inline-block;
@@ -1071,31 +1097,31 @@ ul.link li a{
   .movie_info_box .movie_detail{
     width: 100%;
   }
-   .movie_info_box .movie_title{
-     position: static;
-   }
-   .movie_info_box .movie_meta_info{
-     position: relative;
-     width: auto;
-     height: 214px;
-     margin-left: 175px;
-     margin-top: 0;
-     overflow: auto;
-   }
-   .movie_info_box .movie_image{
-     position: absolute;
-     width: 160px;
-     padding: 0;
-     top: 50px;
-     left: 10px;
-     margin-left: 0;
-   }
+  .movie_info_box .movie_title{
+    position: static;
+  }
+  .movie_info_box .movie_meta_info{
+    position: relative;
+    width: auto;
+    height: 214px;
+    margin-left: 175px;
+    margin-top: 0;
+    overflow: auto;
+  }
+  .movie_info_box .movie_image{
+    position: absolute;
+    width: 160px;
+    padding: 0;
+    top: 50px;
+    left: 10px;
+    margin-left: 0;
+  }
 
 }
 /*@media screen and (max-width: 420px){*/
-  /*.movie_info_box .movie_image{*/
-    /*top:80px !important;*/
-  /*}*/
+/*.movie_info_box .movie_image{*/
+/*top:80px !important;*/
+/*}*/
 /*}*/
 
 @media screen and (max-width:  700px){
@@ -1117,7 +1143,7 @@ ul.link li a{
   }
 
 }
- /*-------------------------------RESPONSI ACCORDING TO THE MEMBRANE----------------------------------*/
+/*-------------------------------RESPONSI ACCORDING TO THE MEMBRANE----------------------------------*/
 @media screen and (max-width: 640px) {
   .movie_list_index.home_v1 ul.last_film_box > li {
     width: 32% !important;

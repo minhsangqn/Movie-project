@@ -35,7 +35,7 @@ router.get("/202cb962ac59075b964b07152d234b70", (req, res) =>{
 router.get('/c5e549a0721069a573eeaba1677ce509', (req,res) => {
     chapter.find().sort({year_id: -1}).exec()
         .then(doc => {
-            console.log(doc);
+            // console.log(doc);
             res.status(200).json(doc);
         })
         .catch(err => {
@@ -47,7 +47,7 @@ router.get('/c5e549a0721069a573eeaba1677ce509', (req,res) => {
 router.get('/c5e549a0721069a573eeaba1677ce508', (req,res) => {
     episoder.find().sort({_id: -1}).exec()
         .then(doc => {
-            console.log(doc);
+            // console.log("MOVIE: "+doc);
             res.status(200).json(doc);
         })
         .catch(err => {
@@ -57,16 +57,16 @@ router.get('/c5e549a0721069a573eeaba1677ce508', (req,res) => {
 });
 //================================get chapter==================//
 router.post('/endpoint', function (req,res) {
-     // var obj = {"err":"Lỗi server"};
+    // var obj = {"err":"Lỗi server"};
     const id = req.body.id;
-    console.log("vao: "+req.body.id);
+    // console.log("vao: "+req.body.id);
     chapter.findOne({"_id":Object(id)})
-    .then(obj => {
-        console.log("DATA: "+obj);
-        res.status(200);
-        res.json(obj);
-    })
-    .catch(err => {
+        .then(obj => {
+            // console.log("DATA: "+obj);
+            res.status(200);
+            res.json(obj);
+        })
+        .catch(err => {
             res.status(500).json({error: err});
         });
 });
@@ -121,9 +121,9 @@ router.post('/6d3e2d986f8fc589babced246675da13', function (req,res) {
                         res.json(b);
                     });
             })
-        .catch(err =>{
-            res.status(500);
-        });
+            .catch(err =>{
+                res.status(500);
+            });
 
     }else {
 
@@ -160,17 +160,17 @@ router.post('/90f751119bc098ffc8097de4ff8fd0ae', function (req, res) {
                 var isItSave = '1';
                 res.json(isItSave);
             }
-            })
+        })
         .catch(err =>{
             console.log('1.2');
             res.status(500);
         });
-    });
+});
 
 //check notification userLogin
 router.post('/0cfd653d5d3e1e9fdbb644523d77971d', function (req,res) {
-   const iduser = req.body.memberId;
-   // console.log(iduser);
+    const iduser = req.body.memberId;
+    // console.log(iduser);
     Notification.find({"id_user_notifi": iduser,"check_view": false})
         .then(noti =>{
             res.json(noti);
@@ -181,41 +181,39 @@ router.post('/0cfd653d5d3e1e9fdbb644523d77971d', function (req,res) {
 });
 //check user view notication
 router.post('/1b3bab5327802e69c787a86976bc3d6d', function (req,res) {
-   const iduser = req.body.idUser;
+    const iduser = req.body.idUser;
     Notification.find({"id_user_notifi": iduser,"check_view": false})
         .then(data =>{
-                var cou = 0;
-                for (var i =0;i<data.length;i++){
-
-                    // console.log("data.length: " +i +": "+data.length);
-
-                    var idNo = data[i]._id;
-                    Notification.findByIdAndUpdate({'_id': idNo},{$set: {check_view: 'true'}}, function (err) {
-                        if (err){
-                            console.log("loi");
-                        } else{
-                            console.log("da xem");
-                        }
-                    });
-                    if(cou == data.length - 1){
-                        console.log("vao");
-                        Notification.find({"id_user_notifi": iduser,"check_view": true})
-                            .populate({path: "status_notification"})
-                            .then(have =>{
-                                // console.log("HAVE: "+have);
-                                res.json(have);
-                            })
-                            .catch(err =>{
-
-                            });
+            var cou = 0;
+            for (var i =0;i<data.length;i++){
+                var isId = data[i]._id;
+                Notification.findByIdAndUpdate({'_id': isId},{$set: {check_view: 'true'}}, function (err) {
+                    if (err){
+                        console.log("loi");
+                    } else{
+                        console.log("da xem");
                     }
-                    cou++;
+                });
+                if(cou == data.length - 1){
+                    console.log("vao");
+                    Notification.find({"id_user_notifi": iduser,"check_view": true})
+                        .populate({path: "status_notification"})
+                        .then(have =>{
+                            console.log("HAVE: "+have);
+                            res.json(have);
+                        })
+                        .catch(err =>{
+                            res.status(500);
+                        });
                 }
+                cou++;
+            }
         })
         .catch(err =>{
             res.status(500);
         })
 });
+
 
 //
 router.post('/faa0374d862abd5a68f19447cd641db1', function (req,res) {
