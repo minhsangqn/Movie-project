@@ -40,30 +40,34 @@
         }
     }
     $(document).ready(function () {
-        var IdUser = document.getElementById("IdUser").value;
-        var IdMovie = document.getElementById("IdMovie").value;
-        var data = {IdUser,IdMovie};
-        // console.log('LOG: '+IdUser);
-        $.ajax({
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            url: 'http://localhost:5000/API/90f751119bc098ffc8097de4ff8fd0ae',
-            success: function (data) {
-                // console.log("DATA SAVE OR NOT SAVE: "+data);
-                if(data === '1'){
-                    document.getElementById("btn_save").style.background = "#296d91";
-                    $('#btn_save').attr('value',data);
-                    document.getElementById("btn_save").innerText = 'Đã Lưu';
-                }else{
-                    document.getElementById("btn_save").style.background = "#78dd28";
-                    $('#btn_save').attr('value',data);
-                    document.getElementById("btn_save").innerText = 'Lưu Phim';
 
+        if (document.getElementById("IdUser") !== null){
+            var IdUser = document.getElementById("IdUser").value;
+            var IdMovie = document.getElementById("IdMovie").value;
+            var data = {IdUser,IdMovie};
+            // console.log('LOG: '+IdUser);
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: 'http://localhost:5000/API/90f751119bc098ffc8097de4ff8fd0ae',
+                success: function (data) {
+                    // console.log("DATA SAVE OR NOT SAVE: "+data);
+                    if(data === '1'){
+                        document.getElementById("btn_save").style.background = "#296d91";
+                        $('#btn_save').attr('value',data);
+                        document.getElementById("btn_save").innerText = 'Đã Lưu';
+                    }else{
+                        document.getElementById("btn_save").style.background = "#78dd28";
+                        $('#btn_save').attr('value',data);
+                        document.getElementById("btn_save").innerText = 'Lưu Phim';
+
+                    }
                 }
-            }
-        });
+            });
+        }
     });
+
 </script>
 <div class="banner-top"></div>
 <ol class="breadcrumb">

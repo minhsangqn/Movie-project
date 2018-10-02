@@ -92,15 +92,22 @@ exports.get_chapter = (id_episode, num) =>
         chapter.findOne({"chapter_id":id_episode,"chapter_num":num})
             .populate({path: "listEpisode"})
             .then(chapter =>{
-                // console.log(chapter);
-                var title = chapter.listEpisode[0].episode_name_ascii;
-                var num = chapter.chapter_num;
-                var url = chapter.chapter_url;
-                var name = chapter.listEpisode[0].episode_name;
-                // console.log("CHAPTER: "+title+"/"+num+"/"+url);
-                var arrChapter = ({"title":title,"num":num,"url":url,"name":name});
-                // console.log("ARR: "+arrChapter.title);
-                resolve({status: 200, arrChapter: arrChapter});
+                episode.findOne({"episode_id":id_episode})
+                    .populate({path: "listEpisode"})
+                    .then(episo =>{
+                        var cat_title = episo.listEpisode;
+                        var name_movie = episo.episode_name;
+                        var title = chapter.listEpisode[0].episode_name_ascii;
+                        var num = chapter.chapter_num;
+                        var url = chapter.chapter_url;
+                        var name = chapter.listEpisode[0].episode_name;
+                        var arrChapter = ({"title":title,"num":num,"url":url,"name":name});
+                        // console.log("ARR: "+arrChapter.title);
+                        resolve({status: 200, arrChapter: arrChapter,title_cat:cat_title,name:name_movie});
+                    })
+                    .catch(err =>{
+
+                    });
 
             })
             .catch(err =>{

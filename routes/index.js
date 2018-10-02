@@ -66,7 +66,9 @@ router.get('/xem-phim/:id_episode-:name_ascii/tap-:num',(req,res) =>{
             console.log("CHAPTER: "+chapter);
             // console.log("CHAPTER: "+chapter.arrChapter.title);
             res.render('frontend/Movie/viewMovie',{
+                title_cat:chapter.title_cat,
                 arrChapter: chapter.arrChapter,
+                name: chapter.name,
                 pageTitle: req.__(chapter.arrChapter.name)}
             )
         })
