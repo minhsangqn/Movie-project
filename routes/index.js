@@ -4,7 +4,6 @@ const getIP = require('ipware')().get_ip;
 //Require Controller modules
 home_controller = require('../controllers/homeController');
 
-
 /*----------------------GET home page------------------------*/
 router.get('/', home_controller.index);
 router.get('/phim/:nav', home_controller.get_phim);
@@ -40,6 +39,7 @@ router.get('/xem-phim/:episode_id-:episode_name_ascii', (req,res) =>{
             const name = result.name;
 
             res.render('frontend/Movie/viewMovie',{
+                IDchapter:result.IDchapter,
                 viewEpi: result.viewEpi,
                 name:result.name,
                 title_cat: result.title_cat,
@@ -66,6 +66,7 @@ router.get('/xem-phim/:id_episode-:name_ascii/tap-:num',(req,res) =>{
             console.log("CHAPTER: "+chapter);
             // console.log("CHAPTER: "+chapter.arrChapter.title);
             res.render('frontend/Movie/viewMovie',{
+                idChapterM:chapter.idChapterM,
                 title_cat:chapter.title_cat,
                 arrChapter: chapter.arrChapter,
                 name: chapter.name,

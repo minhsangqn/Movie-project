@@ -49,10 +49,10 @@
                 <p>Đánh giá phim<span class="num_rating"> (1 lượt)</span></p>
             </div>
             <div class="box_num">
-                <ul id="chapNum" class="chap_num">
+                <ul class="chap_num">
                     {{#each viewEpi}}
                         <li>
-                            <a href="/xem-phim/{{this.id_episode}}-{{this.name_ascii}}/tap-{{this.num}}" class="btn btn_black IdMovie">{{this.num}}</a>
+                        <a href="/xem-phim/{{this.id_episode}}-{{this.name_ascii}}/tap-{{this.num}}" class="btn btn_black IdMovie">{{this.num}}</a>
                         </li>
                     {{/each}}
                 </ul>
@@ -73,6 +73,61 @@
 <script type="text/javascript">jwplayer.key="dWwDdbLI0ul1clbtlw+4/UHPxlYmLoE9Ii9QEw==";</script>
 
 <script>
+    //loi khi copy link dan vào trình duyệt 2 link thì link thứ 2 không player được
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    var player;
+    var offset;
+    var shouldPlay;
+    var idPhim;
+    var idPhim1 = "{{IDchapter}}";
+    var idPhim2 = "{{idChapterM}}";
+    if (idPhim1 === ""){
+        idPhim = idPhim2;
+    }else{
+        idPhim = idPhim1;
+    }
+    var flagFirstLoad = true;
+
+    setInterval(myTimer, 1000);
+    console.log(getCookie(idPhim));
+
+    function myTimer() {
+        if(idPhim !== "") {
+            if(flagFirstLoad === false) {
+                var state = player.getState();
+                var elapsed = player.getPosition();
+
+                console.log("LOG:" + state + "/" + elapsed);
+
+                if (elapsed !== undefined && elapsed !== 0)
+                    setCookie(idPhim, elapsed, 2);
+                console.log("TREN link myTimer:" + idPhim);
+            }
+        }
+    }
+
     var arrid = document.getElementById("data_movie").value;
     // console.log("ARRID: "+arrid);
     if (arrid !== ''){
@@ -88,7 +143,7 @@
                 // console.log('success'+ data);
                 document.getElementById("chapter_number").innerHTML = data.chapter_num;
                 // console.log("a "+data.chapter_id);
-                var player = jwplayer('player').setup({
+                 player = jwplayer('player').setup({
                     file: data.chapter_url,
                     type: 'mp4',
                     width: '100%',
@@ -96,6 +151,31 @@
                     autostart: 'true',
                     preload: 'metadata'
                 });
+
+                 alert(data.chapter_url);
+
+                flagFirstLoad = false;
+
+                console.log("TREN link 1:"+idPhim);
+
+                var curTime = getCookie(idPhim);
+                if(curTime !== undefined && curTime !== "") {
+                    offset = parseInt(curTime);
+                    shouldPlay = true;
+                }
+
+                jwplayer().on('ready', function(event){
+                    if(shouldPlay === true){
+                        jwplayer().play();
+                    }
+                });
+
+                jwplayer().on('firstFrame', function() {
+                    jwplayer().seek(offset)
+                });
+
+
+
                 var bumpIt = () => {
                     var vol = player.getVolume();
                     player.setVolume(vol + 10);
@@ -108,7 +188,7 @@
     var isUrl = document.getElementById("isUrl").value;
     // console.log("CHAPTER: "+isUrl);
     if (isUrl !== '') {
-        var player = jwplayer('player').setup({
+        player = jwplayer('player').setup({
             file: isUrl,
             type: 'mp4',
             width: '100%',
@@ -116,6 +196,33 @@
             autostart: 'true',
             preload: 'metadata'
         });
+
+        alert(isUrl);
+
+        flagFirstLoad = false;
+
+        console.log("TREN link 1:"+idPhim);
+
+        var curTime = getCookie(idPhim);
+        if(curTime !== undefined && curTime !== "") {
+            offset = parseInt(curTime);
+            shouldPlay = true;
+        }
+
+        jwplayer().on('ready', function(event){
+            if(shouldPlay === true){
+                jwplayer().play();
+            }
+        });
+
+        jwplayer().on('firstFrame', function() {
+            jwplayer().seek(offset)
+        });
+
+
+
+
+
         var bumpIt = () => {
             var vol = player.getVolume();
             player.setVolume(vol + 10);
