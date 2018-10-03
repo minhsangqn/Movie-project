@@ -98,10 +98,12 @@
 
     function deleteCookie(cname) {
         var d = new Date(); //Create an date object
+        console.log("d:"+d);
         d.setTime(d.getTime() - (1000*60*60*24)); //Set the time to the past. 1000 milliseonds = 1 second
-        var expires = "expires=" + d.toUTCString(); //Compose the expirartion date
-        window.document.cookie = cname+"="+"; "+expires;//Set the cookie with name and the expiration date
-
+        // var expires = "expires=" + d.toUTCString(); //Compose the expirartion date
+        var expires = "expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        console.log("expires:"+expires);
+        document.cookie = cname+"="+"; "+expires;//Set the cookie with name and the expiration date
     }
 
     var player;
@@ -121,7 +123,7 @@
     console.log("GIAY: "+getCookie(idPhim));
 
     $(document).ready(function() {
-        if (getCookie(idPhim) !== null) {
+        if (getCookie(idPhim) > 5) {
             $("#myModal").modal();
         }
     });
@@ -134,7 +136,7 @@
 
                 console.log("LOG:" + state + "/" + elapsed);
                 if (elapsed !== undefined && elapsed !== 0)
-                    setCookie(idPhim, elapsed, 2);
+                    setCookie(idPhim, elapsed, 30);
                 console.log("TREN link myTimer:" + idPhim);
 
                 if (state === 'complete'){
@@ -146,7 +148,8 @@
     }
 
     function deleteView() {
-        var cname = getCookie(idPhim);
+        var cname = idPhim;
+        console.log(cname);
         deleteCookie(cname);
         window.location.reload();
     }
@@ -185,7 +188,7 @@
                     offset = parseInt(curTime);
                     shouldPlay = true;
                 }
-
+                // NEU OK THI CHO CHAYJ VAO PLAYB KHONG THI BLOCK PLAY CURENTIME
                 jwplayer().on('ready', function(event){
                     if(shouldPlay === true){
                         jwplayer().play();
