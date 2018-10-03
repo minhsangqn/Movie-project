@@ -1,4 +1,3 @@
-<!--<script type="text/javascript" charset="utf-8" async="" src="http://ssl.p.jwpcdn.com/player/v/7.8.7/provider.html5.js"></script>-->
 <script>window.HELP_IMPROVE_VIDEOJS = false;</script>
 <div class="banner-top"></div>
 <ol class="breadcrumb">
@@ -21,7 +20,7 @@
     </li>
     <li class="active">
         <span id="chapter_number"></span>
-        <span>{{arrChapter.num}}</span>
+        <span id="isChapter">{{arrChapter.num}}</span>
     </li>
 </ol>
 <div class="row">
@@ -97,6 +96,14 @@
         return "";
     }
 
+    function deleteCookie(cname) {
+        var d = new Date(); //Create an date object
+        d.setTime(d.getTime() - (1000*60*60*24)); //Set the time to the past. 1000 milliseonds = 1 second
+        var expires = "expires=" + d.toUTCString(); //Compose the expirartion date
+        window.document.cookie = cname+"="+"; "+expires;//Set the cookie with name and the expiration date
+
+    }
+
     var player;
     var offset;
     var shouldPlay;
@@ -111,7 +118,13 @@
     var flagFirstLoad = true;
 
     setInterval(myTimer, 1000);
-    console.log(getCookie(idPhim));
+    console.log("GIAY: "+getCookie(idPhim));
+
+    $(document).ready(function() {
+        if (getCookie(idPhim) !== null) {
+            $("#myModal").modal();
+        }
+    });
 
     function myTimer() {
         if(idPhim !== "") {
@@ -120,16 +133,25 @@
                 var elapsed = player.getPosition();
 
                 console.log("LOG:" + state + "/" + elapsed);
-
                 if (elapsed !== undefined && elapsed !== 0)
                     setCookie(idPhim, elapsed, 2);
                 console.log("TREN link myTimer:" + idPhim);
+
+                if (state === 'complete'){
+                    console.log("Het phim");
+
+                }
             }
         }
     }
 
+    function deleteView() {
+        var cname = getCookie(idPhim);
+        deleteCookie(cname);
+        window.location.reload();
+    }
+
     var arrid = document.getElementById("data_movie").value;
-    // console.log("ARRID: "+arrid);
     if (arrid !== ''){
         var arr = JSON.parse(arrid);
         var id = arr.id;
@@ -152,7 +174,7 @@
                     preload: 'metadata'
                 });
 
-                 alert(data.chapter_url);
+                 // alert(data.chapter_url);
 
                 flagFirstLoad = false;
 
@@ -174,13 +196,6 @@
                     jwplayer().seek(offset)
                 });
 
-
-
-                var bumpIt = () => {
-                    var vol = player.getVolume();
-                    player.setVolume(vol + 10);
-                };
-                bumpIt();
             }
         });
     }
@@ -197,7 +212,7 @@
             preload: 'metadata'
         });
 
-        alert(isUrl);
+        // alert(isUrl);
 
         flagFirstLoad = false;
 
@@ -218,15 +233,24 @@
         jwplayer().on('firstFrame', function() {
             jwplayer().seek(offset)
         });
-
-
-
-
-
-        var bumpIt = () => {
-            var vol = player.getVolume();
-            player.setVolume(vol + 10);
-        };
-        bumpIt();
     }
 </script>
+<div class="modal fade" id="myModal" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Xem tiếp từ lần trước</h4>
+            </div>
+            <div class="modal-body">
+                <p>Hệ thống ghi nhận lần trước bạn đang xem dở bản <b>Vietsub</b>, Bạn có muốn xem tiếp tại đó không?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Xem Tiếp</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteView()">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+</div>

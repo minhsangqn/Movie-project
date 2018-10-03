@@ -60,31 +60,32 @@ exports.get_viewMovie = (episode_id) =>
             .populate({path: "episode_order listEpisode"})
             .then(vie =>{
                 if(vie.length === 0){
-                    // console.log('khong');
+                    console.log('khong');
                     reject ({status: 404,
                         message: req.__('Không tìm thấy phim!')
                     });
                 }else{
-                    // console.log("DATA1: "+ vie.listEpisode);
-                    var title_cat = vie.listEpisode;
-                    var name  = vie.episode_name;
                     var arrCT = vie.episode_order;
-                    var id_episode = vie.episode_id;
-                    var IDchapter = vie.episode_order[0]._id;
-                    // console.log("ID: "+IDchapter);
-                    var name_ascii = vie.episode_name_ascii;
-                    // console.log("NUM: "+arrCT);
-                    var idCT = [];
-                    for (var i = 0;i<arrCT.length;i++){
-                        idCT.push({"id":arrCT[i]._id,"num":arrCT[i].chapter_num,"id_episode":id_episode,"name_ascii":name_ascii})
+                    console.log("CHAPTER: "+arrCT);
+                    if (arrCT.length === 0){
+                        console.log("khong");
+                        resolve({status: 200, err: "Phim này đang cập nhật"});
+                    } else{
+                        var title_cat = vie.listEpisode;
+                        var name  = vie.episode_name;
+                        var id_episode = vie.episode_id;
+                        var IDchapter = vie.episode_order[0]._id;
+                        var name_ascii = vie.episode_name_ascii;
+                        var idCT = [];
+                        for (var i = 0;i<arrCT.length;i++){
+                            idCT.push({"id":arrCT[i]._id,"num":arrCT[i].chapter_num,"id_episode":id_episode,"name_ascii":name_ascii})
+                        }
+                        resolve({status: 200, title_cat: title_cat, name: name,viewEpi:idCT,IDchapter:IDchapter});
                     }
-                    // console.log("ARR: "+idCT[0].num);
-                    resolve({status: 200, title_cat: title_cat, name: name,viewEpi:idCT,IDchapter:IDchapter});
                 }
             })
             .catch(err => {
-                // console.log('2.1');
-                reject({status: 500, message: req.__('Loi server')});
+                reject({status: 500,err: "Lỗi server"});
             });
     });
 //========================================END VIEW==========================================//
@@ -97,7 +98,7 @@ exports.get_chapter = (id_episode, num) =>
                 var idChapterM = chapter._id;
                 // console.log("ID2: "+idChapterM);
                 episode.findOne({"episode_id":id_episode})
-                    .populate({path: "listEpisode"})
+                    .populate({path: "listEpisode episode_order"})
                     .then(episo =>{
                         var cat_title = episo.listEpisode;
                         var name_movie = episo.episode_name;
@@ -106,8 +107,15 @@ exports.get_chapter = (id_episode, num) =>
                         var url = chapter.chapter_url;
                         var name = chapter.listEpisode[0].episode_name;
                         var arrChapter = ({"title":title,"num":num,"url":url,"name":name});
-                        // console.log("ARR: "+arrChapter.title);
-                        resolve({status: 200, arrChapter: arrChapter,title_cat:cat_title,name:name_movie,idChapterM:idChapterM});
+                        var arrCT = episo.episode_order;
+                        // console.log(arrCT);
+                        var idCT = [];
+                        for (var i = 0;i<arrCT.length;i++){
+                            idCT.push({"id":arrCT[i]._id,"num":arrCT[i].chapter_num,"id_episode":id_episode,"name_ascii":title})
+                        }
+
+                        // console.log("ARR: "+idCT);
+                        resolve({status: 200, viewEpi:idCT,arrChapter: arrChapter,title_cat:cat_title,name:name_movie,idChapterM:idChapterM});
                     })
                     .catch(err =>{
 

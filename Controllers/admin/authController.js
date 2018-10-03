@@ -578,9 +578,9 @@ exports.get_deleteChapter = (id,idMovie) =>
             });
     });
 
-exports.get_editChap = (chapter_id) =>
+exports.get_editChap = (id) =>
     new Promise((resolve, reject) =>{
-        chapter.findOne({"chapter_id": chapter_id})
+        chapter.findOne({"_id": id})
             .populate({path: "listEpisode"})
             .then(chap => {
                 if(chap.length === 0){

@@ -402,13 +402,14 @@ router.get('/editChapter/:chapter_id/:_id/:listEpisode', (req, res) =>{
     const chapter_id = req.param('chapter_id');
     const idMovie = req.param('listEpisode');
     const id = req.param('_id');
-    auth_controller.get_editChap(chapter_id)
+    console.log(chapter_id+"/"+idMovie+"/"+id);
+    auth_controller.get_editChap(id)
         .then(result =>{
             res.render('admin/index/Chapter/editChapter', {
                 err: req.flash('err'),
                 success: req.flash('success'),
                 layout:false,
-                pageTitle: req.__('Sửa năm tập'),
+                pageTitle: req.__('Sửa tập phim'),
                 csrfToken: req.csrfToken(),
                 item:result.item})
         })

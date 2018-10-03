@@ -1033,6 +1033,10 @@ ul.link li a{
   }
 }
 @media (min-width: 768px){
+  .modal-dialog {
+    width: 600px;
+    margin: 190px auto !important;
+  }
   .row{
     margin-right: -10px !important;
     margin-left: -10px !important;

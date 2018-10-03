@@ -36,19 +36,26 @@ router.get('/xem-phim/:episode_id-:episode_name_ascii', (req,res) =>{
     home_controller.get_viewMovie(episode_id)
         .then(result => {
             const idChapter = JSON.stringify(result.viewEpi[0]);
+            console.log("Chapter: "+idChapter);
             const name = result.name;
+            if (result.msg) {
+                console.log("khong");
 
-            res.render('frontend/Movie/viewMovie',{
-                IDchapter:result.IDchapter,
-                viewEpi: result.viewEpi,
-                name:result.name,
-                title_cat: result.title_cat,
-                chapterone: idChapter,
-                pageTitle: req.__(name)}
-            )
+            }else {
+                console.log("co");
+                res.render('frontend/Movie/viewMovie',{
+                    IDchapter:result.IDchapter,
+                    viewEpi: result.viewEpi,
+                    name:result.name,
+                    title_cat: result.title_cat,
+                    chapterone: idChapter,
+                    pageTitle: req.__(name)}
+                )
+            }
         })
         .catch(err =>{
-            // console.log('2');
+            req.flash('err', err.err);
+            console.log('loi');
             res.redirect('/');
         });
 });
@@ -59,13 +66,14 @@ router.get('/xem-phim/:episode_id-:episode_name_ascii', (req,res) =>{
 router.get('/xem-phim/:id_episode-:name_ascii/tap-:num',(req,res) =>{
     const id_episode = req.param("id_episode");
     const num = req.param("num");
-    // console.log("NUM: "+id_episode+"/"+num);
+    console.log("NUM: "+id_episode+"/"+num);
 
     home_controller.get_chapter(id_episode, num)
         .then(chapter =>{
             console.log("CHAPTER: "+chapter);
             // console.log("CHAPTER: "+chapter.arrChapter.title);
             res.render('frontend/Movie/viewMovie',{
+                viewEpi:chapter.viewEpi,
                 idChapterM:chapter.idChapterM,
                 title_cat:chapter.title_cat,
                 arrChapter: chapter.arrChapter,

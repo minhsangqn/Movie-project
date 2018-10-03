@@ -6,6 +6,11 @@
 </script>
 <div class="row">
     <div class="col-md-8">
+        {{#if err }}
+            <div class="alert alert-success" role="alert">
+                <p>{{ err }}</p>
+            </div>
+        {{/if}}
         <div class="movie_list_index home_v1">
             <div class="title_movie">
                 <h3 class="title">Movie Mới Cập Nhật</h3>
