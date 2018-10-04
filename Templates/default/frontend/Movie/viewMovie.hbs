@@ -27,7 +27,7 @@
     <div class="col-md-8">
         <div class="block_wrapper page_single">
             <div class="jw-video jw-reset">
-                <video height="450" id="player" class="jw-video jw-reset"></video>
+                <video height="450" id="player" class="jw-video jw-reset jw-controls"></video>
             </div>
             <div class="user_action">
                 <div class="play_actions">
@@ -96,15 +96,15 @@
         return "";
     }
 
-    function deleteCookie(cname) {
-        var d = new Date(); //Create an date object
-        console.log("d:"+d);
-        d.setTime(d.getTime() - (1000*60*60*24)); //Set the time to the past. 1000 milliseonds = 1 second
-        // var expires = "expires=" + d.toUTCString(); //Compose the expirartion date
-        var expires = "expires = Thu, 01 Jan 1970 00:00:00 GMT";
-        console.log("expires:"+expires);
-        document.cookie = cname+"="+"; "+expires;//Set the cookie with name and the expiration date
+    function delete_cookie(cname) {
+        document.cookie = cname +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
+
+    // $(document).ready(function() {
+    // if (getCookie(idPhim) !== null) {
+    //     $("#myModal").modal();
+    // }
+    // });
 
     var player;
     var offset;
@@ -120,38 +120,23 @@
     var flagFirstLoad = true;
 
     setInterval(myTimer, 1000);
-    console.log("GIAY: "+getCookie(idPhim));
 
-    $(document).ready(function() {
-        if (getCookie(idPhim) > 5) {
-            $("#myModal").modal();
-        }
-    });
 
     function myTimer() {
         if(idPhim !== "") {
             if(flagFirstLoad === false) {
                 var state = player.getState();
                 var elapsed = player.getPosition();
-
-                console.log("LOG:" + state + "/" + elapsed);
+                // console.log("LOG:" + state + "/" + elapsed);
                 if (elapsed !== undefined && elapsed !== 0)
                     setCookie(idPhim, elapsed, 30);
-                console.log("TREN link myTimer:" + idPhim);
-
                 if (state === 'complete'){
-                    console.log("Het phim");
-
+                    // console.log("het phim");
+                    delete_cookie(idPhim);
+                    // console.log("da xoa")
                 }
             }
         }
-    }
-
-    function deleteView() {
-        var cname = idPhim;
-        console.log(cname);
-        deleteCookie(cname);
-        window.location.reload();
     }
 
     var arrid = document.getElementById("data_movie").value;
@@ -165,47 +150,48 @@
             contentType: 'application/json',
             url: 'http://localhost:5000/API/endpoint',
             success:function (data) {
-                // console.log('success'+ data);
                 document.getElementById("chapter_number").innerHTML = data.chapter_num;
-                // console.log("a "+data.chapter_id);
-                 player = jwplayer('player').setup({
-                    file: data.chapter_url,
-                    type: 'mp4',
-                    width: '100%',
-                    height: 470,
-                    autostart: 'true',
-                    preload: 'metadata'
-                });
+                    player = jwplayer('player').setup({
+                        file: data.chapter_url,
+                        type: 'mp4',
+                        width: '100%',
+                        height: 470,
+                        autostart: 'true',
+                        preload: 'metadata',
+                        skin: {
+                            name: 'alaska',
+                            url: 'skin/alaska.css'
+                        }
+                    });
 
-                 // alert(data.chapter_url);
 
-                flagFirstLoad = false;
 
-                console.log("TREN link 1:"+idPhim);
+                    flagFirstLoad = false;
 
-                var curTime = getCookie(idPhim);
-                if(curTime !== undefined && curTime !== "") {
-                    offset = parseInt(curTime);
-                    shouldPlay = true;
+
+                        var curTime = getCookie(idPhim);
+                        if (curTime !== undefined && curTime !== "") {
+                            offset = parseInt(curTime);
+                            shouldPlay = true;
+                        }
+
+                        jwplayer().on('ready', function (event) {
+                            if (shouldPlay === true) {
+                                jwplayer().play();
+                            }
+                        });
+
+                        jwplayer().on('firstFrame', function () {
+                            jwplayer().seek(offset)
+                        });
                 }
-                // NEU OK THI CHO CHAYJ VAO PLAYB KHONG THI BLOCK PLAY CURENTIME
-                jwplayer().on('ready', function(event){
-                    if(shouldPlay === true){
-                        jwplayer().play();
-                    }
-                });
-
-                jwplayer().on('firstFrame', function() {
-                    jwplayer().seek(offset)
-                });
-
-            }
+                //doan nay click thi block
         });
     }
 
     var isUrl = document.getElementById("isUrl").value;
-    // console.log("CHAPTER: "+isUrl);
     if (isUrl !== '') {
+
         player = jwplayer('player').setup({
             file: isUrl,
             type: 'mp4',
@@ -215,45 +201,41 @@
             preload: 'metadata'
         });
 
-        // alert(isUrl);
-
         flagFirstLoad = false;
 
-        console.log("TREN link 1:"+idPhim);
-
         var curTime = getCookie(idPhim);
-        if(curTime !== undefined && curTime !== "") {
+        if (curTime !== undefined && curTime !== "") {
             offset = parseInt(curTime);
             shouldPlay = true;
         }
 
-        jwplayer().on('ready', function(event){
-            if(shouldPlay === true){
+        jwplayer().on('ready', function (event) {
+            if (shouldPlay === true) {
                 jwplayer().play();
             }
         });
 
-        jwplayer().on('firstFrame', function() {
+        jwplayer().on('firstFrame', function () {
             jwplayer().seek(offset)
         });
     }
 </script>
-<div class="modal fade" id="myModal" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog">
+<!--<div class="modal fade" id="myModal" role="dialog" data-keyboard="false" data-backdrop="static">-->
+    <!--<div class="modal-dialog">-->
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Xem tiếp từ lần trước</h4>
-            </div>
-            <div class="modal-body">
-                <p>Hệ thống ghi nhận lần trước bạn đang xem dở bản <b>Vietsub</b>, Bạn có muốn xem tiếp tại đó không?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Xem Tiếp</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteView()">Đóng</button>
-            </div>
-        </div>
+        <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h4 class="modal-title">Xem tiếp từ lần trước</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<p>Hệ thống ghi nhận lần trước bạn đang xem dở bản <b>Vietsub</b>, Bạn có muốn xem tiếp tại đó không?</p>-->
+            <!--</div>-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-success" data-dismiss="modal" id="view">Xem Tiếp</button>-->
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal" id="notView">Đóng</button>-->
+            <!--</div>-->
+        <!--</div>-->
 
-    </div>
-</div>
+    <!--</div>-->
+<!--</div>-->

@@ -885,6 +885,10 @@ ul.chap_num li.btn:hover{
   font-size: 13px;
   line-height: 17px;
 }
+.jw-progress{
+  background-color: #48d50a !important;
+}
+
 /*==============================ENDSIBAR LEFT THE MOST VIEW MOVIE=============================================*/
 
 /*===========================================FOOTER MOVIE SITE===========================================================*/
