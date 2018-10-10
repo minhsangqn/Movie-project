@@ -370,6 +370,11 @@ input{line-height: normal}
   overflow: hidden;
   margin: 50px 20px 0px 10px;
 }
+.navbar-search .search-result .result-item .result-item-small{
+  position: relative;
+  overflow: hidden;
+  margin: 5px;
+}
 .navbar-search .search-result .result-item-thumbnail{
   float: left;
   width: 100px;
